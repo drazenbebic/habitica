@@ -7,7 +7,6 @@ COPY tsconfig.json ./
 COPY package.json ./
 COPY yarn.lock ./
 COPY apps ./apps
-COPY packages ./packages
 
 RUN yarn --frozen-lockfile
 RUN yarn run api:build
