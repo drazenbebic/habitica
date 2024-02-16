@@ -1,5 +1,5 @@
 {
-  "name": "@drazenbebic/habitica-integration",
+  "name": "@drazenbebic/habitica-github-app",
   "version": "0.1.0",
   "private": true,
   "repository": "git@github.com:drazenbebic/habitica-integration.git",
@@ -16,7 +16,8 @@
     "prepare": "husky install",
     "dev": "nodemon --exec ts-node --require tsconfig-paths/register apps/api/src/app.ts",
     "lint": "eslint apps/**/*.ts",
-    "lint-fix": "eslint apps/**/*.ts --fix"
+    "lint-fix": "eslint apps/**/*.ts --fix",
+    "api:build": "yarn --cwd apps/api build"
   },
   "packageManager": "yarn@1.22.19"
 }
