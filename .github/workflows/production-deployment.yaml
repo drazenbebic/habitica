@@ -61,12 +61,12 @@ jobs:
           script: |
             docker stop habitica-github-app-production
             docker rm habitica-github-app-production
-            docker image rm ghcr.io/drazenbebic/habitica-github:main
-            docker pull ghcr.io/drazenbebic/habitica-github:main
+            docker image rm ghcr.io/drazenbebic/habitica-github-app:main
+            docker pull ghcr.io/drazenbebic/habitica-github-app:main
             docker run -d \
               --name habitica-github-app-production \
               --network host \
               -e PORT='3002' \
               -e NODE_ENV='production' \
               -p 3002:3000 \
-              ghcr.io/drazenbebic/habitica-github:main
+              ghcr.io/drazenbebic/habitica-github-app:main

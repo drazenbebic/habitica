@@ -2,7 +2,7 @@
   "name": "@drazenbebic/habitica-github-app",
   "version": "0.1.0",
   "private": true,
-  "repository": "git@github.com:drazenbebic/habitica-integration.git",
+  "repository": "git@github.com:drazenbebic/habitica-github-app.git",
   "author": "Drazen Bebic <drazen.bebic@outlook.com>",
   "license": "MIT",
   "workspaces": [
