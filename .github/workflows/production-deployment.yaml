@@ -59,7 +59,6 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            docker stop habitica-github-app-production
             docker rm habitica-github-app-production
             docker image rm ghcr.io/drazenbebic/habitica-github-app:main
             docker pull ghcr.io/drazenbebic/habitica-github-app:main
