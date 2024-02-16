@@ -21,7 +21,7 @@
     "@babel/core": "^7.23.6",
     "@babel/eslint-parser": "^7.23.3",
     "@babel/preset-env": "^7.23.6",
-    "@babel/register": "^7.22.15",
+    "@babel/register": "^7.23.7",
     "@types/cookie-parser": "^1.4.6",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
