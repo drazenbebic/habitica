@@ -1,0 +1,27 @@
+name: Branch deployment
+
+on:
+  pull_request:
+    branches:
+      - main
+
+env:
+  PROJECT_NAME: habitica-integration
+
+jobs:
+  install-and-lint:
+    name: 'Install & Lint'
+    runs-on: ubuntu-latest
+    if: ${{ github.actor != 'dependabot[bot]' }}
+    timeout-minutes: 15
+    steps:
+      - name: 'Use Node.js 18'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+      - name: 'Checkout code'
+        uses: actions/checkout@v4
+      - name: 'Install dependencies'
+        run: yarn --frozen-lockfile
+      - name: 'Lint Action'
+        run: yarn lint

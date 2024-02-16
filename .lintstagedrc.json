@@ -1,0 +1,6 @@
+{
+  "packages/*/src/**/*.ts": [
+    "prettier --write",
+    "eslint"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@drazenbebic/habitica-integration",
+  "version": "0.1.0",
+  "private": true,
+  "repository": "git@github.com:drazenbebic/habitica-integration.git",
+  "author": "Drazen Bebic <drazen.bebic@outlook.com>",
+  "license": "MIT",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "dev": "nodemon --exec ts-node --require tsconfig-paths/register apps/api/src/app.ts",
+    "lint": "eslint apps/**/*.ts",
+    "lint-fix": "eslint apps/**/*.ts --fix"
+  },
+  "packageManager": "yarn@1.22.19"
+}
