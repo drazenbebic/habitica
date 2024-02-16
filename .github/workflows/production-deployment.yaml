@@ -51,7 +51,8 @@ jobs:
     name: "Deploy to IONOS"
     runs-on: ubuntu-latest
     steps:
-      - name: 'Reload Docker Container'
+      - name: 'Stop old Docker Container'
+        continue-on-error: true
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -59,8 +60,17 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
+            docker stop habitica-github-app-production
             docker rm habitica-github-app-production
             docker image rm ghcr.io/drazenbebic/habitica-github-app:main
+      - name: 'Start new Docker Container'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
             docker pull ghcr.io/drazenbebic/habitica-github-app:main
             docker run -d \
               --name habitica-github-app-production \
