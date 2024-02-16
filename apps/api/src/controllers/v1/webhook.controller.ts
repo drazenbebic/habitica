@@ -7,7 +7,7 @@ class WebhookController {
     const hookId = request.header('X-GitHub-Hook-ID');
     const payload = request.body;
 
-    response.status(200).json({
+    response.status(202).json({
       success: true,
       message: 'Webhook processed successfully.',
       data: {
