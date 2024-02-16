@@ -24,6 +24,9 @@ jobs:
       - name: "Checkout repository"
         uses: actions/checkout@v4
 
+      - name: "Lint"
+        run: yarn lint
+
       - name: "Log in to the container registry"
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
         with:
@@ -44,3 +47,28 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+  deploy-to-ionos:
+    needs: [ 'build-and-push' ]
+    name: "Deploy to IONOS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Reload Docker Container'
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            docker stop habitica-github-app-production
+            docker rm habitica-github-app-production
+            docker image rm ghcr.io/drazenbebic/habitica-github:main
+            docker pull ghcr.io/drazenbebic/habitica-github:main
+            docker run -d \
+              --name habitica-github-app-production \
+              --network host \
+              -e PORT='3002' \
+              -e NODE_ENV='production' \
+              -p 3002:3000 \
+              ghcr.io/drazenbebic/habitica-github:main
