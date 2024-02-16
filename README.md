@@ -1,1 +1,1 @@
-# Habitica GitHub Integration
+# Habitica GitHub App
