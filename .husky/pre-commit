@@ -2,3 +2,5 @@
 . "$(dirname -- "$0")/_/husky.sh"
 
 yarn run lint
+yarn run api:build
+yarn run github-app:build
