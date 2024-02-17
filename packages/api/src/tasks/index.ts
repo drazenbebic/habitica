@@ -20,11 +20,11 @@ export const createTask = async (
 };
 
 export const getTasks = async (): Promise<Task[]> => {
-  const { data } = await axios.get<Task[]>(`${baseUrl}/tasks/user`, {
+  const { data: tasks } = await axios.get<Task[]>(`${baseUrl}/tasks/user`, {
     headers: getHeaders(),
   });
 
-  return data;
+  return tasks;
 };
 
 export const scoreTask = async (
