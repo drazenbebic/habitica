@@ -35,13 +35,9 @@ const pushHandler = async (
     task = existingTask;
   }
 
-  scoreTask(task.id, TaskDirection.UP)
-    .then(response => {
-      console.log('response:', response);
-    })
-    .catch(error => {
-      console.error('error:', error);
-    });
+  commits.forEach(() => {
+    scoreTask(task.id, TaskDirection.UP);
+  });
 };
 
 export default pushHandler;
