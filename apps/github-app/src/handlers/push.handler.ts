@@ -12,7 +12,7 @@ const pushHandler = async (
   hookId: string,
   { commits, repository }: PushEvent,
 ) => {
-  const taskName = `Pushed commits in ${repository.name}`;
+  const taskName = `Push commits to the "${repository.name}" repository`;
   const tasks = await getTasks();
   const existingTask = tasks.find(task => task.text === taskName);
   const task = existingTask
