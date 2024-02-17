@@ -1,20 +1,43 @@
 import { PushEvent } from '@octokit/webhooks-types';
-import { TaskType, createTask } from '@habitica/api';
+import {
+  Task,
+  TaskDirection,
+  TaskType,
+  createTask,
+  getTasks,
+  scoreTask,
+} from '@habitica/api';
 
 const pushHandler = async (
   deliveryUuid: string,
   hookId: string,
-  payload: PushEvent,
+  { commits, repository }: PushEvent,
 ) => {
-  const { commits, repository } = payload;
+  let task: Task;
+  const taskName = `Pushed commits in ${repository.name}`;
+  const {
+    data: { data: tasks },
+  } = await getTasks();
 
-  createTask({
-    text: `Pushed ${commits.length} commit(s) in ${repository.name}`,
-    type: TaskType.TODO,
-    value: payload.commits.length,
-  })
-    .then(data => {
-      console.log('data:', data);
+  const existingTask = tasks.find(task => task.text === taskName);
+
+  if (!existingTask) {
+    const {
+      data: { data },
+    } = await createTask({
+      text: taskName,
+      type: TaskType.HABIT,
+      value: 1,
+    });
+
+    task = data;
+  } else {
+    task = existingTask;
+  }
+
+  scoreTask(task.id, TaskDirection.UP)
+    .then(response => {
+      console.log('response:', response);
     })
     .catch(error => {
       console.error('error:', error);
