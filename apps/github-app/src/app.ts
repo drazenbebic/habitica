@@ -20,12 +20,12 @@ process.on('uncaughtException', error => {
   process.exit(1);
 });
 
-// Load logger middleware
-app.use(loggerMiddleware);
-
 // Load body parser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
+// Load logger middleware
+app.use(loggerMiddleware);
 
 // Load cookie parser
 app.use(cookieParser());

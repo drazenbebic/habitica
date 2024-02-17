@@ -19,8 +19,10 @@ export const createTask = async (
   return data;
 };
 
-export const getTasks = async (): Promise<Task[]> => {
-  const { data: tasks } = await axios.get<Task[]>(`${baseUrl}/tasks/user`, {
+export const getTasks = async () => {
+  const {
+    data: { data: tasks },
+  } = await axios.get(`${baseUrl}/tasks/user`, {
     headers: getHeaders(),
   });
 
