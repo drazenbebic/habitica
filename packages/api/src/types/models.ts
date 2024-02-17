@@ -2,7 +2,7 @@ import { TaskAttribute, TaskPriority, TaskType } from '../enums';
 
 export type ChecklistItem = {
   text: string;
-  completed: boolean;
+  completed?: boolean;
 };
 
 export type Task = {
