@@ -6,6 +6,7 @@ import { HTTPError } from './utils';
 import v1WebhookRouter from './routes/v1/webhook.router';
 import process from 'process';
 import loggerMiddleware from './middlewares/logger.middleware';
+import webhookAuthMiddleware from './middlewares/webhook-auth.middleware';
 
 const app = express();
 
@@ -28,6 +29,9 @@ app.use(express.json());
 
 // Load cookie parser
 app.use(cookieParser());
+
+// Load webhook auth middleware
+app.use(webhookAuthMiddleware);
 
 // Expose basedir
 app.locals.basedir = './';
