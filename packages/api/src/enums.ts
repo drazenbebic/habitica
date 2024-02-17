@@ -25,3 +25,8 @@ export enum TaskFrequency {
   MONTHLY = 'monthly',
   YEARLY = 'yearly',
 }
+
+export enum TaskDirection {
+  UP = 'up',
+  DOWN = 'down',
+}
