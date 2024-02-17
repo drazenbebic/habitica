@@ -1,7 +1,7 @@
 {
-  "name": "@habitica-github-app/api",
+  "name": "@habitica/github-app",
   "version": "0.6.0",
-  "description": "Habitica Integration API",
+  "description": "Habitica GitHub App API",
   "license": "MIT",
   "main": "src/app.ts",
   "scripts": {
@@ -15,7 +15,8 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.4",
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "moment": "^2.30.1"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",

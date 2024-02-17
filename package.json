@@ -14,10 +14,12 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "dev": "nodemon --exec ts-node --require tsconfig-paths/register apps/api/src/app.ts",
-    "lint": "eslint apps/**/*.ts",
+    "expose": "ngrok http 3000",
+    "dev": "nodemon --exec ts-node --require tsconfig-paths/register apps/github-app/src/app.ts",
+    "lint": "eslint apps/**/*.ts packages/**/*.ts",
     "lint-fix": "eslint apps/**/*.ts --fix",
-    "api:build": "yarn --cwd apps/api build"
+    "api:build": "yarn workspace @habitica/api run build",
+    "github-app:build": "yarn workspace @habitica/github-app run build"
   },
   "packageManager": "yarn@1.22.19"
 }

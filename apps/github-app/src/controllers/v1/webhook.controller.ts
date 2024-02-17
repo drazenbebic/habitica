@@ -1,4 +1,5 @@
 import catchAsyncErrors from '../../middlewares/catch-async-errors.middleware';
+import pushHandler from '../../handlers/push.handler';
 
 class WebhookController {
   process = catchAsyncErrors(async (request, response, next) => {
@@ -6,6 +7,14 @@ class WebhookController {
     const event = request.header('X-GitHub-Event');
     const hookId = request.header('X-GitHub-Hook-ID');
     const payload = request.body;
+
+    const eventHandlers = {
+      push: pushHandler,
+    };
+
+    if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) {
+      eventHandlers[event](deliveryUuid, hookId, payload);
+    }
 
     response.status(202).json({
       success: true,

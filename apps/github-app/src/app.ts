@@ -5,6 +5,7 @@ import cors from 'cors';
 import { HTTPError } from './utils';
 import v1WebhookRouter from './routes/v1/webhook.router';
 import process from 'process';
+import loggerMiddleware from './middlewares/logger.middleware';
 
 const app = express();
 
@@ -18,11 +19,14 @@ process.on('uncaughtException', error => {
   process.exit(1);
 });
 
-// Setup body parser
+// Load logger middleware
+app.use(loggerMiddleware);
+
+// Load body parser
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Setup cookie parser
+// Load cookie parser
 app.use(cookieParser());
 
 // Expose basedir
@@ -42,7 +46,7 @@ app.use(cors());
 app.get('/', (request, response) => {
   response.status(200).json({
     success: true,
-    message: 'Habitica Integration API',
+    message: 'Habitica GitHub API',
     data: null,
   });
 });
