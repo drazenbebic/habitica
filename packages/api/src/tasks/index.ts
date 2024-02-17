@@ -9,20 +9,22 @@ import {
 import { CreateTaskParameters } from '../types';
 import { getHeaders } from '../utils';
 
-export const createTask = async (data: CreateTaskParameters): Promise<Task> => {
-  const { data: task } = await axios.post<Task>(`${baseUrl}/tasks/user`, data, {
+export const createTask = async (
+  payload: CreateTaskParameters,
+): Promise<Task> => {
+  const { data } = await axios.post<Task>(`${baseUrl}/tasks/user`, payload, {
     headers: getHeaders(),
   });
 
-  return task;
+  return data;
 };
 
 export const getTasks = async (): Promise<Task[]> => {
-  const { data: tasks } = await axios.get<Task[]>(`${baseUrl}/tasks/user`, {
+  const { data } = await axios.get<Task[]>(`${baseUrl}/tasks/user`, {
     headers: getHeaders(),
   });
 
-  return tasks;
+  return data;
 };
 
 export const scoreTask = async (
@@ -41,7 +43,7 @@ export const scoreTask = async (
 };
 
 export const tagTask = async (taskId: string, tagId: string): Promise<Task> => {
-  const { data: task } = await axios.post<Task>(
+  const { data } = await axios.post<Task>(
     `${baseUrl}/tasks/${taskId}/tags/${tagId}`,
     undefined,
     {
@@ -49,7 +51,7 @@ export const tagTask = async (taskId: string, tagId: string): Promise<Task> => {
     },
   );
 
-  return task;
+  return data;
 };
 
 export const addChecklistItemToTask = async (

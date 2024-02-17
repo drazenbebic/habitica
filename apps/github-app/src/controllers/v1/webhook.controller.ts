@@ -1,5 +1,5 @@
 import catchAsyncErrors from '../../middlewares/catch-async-errors.middleware';
-import pushHandler from '../../handlers/push.handler';
+import { pushHandler, registryPackageHandler } from '../../handlers';
 
 class WebhookController {
   process = catchAsyncErrors(async (request, response, next) => {
@@ -10,6 +10,7 @@ class WebhookController {
 
     const eventHandlers = {
       push: pushHandler,
+      registry_package: registryPackageHandler,
     };
 
     if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) {
