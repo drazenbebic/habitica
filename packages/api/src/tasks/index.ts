@@ -24,6 +24,8 @@ export const getTasks = async (): Promise<Task[]> => {
     headers: getHeaders(),
   });
 
+  console.log('FOOO:', tasks);
+
   return tasks;
 };
 
