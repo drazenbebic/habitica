@@ -1,6 +1,5 @@
 import { PushEvent } from '@octokit/webhooks-types';
 import {
-  Task,
   TaskDirection,
   TaskType,
   createTask,
@@ -13,27 +12,16 @@ const pushHandler = async (
   hookId: string,
   { commits, repository }: PushEvent,
 ) => {
-  let task: Task;
   const taskName = `Pushed commits in ${repository.name}`;
-  const {
-    data: { data: tasks },
-  } = await getTasks();
-
+  const tasks = await getTasks();
   const existingTask = tasks.find(task => task.text === taskName);
-
-  if (!existingTask) {
-    const {
-      data: { data },
-    } = await createTask({
-      text: taskName,
-      type: TaskType.HABIT,
-      value: 1,
-    });
-
-    task = data;
-  } else {
-    task = existingTask;
-  }
+  const task = existingTask
+    ? existingTask
+    : await createTask({
+        text: taskName,
+        type: TaskType.HABIT,
+        value: 1,
+      });
 
   commits.forEach(() => {
     scoreTask(task.id, TaskDirection.UP);
