@@ -1,0 +1,28 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = []
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model GitHubInstallations {
+  uuid           String         @id @default(uuid()) @map("uuid") @db.VarChar(36)
+  code           String         @map("code") @db.VarChar(20)
+  installationId String         @map("installation_id") @db.VarChar(8)
+  HabiticaUsers  HabiticaUsers?
+
+  @@map(name: "github_installations")
+}
+
+model HabiticaUsers {
+  uuid                   String              @id @default(uuid()) @map("uuid") @db.VarChar(36)
+  githubInstallation     GitHubInstallations @relation(fields: [githubInstallationUuid], references: [uuid])
+  githubInstallationUuid String              @unique @map("github_installation_uuid") @db.VarChar(36)
+  userId                 String              @db.VarChar(255)
+  apiToken               String              @db.VarChar(255)
+
+  @@map(name: "habitica_users")
+}

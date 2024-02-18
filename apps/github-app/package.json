@@ -8,9 +8,22 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/app.js",
     "build": "tsc --project tsconfig.json",
-    "prod": "set NODE_ENV=production&node dist/app.js"
+    "prod": "set NODE_ENV=production&node dist/app.js",
+    "studio": "dotenv -e ../../.env prisma studio",
+    "db:pull": "dotenv -e ../../.env prisma db pull",
+    "db:push": "dotenv -e ../../.env prisma db push",
+    "db:seed": "dotenv -e ../../.env prisma db seed",
+    "db:execute": "dotenv -e ../../.env prisma db execute",
+    "migrate:dev": "dotenv -e ../../.env prisma migrate dev",
+    "migrate:diff": "dotenv -e ../../.env prisma migrate diff",
+    "migrate:reset": "dotenv -e ../../.env prisma migrate reset",
+    "migrate:reset:force": "dotenv -e ../../.env prisma migrate reset -- --force",
+    "migrate:deploy": "dotenv -e ../../.env prisma migrate deploy",
+    "migrate:status": "dotenv -e ../../.env prisma migrate status",
+    "generate": "dotenv -e ../../.env prisma generate"
   },
   "dependencies": {
+    "@prisma/client": "^5.9.1",
     "axios": "^1.6.7",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -40,8 +53,12 @@
     "lint-staged": "^15.2.2",
     "nodemon": "^3.0.3",
     "prettier": "^3.2.5",
+    "prisma": "^5.9.1",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.3.3"
+  },
+  "prisma": {
+    "schema": "src/prisma/schema.prisma"
   }
 }
