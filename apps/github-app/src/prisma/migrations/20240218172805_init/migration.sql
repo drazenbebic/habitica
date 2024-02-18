@@ -11,8 +11,8 @@ CREATE TABLE "github_installations" (
 CREATE TABLE "habitica_users" (
     "uuid" VARCHAR(36) NOT NULL,
     "github_installation_uuid" VARCHAR(36) NOT NULL,
-    "userId" VARCHAR(255) NOT NULL,
-    "apiToken" VARCHAR(255) NOT NULL,
+    "user_id" VARCHAR(255) NOT NULL,
+    "api_token" VARCHAR(255) NOT NULL,
 
     CONSTRAINT "habitica_users_pkey" PRIMARY KEY ("uuid")
 );
