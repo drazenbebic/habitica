@@ -1,7 +1,10 @@
-import { Task, getTasks } from '@habitica/api';
+import { HabiticaApi, Task } from '@habitica/api';
 
-const getTaskByName = async (taskName: string): Promise<Task> => {
-  const tasks = await getTasks();
+const getTaskByName = async (
+  habiticaApi: HabiticaApi,
+  taskName: string,
+): Promise<Task> => {
+  const tasks = await habiticaApi.getTasks();
   return tasks.find(task => task.text === taskName);
 };
 

@@ -1,14 +1,21 @@
 import { NextFunction, Request, Response } from 'express';
 
+interface HabiticaRequest extends Request {
+  habitica: {
+    userId: string;
+    apiToken: string;
+  };
+}
+
 const catchAsyncErrors =
   (
     callback: (
-      request: Request,
+      request: HabiticaRequest,
       response: Response,
       next: NextFunction,
     ) => Promise<void>,
   ) =>
-  (request: Request, response: Response, next: NextFunction) =>
+  (request: HabiticaRequest, response: Response, next: NextFunction) =>
     Promise.resolve(callback(request, response, next)).catch(next);
 
 export default catchAsyncErrors;

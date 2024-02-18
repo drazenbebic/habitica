@@ -1,12 +1,7 @@
 import catchAsyncErrors from '../../middlewares/catch-async-errors.middleware';
-import {
-  issueCommentHandler,
-  issuesHandler,
-  pullRequestHandler,
-  pullRequestReviewHandler,
-  pushHandler,
-  registryPackageHandler,
-} from '../../handlers';
+
+import { HabiticaApi } from '@habitica/api';
+import EventHandler from '../../event-handler';
 
 class WebhookController {
   process = catchAsyncErrors(async (request, response) => {
@@ -15,17 +10,24 @@ class WebhookController {
     const hookId = request.header('x-github-hook-id');
     const payload = request.body;
 
+    const habiticaApi = new HabiticaApi(
+      request.habitica.userId,
+      request.habitica.apiToken,
+    );
+
+    const eventHandler = new EventHandler(habiticaApi);
+
     const eventHandlers = {
-      issue_comment: issueCommentHandler,
-      issues: issuesHandler,
-      pull_request: pullRequestHandler,
-      pull_request_review: pullRequestReviewHandler,
-      push: pushHandler,
-      registry_package: registryPackageHandler,
+      issue_comment: eventHandler.issueComment,
+      issues: eventHandler.issues,
+      pull_request: eventHandler.pullRequest,
+      pull_request_review: eventHandler.pullRequestReview,
+      push: eventHandler.push,
+      registry_package: eventHandler.registryPackage,
     };
 
     if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) {
-      eventHandlers[event](deliveryUuid, hookId, payload);
+      eventHandlers[event](payload);
     }
 
     response.status(202).json({
