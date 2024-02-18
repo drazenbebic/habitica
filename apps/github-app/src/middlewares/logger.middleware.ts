@@ -8,13 +8,15 @@ const loggerMiddleware = catchAsyncErrors(async (request, response, next) => {
   const hookId = request.header('x-github-hook-id');
   const action = request.body?.action;
 
-  console.info(
-    '📦',
-    chalk.hex('#008a76')(`[${moment.utc().format('YYYY-MM-DD HH:mm:ss')}]`),
-    chalk.hex('#6fadf3')(`[${deliveryUuid}]`),
-    chalk.hex('#6ff389')(action ? `[${event}.${action}]` : `[${event}]`),
-    chalk.hex('#c3f36f')(`[${hookId}]`),
-  );
+  if (deliveryUuid && event && hookId) {
+    console.info(
+      '📦',
+      chalk.hex('#008a76')(`[${moment.utc().format('YYYY-MM-DD HH:mm:ss')}]`),
+      chalk.hex('#6fadf3')(`[${deliveryUuid}]`),
+      chalk.hex('#6ff389')(action ? `[${event}.${action}]` : `[${event}]`),
+      chalk.hex('#c3f36f')(`[${hookId}]`),
+    );
+  }
 
   next();
 });
