@@ -1,5 +1,7 @@
 import catchAsyncErrors from '../../middlewares/catch-async-errors.middleware';
 import {
+  issueCommentHandler,
+  issuesHandler,
   pullRequestReviewHandler,
   pushHandler,
   registryPackageHandler,
@@ -16,6 +18,8 @@ class WebhookController {
       push: pushHandler,
       registry_package: registryPackageHandler,
       pull_request_review: pullRequestReviewHandler,
+      issue_comment: issueCommentHandler,
+      issues: issuesHandler,
     };
 
     if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) {
