@@ -2,6 +2,7 @@ import catchAsyncErrors from '../../middlewares/catch-async-errors.middleware';
 import {
   issueCommentHandler,
   issuesHandler,
+  pullRequestHandler,
   pullRequestReviewHandler,
   pushHandler,
   registryPackageHandler,
@@ -9,17 +10,18 @@ import {
 
 class WebhookController {
   process = catchAsyncErrors(async (request, response) => {
-    const deliveryUuid = request.header('X-GitHub-Delivery');
-    const event = request.header('X-GitHub-Event');
-    const hookId = request.header('X-GitHub-Hook-ID');
+    const deliveryUuid = request.header('x-github-delivery');
+    const event = request.header('x-github-event');
+    const hookId = request.header('x-github-hook-id');
     const payload = request.body;
 
     const eventHandlers = {
-      push: pushHandler,
-      registry_package: registryPackageHandler,
-      pull_request_review: pullRequestReviewHandler,
       issue_comment: issueCommentHandler,
       issues: issuesHandler,
+      pull_request: pullRequestHandler,
+      pull_request_review: pullRequestReviewHandler,
+      push: pushHandler,
+      registry_package: registryPackageHandler,
     };
 
     if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) {
