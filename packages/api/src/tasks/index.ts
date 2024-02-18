@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  APIResponse,
   ChecklistItem,
   ScoreTaskResponse,
   Task,
@@ -12,21 +13,21 @@ import { getHeaders } from '../utils';
 export const createTask = async (
   payload: CreateTaskParameters,
 ): Promise<Task> => {
-  const { data } = await axios.post<Task>(`${baseUrl}/tasks/user`, payload, {
+  const {
+    data: { data },
+  } = await axios.post<APIResponse<Task>>(`${baseUrl}/tasks/user`, payload, {
     headers: getHeaders(),
   });
 
   return data;
 };
 
-export const getTasks = async () => {
+export const getTasks = async (): Promise<Task[]> => {
   const {
     data: { data: tasks },
-  } = await axios.get(`${baseUrl}/tasks/user`, {
+  } = await axios.get<APIResponse<Task[]>>(`${baseUrl}/tasks/user`, {
     headers: getHeaders(),
   });
-
-  console.log('FOOO:', tasks);
 
   return tasks;
 };
@@ -35,7 +36,9 @@ export const scoreTask = async (
   taskId: string,
   direction: TaskDirection,
 ): Promise<ScoreTaskResponse> => {
-  const { data } = await axios.post<ScoreTaskResponse>(
+  const {
+    data: { data },
+  } = await axios.post<APIResponse<ScoreTaskResponse>>(
     `${baseUrl}/tasks/${taskId}/score/${direction}`,
     undefined,
     {
@@ -47,7 +50,9 @@ export const scoreTask = async (
 };
 
 export const tagTask = async (taskId: string, tagId: string): Promise<Task> => {
-  const { data } = await axios.post<Task>(
+  const {
+    data: { data },
+  } = await axios.post<APIResponse<Task>>(
     `${baseUrl}/tasks/${taskId}/tags/${tagId}`,
     undefined,
     {
