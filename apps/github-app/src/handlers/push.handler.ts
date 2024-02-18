@@ -1,6 +1,7 @@
 import { PushEvent } from '@octokit/webhooks-types';
 import {
   TaskDirection,
+  TaskPriority,
   TaskType,
   createTask,
   getTasks,
@@ -21,6 +22,7 @@ const pushHandler = async (
         text: taskName,
         type: TaskType.HABIT,
         value: 1,
+        priority: TaskPriority.LOW,
       });
 
   commits.forEach(() => {
