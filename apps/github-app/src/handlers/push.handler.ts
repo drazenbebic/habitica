@@ -25,9 +25,11 @@ const pushHandler = async (
         priority: TaskPriority.LOW,
       });
 
-  commits.forEach(() => {
-    scoreTask(task.id, TaskDirection.UP);
-  });
+  return Promise.all(
+    commits.map(async () => {
+      await scoreTask(task.id, TaskDirection.UP);
+    }),
+  );
 };
 
 export default pushHandler;

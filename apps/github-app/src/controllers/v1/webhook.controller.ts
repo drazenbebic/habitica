@@ -6,7 +6,7 @@ import {
 } from '../../handlers';
 
 class WebhookController {
-  process = catchAsyncErrors(async (request, response, next) => {
+  process = catchAsyncErrors(async (request, response) => {
     const deliveryUuid = request.header('X-GitHub-Delivery');
     const event = request.header('X-GitHub-Event');
     const hookId = request.header('X-GitHub-Hook-ID');
@@ -24,12 +24,11 @@ class WebhookController {
 
     response.status(202).json({
       success: true,
-      message: 'Webhook processed successfully.',
+      message: 'Accepted. Webhook is being processed.',
       data: {
         deliveryUuid,
         event,
         hookId,
-        payload,
       },
     });
   });
