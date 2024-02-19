@@ -1,8 +1,8 @@
 {
-  "name": "@drazenbebic/habitica-github-app",
+  "name": "@drazenbebic/habitica",
   "version": "0.1.0",
   "private": true,
-  "repository": "git@github.com:drazenbebic/habitica-github-app.git",
+  "repository": "git@github.com:drazenbebic/habitica.git",
   "author": "Drazen Bebic <drazen.bebic@outlook.com>",
   "license": "MIT",
   "workspaces": [

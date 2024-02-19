@@ -3,8 +3,7 @@ import * as dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { HTTPError } from './utils';
-import v1OAuthRouter from './routes/v1/oauth.router';
-import v1WebhookRouter from './routes/v1/webhook.router';
+import v1GitHubRouter from './routes/v1/github.router';
 import process from 'process';
 import loggerMiddleware from './middlewares/logger.middleware';
 
@@ -36,8 +35,7 @@ app.locals.basedir = './';
 // Route definition
 const routes: { [key: string]: { [key: string]: Router } } = {
   v1: {
-    oauth: v1OAuthRouter,
-    webhooks: v1WebhookRouter,
+    github: v1GitHubRouter,
   },
 };
 
