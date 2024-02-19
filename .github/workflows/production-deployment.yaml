@@ -64,8 +64,8 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            docker stop PROD_${{ env.IMAGE_NAME }}
-            docker rm PROD_${{ env.IMAGE_NAME }}
+            docker stop habitica
+            docker rm habitica
             docker image rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
       - name: 'Start new container'
         uses: appleboy/ssh-action@v1.0.3
@@ -77,11 +77,16 @@ jobs:
           script: |
             docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
             docker run -d \
-              --name PROD_${{ env.IMAGE_NAME }} \
+              --name habitica \
               --network host \
               -e PORT='3002' \
               -e NODE_ENV='production' \
               -e HABITICA_USER_ID='${{ secrets.HABITICA_USER_ID }}' \
               -e HABITICA_API_TOKEN='${{ secrets.HABITICA_API_TOKEN }}' \
+              -e DB_USER='${{ secrets.DB_USER }}' \
+              -e DB_PASS='${{ secrets.DB_PASS }}' \
+              -e DB_NAME='${{ secrets.DB_NAME }}' \
+              -e DB_PORT='${{ secrets.DB_PORT }}' \
+              -e DB_URL='${{ secrets.DB_URL }}' \
               -p 3002:3000 \
-              ghcr.io/drazenbebic/habitica-github-app:main
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
