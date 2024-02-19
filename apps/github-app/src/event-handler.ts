@@ -85,7 +85,14 @@ class EventHandler {
           priority: isFeature ? TaskPriority.HIGH : TaskPriority.NORMAL,
         });
 
-    return await this.api.scoreTask(task.id, TaskDirection.UP);
+    this.api
+      .scoreTask(task.id, TaskDirection.UP)
+      .then(data => {
+        console.log('Score Task Response:', data);
+      })
+      .catch(error => {
+        console.error('Score Task Error:', error);
+      });
   };
 
   pullRequestReview = async ({
@@ -108,7 +115,14 @@ class EventHandler {
           priority: TaskPriority.HIGH,
         });
 
-    return await this.api.scoreTask(task.id, TaskDirection.UP);
+    this.api
+      .scoreTask(task.id, TaskDirection.UP)
+      .then(data => {
+        console.log('Score Task Response:', data);
+      })
+      .catch(error => {
+        console.error('Score Task Error:', error);
+      });
   };
 
   push = async ({ commits, repository }: PushEvent) => {
@@ -124,11 +138,13 @@ class EventHandler {
           priority: TaskPriority.LOW,
         });
 
-    return Promise.all(
+    const data = await Promise.all(
       commits.map(async () => {
-        await this.api.scoreTask(task.id, TaskDirection.UP);
+        return await this.api.scoreTask(task.id, TaskDirection.UP);
       }),
     );
+
+    console.log('Score Task Response:', data);
   };
 
   registryPackage = async ({ action }: RegistryPackagePublishedEvent) => {
