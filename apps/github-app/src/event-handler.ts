@@ -126,6 +126,14 @@ class EventHandler {
   };
 
   push = async ({ commits, repository }: PushEvent) => {
+    const validCommits = commits.filter(
+      ({ author }) => author.username !== 'dependabot[bot]',
+    );
+
+    if (validCommits.length <= 0) {
+      return;
+    }
+
     const taskName = `Push commits to the "${repository.name}" repository`;
     const tasks = await this.api.getTasks();
     const existingTask = tasks.find(task => task.text === taskName);
@@ -139,7 +147,7 @@ class EventHandler {
         });
 
     const data = await Promise.all(
-      commits.map(async () => {
+      validCommits.map(async () => {
         return await this.api.scoreTask(task.id, TaskDirection.UP);
       }),
     );
