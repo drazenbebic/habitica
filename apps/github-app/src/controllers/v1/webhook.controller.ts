@@ -1,6 +1,6 @@
 import catchAsyncErrors from '../../middlewares/catch-async-errors.middleware';
 
-import { HabiticaApi } from '@habitica/api';
+import { HabiticaApi } from '@habitica/core';
 import EventHandler from '../../event-handler';
 
 class WebhookController {

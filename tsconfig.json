@@ -10,8 +10,8 @@
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "@habitica/api": [
-        "./packages/api/src/index.ts"
+      "@habitica/core": [
+        "./packages/core/src/index.ts"
       ]
     }
   }

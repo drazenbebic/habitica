@@ -29,7 +29,7 @@ jobs:
         run: yarn lint
       - name: "Build"
         run: |
-          yarn api:build
+          yarn core:build
           yarn github-app:build
       - name: "Log in to the container registry"
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
@@ -55,7 +55,7 @@ jobs:
     name: "Deploy to IONOS"
     runs-on: ubuntu-latest
     steps:
-      - name: 'Stop old Docker Container'
+      - name: 'Stop existing container'
         continue-on-error: true
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -64,10 +64,10 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            docker stop habitica-github-app-production
-            docker rm habitica-github-app-production
-            docker image rm ghcr.io/drazenbebic/habitica-github-app:main
-      - name: 'Start new Docker Container'
+            docker stop PROD_${{ env.IMAGE_NAME }}
+            docker rm PROD_${{ env.IMAGE_NAME }}
+            docker image rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+      - name: 'Start new container'
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -75,9 +75,9 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 22
           script: |
-            docker pull ghcr.io/drazenbebic/habitica-github-app:main
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
             docker run -d \
-              --name habitica-github-app-production \
+              --name PROD_${{ env.IMAGE_NAME }} \
               --network host \
               -e PORT='3002' \
               -e NODE_ENV='production' \

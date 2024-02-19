@@ -1,4 +1,4 @@
-import { HabiticaApi, Task } from '@habitica/api';
+import { HabiticaApi, Task } from '@habitica/core';
 
 const getTaskByName = async (
   habiticaApi: HabiticaApi,

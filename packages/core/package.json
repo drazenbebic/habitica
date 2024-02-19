@@ -1,5 +1,5 @@
 {
-  "name": "@habitica/api",
+  "name": "@habitica/core",
   "version": "0.1.0",
   "description": "Habitica API wrapper",
   "license": "MIT",

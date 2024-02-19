@@ -3,7 +3,7 @@ import {
   TaskDirection,
   TaskPriority,
   TaskType,
-} from '@habitica/api';
+} from '@habitica/core';
 import {
   InstallationEvent,
   IssueCommentEvent,

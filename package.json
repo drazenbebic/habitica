@@ -18,7 +18,7 @@
     "dev": "nodemon --exec ts-node --require tsconfig-paths/register apps/github-app/src/app.ts",
     "lint": "eslint apps/**/*.ts packages/**/*.ts",
     "lint-fix": "eslint apps/**/*.ts --fix",
-    "api:build": "yarn workspace @habitica/api run build",
+    "core:build": "yarn workspace @habitica/core run build",
     "github-app:build": "yarn workspace @habitica/github-app run build",
     "github-app:orm:studio": "yarn workspace @habitica/github-app run studio",
     "github-app:orm:db:pull": "yarn workspace @habitica/github-app run db:pull",

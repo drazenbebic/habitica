@@ -10,7 +10,7 @@ COPY apps ./apps
 COPY packages ./packages
 
 RUN yarn --frozen-lockfile
-RUN yarn run api:build
+RUN yarn run core:build
 RUN yarn run github-app:build
 
 COPY . .
