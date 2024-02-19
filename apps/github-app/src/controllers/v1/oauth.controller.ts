@@ -26,11 +26,11 @@ class OAuthController {
       githubInstallation = await prisma.gitHubInstallations.create({
         data: {
           code: code.toString(),
-          installationId: installationId.toString(),
+          installationId: Number(installationId),
         },
       });
 
-      const habiticaUser = await prisma.habiticaUsers.create({
+      await prisma.habiticaUsers.create({
         data: {
           githubInstallationUuid: githubInstallation.uuid,
           // TODO: Retrieve these values from the request.

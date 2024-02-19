@@ -11,7 +11,8 @@ datasource db {
 model GitHubInstallations {
   uuid           String         @id @default(uuid()) @map("uuid") @db.VarChar(36)
   code           String         @map("code") @db.VarChar(20)
-  installationId String         @map("installation_id") @db.VarChar(8)
+  installationId Int            @unique @map("installation_id") @db.Integer()
+  suspended      Boolean        @default(false) @map("suspended") @db.Boolean
   habiticaUser   HabiticaUsers? @relation("GithubInstallationsHabiticaUsers")
 
   @@map(name: "github_installations")
@@ -21,7 +22,7 @@ model HabiticaUsers {
   uuid                   String              @id @default(uuid()) @map("uuid") @db.VarChar(36)
   githubInstallation     GitHubInstallations @relation("GithubInstallationsHabiticaUsers", fields: [githubInstallationUuid], references: [uuid])
   githubInstallationUuid String              @unique @map("github_installation_uuid") @db.VarChar(36)
-  userId                 String              @map("user_id") @db.VarChar(255)
+  userId                 String              @unique @map("user_id") @db.VarChar(255)
   apiToken               String              @map("api_token") @db.VarChar(255)
 
   @@map(name: "habitica_users")

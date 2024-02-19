@@ -5,14 +5,17 @@ import {
   TaskType,
 } from '@habitica/api';
 import {
+  InstallationEvent,
   IssueCommentEvent,
   IssuesEvent,
   PullRequestEvent,
   PullRequestReviewEvent,
   PushEvent,
   RegistryPackagePublishedEvent,
+  WorkflowJobEvent,
+  WorkflowRunEvent,
 } from '@octokit/webhooks-types';
-import { getTaskByName } from './utils';
+import { getTaskByName, prisma } from './utils';
 
 class EventHandler {
   api: HabiticaApi;
@@ -21,12 +24,38 @@ class EventHandler {
     this.api = habiticaApi;
   }
 
-  issueComment = async (event: IssueCommentEvent) => {
-    console.log('🚧 TODO: issue_comment handler.');
+  installation = async ({ action, installation }: InstallationEvent) => {
+    switch (action) {
+      case 'suspend':
+      case 'unsuspend':
+        await prisma.gitHubInstallations.updateMany({
+          data: {
+            suspended: action === 'suspend',
+          },
+          where: {
+            installationId: installation.id,
+          },
+        });
+        break;
+      case 'deleted':
+        await prisma.gitHubInstallations.deleteMany({
+          where: {
+            installationId: installation.id,
+          },
+        });
+        break;
+      case 'created':
+        console.log('⭐ New installation created! ⭐️');
+        break;
+    }
   };
 
-  issues = async (event: IssuesEvent) => {
-    console.log('🚧 TODO: issues handler.');
+  issueComment = async ({ action }: IssueCommentEvent) => {
+    console.log(`🚧 TODO: issue_comment.${action} handler.`);
+  };
+
+  issues = async ({ action }: IssuesEvent) => {
+    console.log(`🚧 TODO: issues.${action} handler.`);
   };
 
   pullRequest = async ({
@@ -102,8 +131,16 @@ class EventHandler {
     );
   };
 
-  registryPackage = async (event: RegistryPackagePublishedEvent) => {
-    console.log('🚧 TODO: registry_package handler.');
+  registryPackage = async ({ action }: RegistryPackagePublishedEvent) => {
+    console.log(`🚧 TODO: registry_package.${action} handler.`);
+  };
+
+  workflowJob = async ({ action }: WorkflowJobEvent) => {
+    console.log(`🚧 TODO: workflow_job.${action} handler.`);
+  };
+
+  workflowRun = async ({ action }: WorkflowRunEvent) => {
+    console.log(`🚧 TODO: workflow_run.${action} handler.`);
   };
 }
 

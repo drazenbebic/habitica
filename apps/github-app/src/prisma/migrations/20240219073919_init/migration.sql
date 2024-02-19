@@ -2,7 +2,8 @@
 CREATE TABLE "github_installations" (
     "uuid" VARCHAR(36) NOT NULL,
     "code" VARCHAR(20) NOT NULL,
-    "installation_id" VARCHAR(8) NOT NULL,
+    "installation_id" INTEGER NOT NULL,
+    "suspended" BOOLEAN NOT NULL DEFAULT false,
 
     CONSTRAINT "github_installations_pkey" PRIMARY KEY ("uuid")
 );
@@ -18,7 +19,13 @@ CREATE TABLE "habitica_users" (
 );
 
 -- CreateIndex
+CREATE UNIQUE INDEX "github_installations_installation_id_key" ON "github_installations"("installation_id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "habitica_users_github_installation_uuid_key" ON "habitica_users"("github_installation_uuid");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "habitica_users_user_id_key" ON "habitica_users"("user_id");
 
 -- AddForeignKey
 ALTER TABLE "habitica_users" ADD CONSTRAINT "habitica_users_github_installation_uuid_fkey" FOREIGN KEY ("github_installation_uuid") REFERENCES "github_installations"("uuid") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -6,7 +6,7 @@ const authMiddleware = catchAsyncErrors(async (request, response, next) => {
   const installation: Installation = request.body.installation as Installation;
   const githubInstallation = await prisma.gitHubInstallations.findFirst({
     where: {
-      installationId: `${installation.id}`,
+      installationId: installation.id,
     },
     include: {
       habiticaUser: true,
@@ -15,6 +15,10 @@ const authMiddleware = catchAsyncErrors(async (request, response, next) => {
 
   if (!githubInstallation || !githubInstallation.habiticaUser) {
     return next(new HTTPError('Installation not found.', 404));
+  }
+
+  if (githubInstallation.suspended) {
+    return next(new HTTPError('Installation suspended.', 403));
   }
 
   const { userId, apiToken } = githubInstallation.habiticaUser;

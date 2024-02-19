@@ -18,12 +18,15 @@ class WebhookController {
     const eventHandler = new EventHandler(habiticaApi);
 
     const eventHandlers = {
+      installation: eventHandler.installation,
       issue_comment: eventHandler.issueComment,
       issues: eventHandler.issues,
       pull_request: eventHandler.pullRequest,
       pull_request_review: eventHandler.pullRequestReview,
       push: eventHandler.push,
       registry_package: eventHandler.registryPackage,
+      workflow_job: eventHandler.workflowJob,
+      workflow_run: eventHandler.workflowRun,
     };
 
     if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) {
