@@ -23,7 +23,7 @@
     "generate": "dotenv -e ../../.env prisma generate"
   },
   "dependencies": {
-    "@prisma/client": "^5.9.1",
+    "@prisma/client": "^5.10.0",
     "axios": "^1.6.7",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
