@@ -9,28 +9,21 @@ const authMiddleware = catchAsyncErrors(async (request, response, next) => {
       installationId: installation.id,
     },
     include: {
-      habiticaUser: true,
+      gitHubUsers: {
+        include: {
+          habiticaUser: true,
+        },
+      },
     },
   });
 
-  if (!githubInstallation || !githubInstallation.habiticaUser) {
+  if (!githubInstallation || githubInstallation.gitHubUsers.length < 0) {
     return next(new HTTPError('Installation not found.', 404));
   }
 
   if (githubInstallation.suspended) {
     return next(new HTTPError('Installation suspended.', 403));
   }
-
-  const { userId, apiToken } = githubInstallation.habiticaUser;
-
-  if (!userId || !apiToken) {
-    return next(new HTTPError('Installation not found.', 404));
-  }
-
-  request.habitica = {
-    userId,
-    apiToken,
-  };
 
   next();
 });

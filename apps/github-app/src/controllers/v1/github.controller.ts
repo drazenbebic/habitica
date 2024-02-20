@@ -3,6 +3,7 @@ import { HTTPError, prisma } from '../../utils';
 import { env } from 'process';
 import { HabiticaApi } from '@habitica/core';
 import EventHandler from '../../event-handler';
+import axios from 'axios';
 
 class GitHubController {
   webhook = catchAsyncErrors(async (request, response) => {
@@ -12,8 +13,8 @@ class GitHubController {
     const payload = request.body;
 
     const habiticaApi = new HabiticaApi(
-      request.habitica.userId,
-      request.habitica.apiToken,
+      env.HABITICA_USER_ID,
+      env.HABITICA_API_TOKEN,
     );
 
     const eventHandler = new EventHandler(habiticaApi);
@@ -53,37 +54,84 @@ class GitHubController {
     } = request.query;
 
     if (setupAction === 'install') {
-      let githubInstallation = await prisma.gitHubInstallations.findFirst({
+      let gitHubInstallation = await prisma.gitHubInstallations.findFirst({
         where: {
           code: code.toString(),
         },
       });
 
-      if (githubInstallation) {
+      if (gitHubInstallation) {
         return next(
           new HTTPError('An installation with this ID already exists.', 409),
         );
       }
 
-      githubInstallation = await prisma.gitHubInstallations.create({
+      const { data } = await axios.post(
+        'https://github.com/login/oauth/access_token',
+        {
+          client_id: env.CLIENT_ID,
+          client_secret: env.CLIENT_SECRET,
+          code,
+        },
+      );
+
+      const params = new URLSearchParams(data);
+
+      const { data: gitHubUserData } = await axios.get(
+        'https://api.github.com/user',
+        {
+          headers: {
+            accept: 'application/vnd.github+json',
+            authorization: `Bearer ${params.get('access_token')}`,
+            'x-github-api-version': '2022-11-28',
+          },
+        },
+      );
+
+      gitHubInstallation = await prisma.gitHubInstallations.create({
         data: {
           code: code.toString(),
           installationId: Number(installationId),
         },
       });
 
+      const gitHubUser = await prisma.gitHubUsers.create({
+        data: {
+          installationUuid: gitHubInstallation.uuid,
+          login: gitHubUserData.login || undefined,
+          id: gitHubUserData.id || undefined,
+          nodeId: gitHubUserData.nodeId || undefined,
+          avatarUrl: gitHubUserData.avatarUrl || undefined,
+          gravatarId: gitHubUserData.gravatarId || undefined,
+          htmlUrl: gitHubUserData.htmlUrl || undefined,
+          type: gitHubUserData.type || undefined,
+          name: gitHubUserData.name || undefined,
+          company: gitHubUserData.company || undefined,
+          blog: gitHubUserData.blog || undefined,
+          location: gitHubUserData.location || undefined,
+          email: gitHubUserData.email || undefined,
+          accessToken: gitHubUserData.accessToken || undefined,
+          expiresIn: gitHubUserData.expiresIn || undefined,
+          refreshToken: gitHubUserData.refreshToken || undefined,
+          refreshTokenExpiresIn:
+            gitHubUserData.refreshTokenExpiresIn || undefined,
+          scope: gitHubUserData.scope || undefined,
+          tokenType: gitHubUserData.tokenType || undefined,
+        },
+      });
+
       await prisma.habiticaUsers.create({
         data: {
-          githubInstallationUuid: githubInstallation.uuid,
+          gitHubUserUuid: gitHubUser.uuid,
           // TODO: Retrieve these values from the request.
           userId: env.HABITICA_USER_ID,
           apiToken: env.HABITICA_API_TOKEN,
         },
       });
 
-      response.status(githubInstallation ? 200 : 500).json({
-        success: !!githubInstallation,
-        message: githubInstallation
+      response.status(gitHubInstallation ? 200 : 500).json({
+        success: !!gitHubInstallation,
+        message: gitHubInstallation
           ? 'Installation successful.'
           : 'Installation failed.',
         data: null,
@@ -92,7 +140,7 @@ class GitHubController {
       response.status(200).json({
         success: true,
         message: 'Installation successful.',
-        data: null,
+        data: request.headers,
       });
     }
   });

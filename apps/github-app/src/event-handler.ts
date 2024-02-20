@@ -25,10 +25,22 @@ class EventHandler {
   }
 
   installation = async ({ action, installation }: InstallationEvent) => {
+    const githubInstallation = await prisma.gitHubInstallations.findUnique({
+      where: {
+        installationId: installation.id,
+      },
+    });
+
+    const gitHubUsers = await prisma.gitHubUsers.findMany({
+      where: {
+        installationUuid: githubInstallation.uuid,
+      },
+    });
+
     switch (action) {
       case 'suspend':
       case 'unsuspend':
-        await prisma.gitHubInstallations.updateMany({
+        await prisma.gitHubInstallations.update({
           data: {
             suspended: action === 'suspend',
           },
@@ -38,9 +50,23 @@ class EventHandler {
         });
         break;
       case 'deleted':
-        await prisma.gitHubInstallations.deleteMany({
+        await prisma.habiticaUsers.deleteMany({
           where: {
-            installationId: installation.id,
+            gitHubUserUuid: {
+              in: gitHubUsers.map(({ uuid }) => uuid),
+            },
+          },
+        });
+
+        await prisma.gitHubUsers.deleteMany({
+          where: {
+            installationUuid: githubInstallation.uuid,
+          },
+        });
+
+        await prisma.gitHubInstallations.delete({
+          where: {
+            uuid: githubInstallation.uuid,
           },
         });
         break;
@@ -105,7 +131,7 @@ class EventHandler {
 
     const taskName = `Review pull requests in the "${repository.name}" repository`;
     const tasks = await this.api.getTasks();
-    const existingTask = tasks.find(task => task.text === taskName);
+    const existingTask = tasks.find(({ text }) => text === taskName);
     const task = existingTask
       ? existingTask
       : await this.api.createTask({

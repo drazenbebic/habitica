@@ -9,17 +9,14 @@ on:
     branches:
       - main
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+#env:
+#  REGISTRY: ghcr.io
+#  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  build-and-push:
-    name: "Build & Push Docker Image"
+  lint-and-build:
+    name: "Lint & Build"
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
@@ -31,62 +28,73 @@ jobs:
         run: |
           yarn core:build
           yarn github-app:build
-      - name: "Log in to the container registry"
-        uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+
+  push-to-ecr:
+    needs: [ 'lint-and-build' ]
+    name: "Push to AWS ECR"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v4
+      - name: "Log in to AWS ECR"
+        uses: docker/login-action@v3
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: "Extract metadata (tags, labels) for Docker"
+          registry: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+          username: ${{ secrets.AWS_ACCESS_KEY }}
+          password: ${{ secrets.AWS_ACCESS_SECRET }}
+      - name: "Extract metadata (tags, labels) for ECR"
         id: meta
-        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-      - name: "Build and push Docker image"
-        uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+          images: ${{ github.repository }}
+      - name: "Build and push to ECR"
+        uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-  deploy-to-ionos:
-    needs: [ 'build-and-push' ]
-    name: "Deploy to IONOS"
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Stop existing container'
-        continue-on-error: true
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: |
-            docker stop habitica
-            docker rm habitica
-            docker image rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
-      - name: 'Start new container'
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: |
-            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
-            docker run -d \
-              --name habitica \
-              --network host \
-              -e PORT='3002' \
-              -e NODE_ENV='production' \
-              -e HABITICA_USER_ID='${{ secrets.HABITICA_USER_ID }}' \
-              -e HABITICA_API_TOKEN='${{ secrets.HABITICA_API_TOKEN }}' \
-              -e DB_USER='${{ secrets.DB_USER }}' \
-              -e DB_PASS='${{ secrets.DB_PASS }}' \
-              -e DB_NAME='${{ secrets.DB_NAME }}' \
-              -e DB_PORT='${{ secrets.DB_PORT }}' \
-              -e DB_URL='${{ secrets.DB_URL }}' \
-              -p 3002:3000 \
-              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+#  deploy-to-ionos:
+#    needs: [ 'build-and-push' ]
+#    name: "Deploy to IONOS"
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: 'Stop existing container'
+#        continue-on-error: true
+#        uses: appleboy/ssh-action@v1.0.3
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USER }}
+#          password: ${{ secrets.SSH_PASSWORD }}
+#          port: 22
+#          script: |
+#            docker stop habitica
+#            docker rm habitica
+#            docker image rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+#      - name: 'Start new container'
+#        uses: appleboy/ssh-action@v1.0.3
+#        with:
+#          host: ${{ secrets.SSH_HOST }}
+#          username: ${{ secrets.SSH_USER }}
+#          password: ${{ secrets.SSH_PASSWORD }}
+#          port: 22
+#          script: |
+#            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+#            docker run -d \
+#              --name habitica \
+#              --network host \
+#              -e PORT='3002' \
+#              -e NODE_ENV='production' \
+#              -e HABITICA_USER_ID='${{ secrets.HABITICA_USER_ID }}' \
+#              -e HABITICA_API_TOKEN='${{ secrets.HABITICA_API_TOKEN }}' \
+#              -e DB_USER='${{ secrets.DB_USER }}' \
+#              -e DB_PASS='${{ secrets.DB_PASS }}' \
+#              -e DB_NAME='${{ secrets.DB_NAME }}' \
+#              -e DB_PORT='${{ secrets.DB_PORT }}' \
+#              -e DB_URL='${{ secrets.DB_URL }}' \
+#              -p 3002:3000 \
+#              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
