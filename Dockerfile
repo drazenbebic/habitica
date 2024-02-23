@@ -24,8 +24,5 @@ EXPOSE 3000
 # Start the application
 RUN yarn run github-app:prod
 
-# Make the script executable
-RUN chmod +x migrate.sh
-
-# Run Migrations
-CMD ["./migrate.sh"]
+# Migrate & start the application
+CMD ["yarn", "run", "github-app:orm:migrate:deploy", "&&", "yarn", "run", "github-app:prod"]
