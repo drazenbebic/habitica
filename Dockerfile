@@ -16,13 +16,13 @@ RUN yarn run core:build
 RUN yarn run github-app:build
 
 # Copy the shell script for migrations
-COPY migrate.sh ./
-
-# Make the script executable
-RUN chmod +x migrate.sh
+COPY . .
 
 # Expose port
 EXPOSE 3000
 
-# Run the shell script on container startup
-CMD ["./migrate.sh"]
+# Run Migrations
+RUN yarn run github-app:orm:migrate:deploy
+
+# Start the application
+RUN yarn run github-app:prod

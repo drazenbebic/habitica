@@ -20,6 +20,7 @@
     "lint-fix": "eslint apps/**/*.ts --fix",
     "core:build": "yarn workspace @habitica/core run build",
     "github-app:build": "yarn workspace @habitica/github-app run build",
+    "github-app:prod": "yarn workspace @habitica/github-app run prod",
     "github-app:orm:studio": "yarn workspace @habitica/github-app run studio",
     "github-app:orm:db:pull": "yarn workspace @habitica/github-app run db:pull",
     "github-app:orm:db:push": "yarn workspace @habitica/github-app run db:push",
