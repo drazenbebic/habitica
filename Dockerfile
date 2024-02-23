@@ -21,8 +21,11 @@ COPY . .
 # Expose port
 EXPOSE 3000
 
-# Run Migrations
-RUN yarn run github-app:orm:migrate:deploy
-
 # Start the application
 RUN yarn run github-app:prod
+
+# Make the script executable
+RUN chmod +x migrate.sh
+
+# Run Migrations
+CMD ["./migrate.sh"]
