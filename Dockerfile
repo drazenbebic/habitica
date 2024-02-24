@@ -21,8 +21,5 @@ COPY . .
 # Expose port
 EXPOSE 3000
 
-# Start the application
-RUN yarn run github-app:prod
-
 # Migrate & start the application
 CMD ["yarn", "run", "github-app:orm:migrate:deploy", "&&", "yarn", "run", "github-app:prod"]
