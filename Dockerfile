@@ -21,5 +21,8 @@ COPY . .
 # Expose port
 EXPOSE 3000
 
+# Make the script executable
+RUN chmod +x start.sh
+
 # Migrate & start the application
-CMD ["yarn", "run", "github-app:orm:migrate:deploy", "&&", "yarn", "run", "github-app:prod"]
+CMD ["./start.sh"]
