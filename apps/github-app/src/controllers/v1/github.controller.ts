@@ -1,7 +1,6 @@
 import catchAsyncErrors from '../../middlewares/catch-async-errors.middleware';
 import { HTTPError, prisma } from '../../utils';
 import { env } from 'process';
-import { HabiticaApi } from '@habitica/core';
 import EventHandler from '../../event-handler';
 import axios from 'axios';
 
@@ -12,12 +11,7 @@ class GitHubController {
     const hookId = request.header('x-github-hook-id');
     const payload = request.body;
 
-    const habiticaApi = new HabiticaApi(
-      env.HABITICA_USER_ID,
-      env.HABITICA_API_TOKEN,
-    );
-
-    const eventHandler = new EventHandler(habiticaApi);
+    const eventHandler = new EventHandler();
 
     const eventHandlers = {
       installation: eventHandler.installation,

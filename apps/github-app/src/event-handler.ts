@@ -1,9 +1,4 @@
-import {
-  HabiticaApi,
-  TaskDirection,
-  TaskPriority,
-  TaskType,
-} from '@habitica/core';
+import { TaskDirection, TaskPriority, TaskType } from '@habitica/core';
 import {
   InstallationEvent,
   IssueCommentEvent,
@@ -20,16 +15,11 @@ import {
   accountDelete,
   accountSuspend,
   accountUnsuspend,
+  getHabiticaApi,
   getTaskByName,
 } from './utils';
 
 class EventHandler {
-  api: HabiticaApi;
-
-  constructor(habiticaApi: HabiticaApi) {
-    this.api = habiticaApi;
-  }
-
   installation = async ({
     action,
     installation,
@@ -59,72 +49,70 @@ class EventHandler {
 
   pullRequest = async ({
     action,
+    installation,
     pull_request: pullRequest,
     repository,
+    sender,
   }: PullRequestEvent) => {
-    if (action !== 'closed') {
-      return;
-    }
-
     const isFeature = pullRequest.title.startsWith('feat');
     const isBugFix = pullRequest.title.startsWith('fix');
 
-    if (!isFeature && !isBugFix) {
+    if (action !== 'closed' || (!isFeature && !isBugFix)) {
+      return;
+    }
+
+    const habiticaApi = await getHabiticaApi(installation.id, sender.login);
+
+    if (!habiticaApi) {
       return;
     }
 
     const taskName = `Merged a ${isFeature ? 'feature' : 'bug fix'} branch in the "${repository.name}" repository`;
-    const existingTask = await getTaskByName(this.api, taskName);
+    const existingTask = await getTaskByName(habiticaApi, taskName);
     const task = existingTask
       ? existingTask
-      : await this.api.createTask({
+      : await habiticaApi.createTask({
           text: taskName,
           type: TaskType.HABIT,
           value: isFeature ? 5 : 3,
           priority: isFeature ? TaskPriority.HIGH : TaskPriority.NORMAL,
         });
 
-    this.api
-      .scoreTask(task.id, TaskDirection.UP)
-      .then(data => {
-        console.log('Score Task Response:', data);
-      })
-      .catch(error => {
-        console.error('Score Task Error:', error);
-      });
+    await habiticaApi.scoreTask(task.id, TaskDirection.UP);
   };
 
   pullRequestReview = async ({
     action,
+    installation,
     repository,
+    sender,
   }: PullRequestReviewEvent) => {
     if (action !== 'submitted') {
       return;
     }
 
+    const habiticaApi = await getHabiticaApi(installation.id, sender.login);
+
+    if (!habiticaApi) {
+      return;
+    }
+
     const taskName = `Review pull requests in the "${repository.name}" repository`;
-    const tasks = await this.api.getTasks();
+    const tasks = await habiticaApi.getTasks();
     const existingTask = tasks.find(({ text }) => text === taskName);
     const task = existingTask
       ? existingTask
-      : await this.api.createTask({
+      : await habiticaApi.createTask({
           text: taskName,
           type: TaskType.HABIT,
           value: 3,
           priority: TaskPriority.HIGH,
         });
 
-    this.api
-      .scoreTask(task.id, TaskDirection.UP)
-      .then(data => {
-        console.log('Score Task Response:', data);
-      })
-      .catch(error => {
-        console.error('Score Task Error:', error);
-      });
+    await habiticaApi.scoreTask(task.id, TaskDirection.UP);
   };
 
-  push = async ({ commits, repository }: PushEvent) => {
+  push = async ({ commits, repository, installation }: PushEvent) => {
     const validCommits = commits.filter(
       ({ author }) => author.username !== 'dependabot[bot]',
     );
@@ -134,24 +122,30 @@ class EventHandler {
     }
 
     const taskName = `Push commits to the "${repository.name}" repository`;
-    const tasks = await this.api.getTasks();
-    const existingTask = tasks.find(task => task.text === taskName);
-    const task = existingTask
-      ? existingTask
-      : await this.api.createTask({
-          text: taskName,
-          type: TaskType.HABIT,
-          value: 1,
-          priority: TaskPriority.LOW,
-        });
 
-    const data = await Promise.all(
-      validCommits.map(
-        async () => await this.api.scoreTask(task.id, TaskDirection.UP),
-      ),
-    );
+    for (const commit of validCommits) {
+      const habiticaApi = await getHabiticaApi(
+        installation.id,
+        commit.author.username,
+      );
 
-    console.log('Score Task Response:', data);
+      if (!habiticaApi) {
+        continue;
+      }
+
+      const tasks = await habiticaApi.getTasks();
+      const existingTask = tasks.find(task => task.text === taskName);
+      const task = existingTask
+        ? existingTask
+        : await habiticaApi.createTask({
+            text: taskName,
+            type: TaskType.HABIT,
+            value: 1,
+            priority: TaskPriority.LOW,
+          });
+
+      await habiticaApi.scoreTask(task.id, TaskDirection.UP);
+    }
   };
 
   registryPackage = async ({ action }: RegistryPackagePublishedEvent) => {
