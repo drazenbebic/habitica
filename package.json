@@ -33,7 +33,8 @@
     "github-app:orm:migrate:deploy": "yarn workspace @habitica/github-app run migrate:deploy",
     "github-app:orm:migrate:status": "yarn workspace @habitica/github-app run migrate:status",
     "github-app:orm:generate": "yarn workspace @habitica/github-app run generate",
-    "dashboard:dev": "yarn workspace @habitica/dashboard run next"
+    "dashboard:dev": "yarn workspace @habitica/dashboard run next",
+    "dashboard:build": "yarn workspace @habitica/dashboard run build"
   },
   "packageManager": "yarn@1.22.19"
 }

@@ -1,13 +1,13 @@
 'use client';
 
 import { NextPage } from 'next';
-import React, { useState } from 'react';
+import React, { FC, Suspense, useState } from 'react';
 import { Form, FormInput, FormSubmit, useFormStore } from '@ariakit/react';
 import { Button, Pane, Paragraph, TextInputField } from 'evergreen-ui';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 
-const OAuth: NextPage = () => {
+const Search: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const params = useSearchParams();
   const [values, setValues] = useState({
@@ -92,6 +92,14 @@ const OAuth: NextPage = () => {
         </Form>
       </Pane>
     </Pane>
+  );
+};
+
+const OAuth: NextPage = () => {
+  return (
+    <Suspense>
+      <Search />
+    </Suspense>
   );
 };
 
