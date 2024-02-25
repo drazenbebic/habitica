@@ -96,5 +96,5 @@ jobs:
 #              -e DB_NAME='${{ secrets.DB_NAME }}' \
 #              -e DB_PORT='${{ secrets.DB_PORT }}' \
 #              -e DB_URL='${{ secrets.DB_URL }}' \
-#              -p 3002:3000 \
+#              -p 3002:3100 \
 #              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main

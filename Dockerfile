@@ -9,17 +9,18 @@ COPY package.json ./
 COPY yarn.lock ./
 COPY apps ./apps
 COPY packages ./packages
+COPY start.sh ./
 
 # Install dependencies and build
 RUN yarn --frozen-lockfile
 RUN yarn run core:build
 RUN yarn run github-app:build
 
-# Copy the shell script for migrations
+# Copy the files
 COPY . .
 
 # Expose port
-EXPOSE 3000
+EXPOSE 3100
 
 # Make the script executable
 RUN chmod +x start.sh

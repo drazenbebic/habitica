@@ -15,7 +15,13 @@ import {
   WorkflowJobEvent,
   WorkflowRunEvent,
 } from '@octokit/webhooks-types';
-import { getTaskByName, prisma } from './utils';
+import {
+  accountCreate,
+  accountDelete,
+  accountSuspend,
+  accountUnsuspend,
+  getTaskByName,
+} from './utils';
 
 class EventHandler {
   api: HabiticaApi;
@@ -24,55 +30,22 @@ class EventHandler {
     this.api = habiticaApi;
   }
 
-  installation = async ({ action, installation }: InstallationEvent) => {
-    const githubInstallation = await prisma.gitHubInstallations.findUnique({
-      where: {
-        installationId: installation.id,
-      },
-    });
-
-    const gitHubUsers = await prisma.gitHubUsers.findMany({
-      where: {
-        installationUuid: githubInstallation.uuid,
-      },
-    });
+  installation = async ({
+    action,
+    installation,
+    sender,
+  }: InstallationEvent) => {
+    const installationId = installation.id;
 
     switch (action) {
       case 'suspend':
+        return await accountSuspend(installationId);
       case 'unsuspend':
-        await prisma.gitHubInstallations.update({
-          data: {
-            suspended: action === 'suspend',
-          },
-          where: {
-            installationId: installation.id,
-          },
-        });
-        break;
+        return await accountUnsuspend(installationId);
       case 'deleted':
-        await prisma.habiticaUsers.deleteMany({
-          where: {
-            gitHubUserUuid: {
-              in: gitHubUsers.map(({ uuid }) => uuid),
-            },
-          },
-        });
-
-        await prisma.gitHubUsers.deleteMany({
-          where: {
-            installationUuid: githubInstallation.uuid,
-          },
-        });
-
-        await prisma.gitHubInstallations.delete({
-          where: {
-            uuid: githubInstallation.uuid,
-          },
-        });
-        break;
+        return await accountDelete(installationId);
       case 'created':
-        console.log('⭐ New installation created! ⭐️');
-        break;
+        return await accountCreate(installationId, sender);
     }
   };
 
@@ -173,9 +146,9 @@ class EventHandler {
         });
 
     const data = await Promise.all(
-      validCommits.map(async () => {
-        return await this.api.scoreTask(task.id, TaskDirection.UP);
-      }),
+      validCommits.map(
+        async () => await this.api.scoreTask(task.id, TaskDirection.UP),
+      ),
     );
 
     console.log('Score Task Response:', data);

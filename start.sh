@@ -2,8 +2,11 @@
 
 set -e
 
-# Execute migrations.
-yarn run github-app:orm:migrate:deploy
+# Execute pending migrations
+# yarn run github-app:orm:migrate:deploy
 
-# Start the application.
+# Force-reset the database
+yarn run github-app:orm:migrate:reset:force
+
+# Start the application
 yarn run github-app:prod

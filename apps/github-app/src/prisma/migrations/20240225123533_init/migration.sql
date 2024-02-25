@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE "hbtc_github_installations" (
     "uuid" VARCHAR(36) NOT NULL,
-    "code" VARCHAR(20) NOT NULL,
+    "code" VARCHAR(20),
     "installation_id" INTEGER NOT NULL,
     "suspended" BOOLEAN DEFAULT false,
 

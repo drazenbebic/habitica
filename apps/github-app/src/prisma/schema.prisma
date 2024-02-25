@@ -10,7 +10,7 @@ datasource db {
 
 model GitHubInstallations {
   uuid           String        @id @default(uuid()) @map("uuid") @db.VarChar(36)
-  code           String        @map("code") @db.VarChar(20)
+  code           String?       @map("code") @db.VarChar(20)
   installationId Int           @unique @map("installation_id") @db.Integer()
   suspended      Boolean?      @default(false) @map("suspended") @db.Boolean
   gitHubUsers    GitHubUsers[] @relation("GithubInstallationsGithubUsers")

@@ -13,8 +13,8 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "prepare": "husky install",
-    "expose": "ngrok http 3000",
+    "prepare": "husky",
+    "expose": "ngrok start --all",
     "dev": "nodemon --exec ts-node --require tsconfig-paths/register apps/github-app/src/app.ts",
     "lint": "eslint apps/**/*.ts packages/**/*.ts",
     "lint-fix": "eslint apps/**/*.ts --fix",
@@ -32,7 +32,8 @@
     "github-app:orm:migrate:reset:force": "yarn workspace @habitica/github-app run migrate:reset:force",
     "github-app:orm:migrate:deploy": "yarn workspace @habitica/github-app run migrate:deploy",
     "github-app:orm:migrate:status": "yarn workspace @habitica/github-app run migrate:status",
-    "github-app:orm:generate": "yarn workspace @habitica/github-app run generate"
+    "github-app:orm:generate": "yarn workspace @habitica/github-app run generate",
+    "dashboard:dev": "yarn workspace @habitica/dashboard run next"
   },
   "packageManager": "yarn@1.22.19"
 }

@@ -6,7 +6,7 @@ import authMiddleware from '../../middlewares/auth.middleware';
 const gitHubRouter = express.Router();
 const controller = new GitHubController();
 
-gitHubRouter.route('/github/oauth/complete').get(controller.oAuthComplete);
+gitHubRouter.route('/github/oauth/complete').post(controller.oAuthComplete);
 gitHubRouter
   .route('/github/webhook')
   .post(webhookAuthMiddleware, authMiddleware, controller.webhook);

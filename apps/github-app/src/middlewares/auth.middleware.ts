@@ -3,6 +3,12 @@ import { HTTPError, prisma } from '../utils';
 import { Installation } from '@octokit/webhooks-types';
 
 const authMiddleware = catchAsyncErrors(async (request, response, next) => {
+  const event = request.header('x-github-event');
+
+  if (event === 'installation') {
+    return next();
+  }
+
   const installation: Installation = request.body.installation as Installation;
   const githubInstallation = await prisma.gitHubInstallations.findFirst({
     where: {

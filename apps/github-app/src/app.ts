@@ -1,16 +1,17 @@
 import express, { Router } from 'express';
-import * as dotenv from 'dotenv';
+import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import { HTTPError } from './utils';
 import v1GitHubRouter from './routes/v1/github.router';
+import path from 'path';
 import process from 'process';
 import loggerMiddleware from './middlewares/logger.middleware';
 
 const app = express();
 
 // Loading the environment
-dotenv.config({ path: '../../.env' });
+dotenv.config({ path: path.resolve(__dirname, '../../../.env') });
 
 // Handling uncaught exceptions
 process.on('uncaughtException', error => {
