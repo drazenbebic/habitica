@@ -2,6 +2,7 @@ name: "Production Deployment"
 
 concurrency:
   group: habitica-integration
+  cancel-in-progress: true
 
 on:
   workflow_dispatch:
@@ -9,10 +10,17 @@ on:
     branches:
       - main
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
-  lint-and-build:
-    name: "Lint & Build"
+  build-and-push:
+    name: "Build & Push Docker Image"
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: "Checkout repository"
         uses: actions/checkout@v4
@@ -24,32 +32,56 @@ jobs:
         run: |
           yarn core:build
           yarn github-app:build
-
-  push-to-ecr:
-    needs: [ 'lint-and-build' ]
-    name: "Push to AWS ECR"
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
-    steps:
-      - name: "Checkout repository"
-        uses: actions/checkout@v4
-      - name: "Extract metadata (tags, labels) for ECR"
-        id: meta
-        uses: docker/metadata-action@v5
-      - name: "Log in to AWS ECR"
+      - name: "Log in to the container registry"
         uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-          username: ${{ secrets.AWS_ACCESS_KEY }}
-          password: ${{ secrets.AWS_ACCESS_SECRET }}
-      - name: "Build and push to ECR"
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: "Extract metadata (tags, labels) for Docker"
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+      - name: "Build and push Docker image"
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/habitica:${{ steps.meta.outputs.tags }}
-          labels: |
-            maintainer=${{ github.actor }}
-            commit=${{ github.sha }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+  deploy-to-ionos:
+    needs: [ 'build-and-push' ]
+    name: "Deploy to IONOS"
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Stop existing container'
+        continue-on-error: true
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            docker stop habitica
+            docker rm habitica
+            docker image rm ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+      - name: 'Start new container'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          script: |
+            docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
+            docker run -d \
+              --name habitica \
+              --network host \
+              -e PORT_GITHUB_APP='3002' \
+              -e NODE_ENV='production' \
+              -e DB_URL='${{ secrets.DB_URL }}' \
+              -p 3002:3000 \
+              ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main
