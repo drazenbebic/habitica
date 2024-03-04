@@ -15,26 +15,26 @@
     "@jridgewell/gen-mapping" "^0.3.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@ariakit/core@0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@ariakit/core/-/core-0.4.1.tgz#38f3f41f904511499c1b92901d6f80521b17d6c3"
-  integrity sha512-Rdhw0/K0x+50gFvzuMW9wp+WJxpkrgiMgegRTOZSU92bv1K+6XfQWnlieIkLt2FC7pZGrDpGlS4C7ztEVF+JRg==
+"@ariakit/core@0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@ariakit/core/-/core-0.4.2.tgz#8ab7b2023e957cfbe749e77b1bbe136dd7c4203d"
+  integrity sha512-CkQbFWjw7sFO6I5FCEfB+6eM2KgiPwcxLoP+kl+dijGJgu5PJZGDUrDnYDMWIsaiaTeAIdpnm+deC/VWjorZqg==
 
-"@ariakit/react-core@0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@ariakit/react-core/-/react-core-0.4.1.tgz#5c8f9f9588eef8dd2510fc1518b26fb4b2ead8ff"
-  integrity sha512-cwDczl9XWBloXNg0CuHmJtBfEe7qF265JE0Pwlcp8wMSY9PsJeb0mKBlTygUPKn/FsKpKGaYSI7DlDntbcZciw==
+"@ariakit/react-core@0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@ariakit/react-core/-/react-core-0.4.2.tgz#c592aef955b55f60fb17e05274378d7777bd63a3"
+  integrity sha512-GRKDQ+voiAWuVt+ZwYdQfI7bPQrPdP0PVhpK1XzhgfWa1GyMdv3iWAw3ayHzZpB6S7j2I+NMuVEyb1hAv5qeZw==
   dependencies:
-    "@ariakit/core" "0.4.1"
+    "@ariakit/core" "0.4.2"
     "@floating-ui/dom" "^1.0.0"
     use-sync-external-store "^1.2.0"
 
-"@ariakit/react@^0.4.1":
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/@ariakit/react/-/react-0.4.1.tgz#7951196f521f56be41fed989e1b22a9f56f8a86e"
-  integrity sha512-hKfCYjc3MFW20kn2dcvejB5zbYt/uU33Teq82c414/utf5sEoeRF+bxjNku8x1baJby9/SDP6zj2IgWPuedFNA==
+"@ariakit/react@^0.4.2":
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/@ariakit/react/-/react-0.4.2.tgz#57fe3495727351a3f866e6009684b96b0a8d6862"
+  integrity sha512-VHc22NM9pEIJWJ6vq08pfyN+iPPC5kRGi6fzu6CSxXgRWw6nuJKwpscVMacJUh3ZwA4Pvw1ccwbmwaNkhKt8KA==
   dependencies:
-    "@ariakit/react-core" "0.4.1"
+    "@ariakit/react-core" "0.4.2"
 
 "@babel/code-frame@^7.23.5":
   version "7.23.5"
