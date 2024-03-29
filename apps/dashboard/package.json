@@ -9,7 +9,7 @@
     "lint": "dotenv -e ../../.env next lint"
   },
   "dependencies": {
-    "@ariakit/react": "^0.4.1",
+    "@ariakit/react": "^0.4.5",
     "axios": "^1.6.7",
     "classnames": "^2.5.1",
     "dotenv": "^16.4.5",
