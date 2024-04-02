@@ -1247,10 +1247,10 @@
     picocolors "^1.0.0"
     tslib "^2.6.0"
 
-"@prisma/client@^5.10.2":
-  version "5.10.2"
-  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.10.2.tgz#e087b40a4de8e3171eb9cbf0a873465cd2068e17"
-  integrity sha512-ef49hzB2yJZCvM5gFHMxSFL9KYrIP9udpT5rYo0CsHD4P9IKj473MbhU1gjKKftiwWBTIyrt9jukprzZXazyag==
+"@prisma/client@^5.12.0":
+  version "5.12.0"
+  resolved "https://registry.yarnpkg.com/@prisma/client/-/client-5.12.0.tgz#4d1fb68074307bf9445d06ad387139301aa4bcc4"
+  integrity sha512-bk/+KPpRm0+IzqFCtAxrj+/TNiHzulspnO+OkysaYY/atc/eX0Gx8V3tTLxbHKVX0LKD4Hi8KKCcSbU1U72n7Q==
 
 "@prisma/debug@5.10.2":
   version "5.10.2"
