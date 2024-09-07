@@ -5,13 +5,19 @@
 // Setup type definitions for built-in Supabase Runtime APIs
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { createClient } from 'jsr:@supabase/supabase-js@2';
+import axios from 'npm:axios@1.7.7';
 
 console.log('Function "oauth" up and running!');
 
 Deno.serve(async req => {
   const { code, installationId, userId, apiToken } = await req.json();
 
-  console.log('REQUEST_DATA:', { code, installationId, userId, apiToken });
+  console.log('Habitica - REQUEST_DATA:', {
+    code,
+    installationId,
+    userId,
+    apiToken,
+  });
 
   const supabase = createClient(
     Deno.env.get('SUPABASE_URL') ?? '',
@@ -27,12 +33,33 @@ Deno.serve(async req => {
 
   // Find GitHub Installation...
   const { data, error } = await supabase
-    .from("'hbtc_github_installations'")
+    .from('hbtc_github_installations')
     .select('*')
     .eq('installation_id', Number(installationId))
     .single();
 
-  console.log('QUERY_RESULT:', { data, error });
+  if (error) {
+    console.error('Habitica - GitHub Installation could not be found.', {
+      code,
+      installationId,
+      userId,
+      apiToken,
+    });
+    return new Response('The GitHub installation could not be found.', {
+      status: 404,
+    });
+  }
+
+  const { data: tokenData } = await axios.post(
+    'https://github.com/login/oauth/access_token',
+    {
+      client_id: Deno.env.get('GITHUB_CLIENT_ID') ?? '',
+      client_secret: Deno.env.get('GITHUB_CLIENT_SECRET') ?? '',
+      code,
+    },
+  );
+
+  console.log('Habitica - GitHub Token Data:', { tokenData });
 
   const response = JSON.stringify({
     code,

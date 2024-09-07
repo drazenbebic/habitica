@@ -4,45 +4,58 @@
 
 // Setup type definitions for built-in Supabase Runtime APIs
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
-import crypto from 'node:crypto';
+import { createClient } from 'npm:@supabase/supabase-js@1.13.1';
+import EventHandler from './event-handler.ts';
+import { Database } from './database.types.ts';
 
 console.log('Function "webhook" up and running!');
 
 Deno.serve(async req => {
-  const secret = Deno.env.get('GITHUB_WEBHOOK_SECRET'); // Set this in your environment variables
+  // const secret = Deno.env.get('GITHUB_WEBHOOK_SECRET'); // Set this in your environment variables
+  // const signature = req.headers.get('X-Hub-Signature');
 
-  console.log('DEBUG: SECRET', secret);
+  // TODO: Webhook Secret Check.
 
-  // Get the `X-Hub-Signature` from the headers
-  const signature = req.headers.get('X-Hub-Signature');
-
-  console.log('DEBUG: SIGNATURE', signature);
-
-  if (!signature || !secret) {
-    return new Response('Webhook signature verification failed.', {
-      status: 401,
-    });
-  }
-
-  // Read the raw body of the request
-  const body = await req.text();
-
-  // Compute the HMAC using the secret
-  const hmac = crypto.createHmac('sha1', secret);
-  hmac.update(body);
-  const hash = `sha1=${hmac.toString('hex')}`;
-
-  // Compare the computed HMAC with the received signature
-  if (signature !== hash) {
-    return new Response('Webhook signature verification failed.', {
-      status: 401,
-    });
-  }
+  const supabase = createClient<Database>(
+    Deno.env.get('SUPABASE_URL') ?? '',
+    Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+    // Create client with Auth context of the user that called the function.
+    // This way your row-level-security (RLS) policies are applied.
+    {
+      global: {
+        headers: { Authorization: req.headers.get('Authorization')! },
+      },
+    },
+  );
 
   const deliveryUuid = req.headers.get('x-github-delivery');
-  const event = req.headers.get('x-github-event');
-  const hookId = req.headers.get('x-github-hook-id');
+  const event = req.headers.get('x-github-event') || '';
+  const hookId = req.headers.get('x-github-hook-id') || '';
   const payload = await req.json();
+  const eventHandler = new EventHandler(supabase);
+
+  console.log('Habitica - Webhook Triggered.', {
+    deliveryUuid,
+    event,
+    hookId,
+    payload,
+  });
+
+  const eventHandlers = {
+    installation: eventHandler.installation,
+    issue_comment: eventHandler.issueComment,
+    issues: eventHandler.issues,
+    pull_request: eventHandler.pullRequest,
+    pull_request_review: eventHandler.pullRequestReview,
+    push: eventHandler.push,
+    registry_package: eventHandler.registryPackage,
+    workflow_job: eventHandler.workflowJob,
+    workflow_run: eventHandler.workflowRun,
+  };
+
+  if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) {
+    await eventHandlers[event](payload, supabase);
+  }
 
   return new Response(
     JSON.stringify({ deliveryUuid, event, hookId, payload }),
