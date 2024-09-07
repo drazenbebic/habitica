@@ -5,12 +5,23 @@ import { NextRequest, NextResponse } from 'next/server';
 const handler = async (request: NextRequest) => {
   const { code, installationId, userId, apiToken } = await request.json();
 
-  const { data } = await axios.post(`${env.API_URL}/functions/v1/oauth`, {
-    code,
-    installationId,
-    userId,
-    apiToken,
-  });
+  const bearerToken = env.SUPABASE_FUNCTIONS_BEARER_TOKEN;
+  const baseUrl = env.SUPABASE_FUNCTIONS_BASE_URL;
+
+  const { data } = await axios.post(
+    `${baseUrl}/functions/v1/oauth`,
+    {
+      code,
+      installationId,
+      userId,
+      apiToken,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${bearerToken}`,
+      },
+    },
+  );
 
   return NextResponse.json(
     {
