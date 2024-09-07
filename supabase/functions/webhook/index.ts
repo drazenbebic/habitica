@@ -4,7 +4,7 @@
 
 // Setup type definitions for built-in Supabase Runtime APIs
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
-import { createClient } from 'npm:@supabase/supabase-js@1.13.1';
+import { createClient } from 'npm:@supabase/supabase-js@2';
 import EventHandler from './event-handler.ts';
 import { Database } from './database.types.ts';
 

@@ -8,9 +8,10 @@ import {
   RegistryPackagePublishedEvent,
   WorkflowJobEvent,
   WorkflowRunEvent,
-} from 'npm:@octokit/webhooks-types@7.5.1';
+} from 'npm:@octokit/webhooks-types@7';
 import placeholder from './placeholder.ts';
-import { SupabaseClient } from 'npm:@supabase/supabase-js@1.13.1';
+import { SupabaseClient } from 'npm:@supabase/supabase-js@2';
+import { createInstallation } from './handlers/installation.ts';
 
 class EventHandler {
   protected supabase;
@@ -34,7 +35,10 @@ class EventHandler {
       case 'deleted':
         return await placeholder({ action, event: 'installation' });
       case 'created':
-        return await placeholder({ action, event: 'installation' });
+        return await createInstallation(
+          { installationId, sender },
+          this.supabase,
+        );
     }
   };
 
