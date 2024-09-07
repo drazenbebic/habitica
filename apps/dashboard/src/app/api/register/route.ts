@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server';
 const handler = async (request: NextRequest) => {
   const { code, installationId, userId, apiToken } = await request.json();
 
-  const { data } = await axios.post(`${env.API_URL}/v1/github/oauth/complete`, {
+  const { data } = await axios.post(`${env.API_URL}/functions/v1/oauth`, {
     code,
     installationId,
     userId,

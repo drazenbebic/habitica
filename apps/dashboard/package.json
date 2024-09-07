@@ -9,21 +9,21 @@
     "lint": "dotenv -e ../../.env next lint"
   },
   "dependencies": {
-    "@ariakit/react": "^0.4.1",
-    "axios": "^1.6.7",
+    "@ariakit/react": "^0.4.11",
+    "axios": "^1.7.7",
     "classnames": "^2.5.1",
     "dotenv": "^16.4.5",
     "evergreen-ui": "^7.1.9",
-    "next": "14.1.1",
+    "next": "^14.2.8",
     "normalize.css": "^8.0.1",
     "react": "^18",
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@types/node": "^20",
+    "@types/node": "^22",
     "@types/react": "^18",
     "@types/react-dom": "^18",
-    "sass": "^1.71.1",
+    "sass": "^1.78.0",
     "typescript": "^5"
   }
 }
