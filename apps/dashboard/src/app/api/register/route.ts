@@ -8,6 +8,15 @@ const handler = async (request: NextRequest) => {
   const bearerToken = env.SUPABASE_FUNCTIONS_BEARER_TOKEN;
   const baseUrl = env.SUPABASE_FUNCTIONS_BASE_URL;
 
+  console.log('REQUEST_PARAMS:', {
+    bearerToken,
+    baseUrl,
+    code,
+    installationId,
+    userId,
+    apiToken,
+  });
+
   const { data } = await axios.post(
     `${baseUrl}/functions/v1/oauth`,
     {
