@@ -3,6 +3,8 @@
 import React, { FC } from 'react';
 import './global.scss';
 import { Avatar, Button, Heading, Pane, Paragraph } from 'evergreen-ui';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 type Props = {
   children: React.ReactNode;
@@ -44,6 +46,8 @@ const RootLayout: FC<Props> = ({ children }) => {
           </Pane>
         </header>
         <main id="content">{children}</main>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
