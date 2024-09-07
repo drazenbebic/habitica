@@ -27,29 +27,22 @@ export const createInstallation = async (
     .single();
 
   if (existingGitHubInstallation) {
-    console.error('Habitica - Installation already exists.', installationId);
+    console.error('EXISTING_GITHUB_INSTALLATION', { installationId });
     throw new HttpError('An installation with this ID already exists.', 409);
   }
 
   // Create the installation.
-  const { error: gitHubInstallationError } = await supabase
-    .from('hbtc_github_installations')
-    .insert({ uuid: v4(), installation_id: installationId });
+  const { data: gitHubInstallation, error: gitHubInstallationError } =
+    await supabase
+      .from('hbtc_github_installations')
+      .insert({ uuid: v4(), installation_id: installationId })
+      .select('*')
+      .single();
 
   if (gitHubInstallationError) {
-    console.error(
-      'Habitica - The installation could not be created.',
-      gitHubInstallationError,
-    );
+    console.error('GITHUB_INSTALLATION_ERROR', gitHubInstallationError);
     throw new HttpError('The installation could not be created.', 500);
   }
-
-  // Re-fetch the installation from the database.
-  const { data: gitHubInstallation } = await supabase
-    .from('hbtc_github_installations')
-    .select('*')
-    .eq('installation_id', Number(installationId))
-    .single();
 
   const { error: gitHubUserError } = await supabase
     .from('hbtc_github_users')
@@ -68,10 +61,7 @@ export const createInstallation = async (
     });
 
   if (gitHubUserError) {
-    console.error('Habitica - The GitHub User could not be created.', {
-      installationId,
-      user: sender,
-    });
+    console.error('GITHUB_USER_ERROR', gitHubUserError);
     throw new HttpError('The GitHub User could not be created.', 500);
   }
 };
