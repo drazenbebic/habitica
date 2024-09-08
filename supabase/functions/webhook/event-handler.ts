@@ -16,6 +16,7 @@ import {
   installationDeleteHandler,
   installationToggleHandler,
   pullRequestClosedHandler,
+  pullRequestReviewSubmittedHandler,
   pushCommitsHandler,
 } from './handlers/index.ts';
 
@@ -102,13 +103,25 @@ class EventHandler {
     }
   };
 
-  pullRequestReview = async ({
-    action,
-    installation,
-    repository,
-    sender,
-  }: PullRequestReviewEvent) => {
-    return await placeholderHandler({ action, event: 'pull_request_review' });
+  pullRequestReview = async (event: PullRequestReviewEvent) => {
+    const { action } = event;
+
+    switch (event.action) {
+      case 'dismissed':
+        return await placeholderHandler({
+          action,
+          event: 'pull_request_review',
+        });
+      case 'edited':
+        return await placeholderHandler({
+          action,
+          event: 'pull_request_review',
+        });
+      case 'submitted':
+        break;
+      default:
+        return await pullRequestReviewSubmittedHandler(event, this.supabase);
+    }
   };
 
   push = async (event: PushEvent) => {

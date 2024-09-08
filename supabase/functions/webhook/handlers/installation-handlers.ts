@@ -61,7 +61,7 @@ export const installationDeleteHandler = async (
       .delete()
       .in(
         'github_user_uuid',
-        gitHubUsers.map(({ uuid }) => uuid),
+        gitHubUsers.map(({ uuid }: { uuid: string }) => uuid),
       );
 
     if (habiticaUsersError) {

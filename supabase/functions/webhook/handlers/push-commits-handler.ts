@@ -9,6 +9,11 @@ export const pushCommitsHandler = async (
 ) => {
   console.info('[push]: Event triggered.');
 
+  if (!installation?.id) {
+    console.info('[push]: Installation is missing.');
+    return;
+  }
+
   const validCommits = commits.filter(
     ({ author }) => author.username !== 'dependabot[bot]',
   );
@@ -21,6 +26,11 @@ export const pushCommitsHandler = async (
   const taskName = `Push commits to the "${repository.name}" repository`;
 
   for (const commit of validCommits) {
+    if (!commit.author?.username) {
+      console.info('[push]: Author username missing. Commit skipped.');
+      continue;
+    }
+
     const habiticaApi = await getHabiticaApi(
       installation.id,
       commit.author.username,
@@ -28,7 +38,7 @@ export const pushCommitsHandler = async (
     );
 
     if (!habiticaApi) {
-      console.info('[push]: Commit skipped.', commit);
+      console.info('[push]: Habitica user missing. Commit skipped.');
       continue;
     }
 

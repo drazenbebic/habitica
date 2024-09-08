@@ -15,6 +15,11 @@ export const pullRequestClosedHandler = async (
 ) => {
   console.info('[pull_request.closed]: Event triggered.');
 
+  if (!installation?.id) {
+    console.info('[pull_request.closed]: Installation is missing.');
+    return;
+  }
+
   const isFeature = pullRequest.title.startsWith('feat');
   const isFix = pullRequest.title.startsWith('fix');
 
@@ -25,6 +30,7 @@ export const pullRequestClosedHandler = async (
   );
 
   if (!habiticaApi) {
+    console.info('[pull_request.closed]: Habitica user is missing.');
     return;
   }
 

@@ -4,7 +4,7 @@ import { Task } from './types/index.ts';
 const getTaskByName = async (
   habiticaApi: HabiticaApi,
   taskName: string,
-): Promise<Task> => {
+): Promise<Task | undefined> => {
   const tasks = await habiticaApi.getTasks();
   return tasks.find(task => task.text === taskName);
 };

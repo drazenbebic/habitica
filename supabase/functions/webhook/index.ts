@@ -4,7 +4,7 @@
 
 // Setup type definitions for built-in Supabase Runtime APIs
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
-import { createClient } from 'npm:@supabase/supabase-js@2';
+import { createClient, SupabaseClient } from 'npm:@supabase/supabase-js@2';
 import EventHandler from './event-handler.ts';
 import { Database } from './database.types.ts';
 
@@ -39,7 +39,9 @@ Deno.serve(async req => {
     payload,
   });
 
-  const eventHandlers = {
+  type EventHandlerInterface = Record<string, (event: any, supabase: SupabaseClient) => Promise<void>>
+
+  const eventHandlers: EventHandlerInterface = {
     installation: eventHandler.installation,
     issue_comment: eventHandler.issueComment,
     issues: eventHandler.issues,
@@ -52,7 +54,7 @@ Deno.serve(async req => {
   };
 
   if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) {
-    await eventHandlers[event](payload, supabase);
+    await eventHandlers[event as keyof EventHandlerInterface](payload, supabase);
   }
 
   return new Response(

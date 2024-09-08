@@ -3,8 +3,16 @@
   "packages": {
     "specifiers": {
       "jsr:@supabase/functions-js": "jsr:@supabase/functions-js@2.4.3",
+      "jsr:@supabase/supabase-js@2": "jsr:@supabase/supabase-js@2.45.3",
       "npm:@octokit/webhooks-types@7": "npm:@octokit/webhooks-types@7.5.1",
+      "npm:@supabase/auth-js@2.65.0": "npm:@supabase/auth-js@2.65.0",
+      "npm:@supabase/functions-js@2.4.1": "npm:@supabase/functions-js@2.4.1",
+      "npm:@supabase/node-fetch@2.6.15": "npm:@supabase/node-fetch@2.6.15",
+      "npm:@supabase/postgrest-js@1.15.8": "npm:@supabase/postgrest-js@1.15.8",
+      "npm:@supabase/realtime-js@2.10.2": "npm:@supabase/realtime-js@2.10.2",
+      "npm:@supabase/storage-js@2.7.0": "npm:@supabase/storage-js@2.7.0",
       "npm:@supabase/supabase-js@2": "npm:@supabase/supabase-js@2.45.3",
+      "npm:@types/node": "npm:@types/node@18.16.19",
       "npm:axios@1": "npm:axios@1.7.7",
       "npm:openai@^4.52.5": "npm:openai@4.58.1",
       "npm:uuid@10": "npm:uuid@10.0.0"
@@ -14,6 +22,17 @@
         "integrity": "010834c9e7d2996b4be8e4004a15ed8f42b326490e4b354683f9c191353b76cc",
         "dependencies": [
           "npm:openai@^4.52.5"
+        ]
+      },
+      "@supabase/supabase-js@2.45.3": {
+        "integrity": "16f283644a29d70819661047e939754604255c0f77c529876c3fa09ee340eab7",
+        "dependencies": [
+          "npm:@supabase/auth-js@2.65.0",
+          "npm:@supabase/functions-js@2.4.1",
+          "npm:@supabase/node-fetch@2.6.15",
+          "npm:@supabase/postgrest-js@1.15.8",
+          "npm:@supabase/realtime-js@2.10.2",
+          "npm:@supabase/storage-js@2.7.0"
         ]
       }
     },

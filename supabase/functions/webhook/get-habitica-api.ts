@@ -5,7 +5,7 @@ const getHabiticaApi = async (
   installationId: number,
   login: string,
   supabase: SupabaseClient,
-): Promise<HabiticaApi | undefined> => {
+): Promise<HabiticaApi | null> => {
   const { data: githubInstallation, error: githubInstallationError } =
     await supabase
       .from('hbtc_github_installations')
