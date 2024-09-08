@@ -4,7 +4,8 @@
 
 // Setup type definitions for built-in Supabase Runtime APIs
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
-import { createClient, SupabaseClient } from 'npm:@supabase/supabase-js@2';
+import { SupabaseClient, createClient } from 'npm:@supabase/supabase-js@2';
+import { WebhookEvent, WebhookEventName } from 'npm:@octokit/webhooks-types@7';
 import EventHandler from './event-handler.ts';
 import { Database } from './database.types.ts';
 
@@ -39,22 +40,35 @@ Deno.serve(async req => {
     payload,
   });
 
-  type EventHandlerInterface = Record<string, (event: any, supabase: SupabaseClient) => Promise<void>>
+  type EventHandlerInterface = Record<
+    Partial<WebhookEventName>,
+    (
+      event: Pick<WebhookEvent, 'action'>,
+      supabase: SupabaseClient,
+    ) => Promise<void>
+  >;
 
   const eventHandlers: EventHandlerInterface = {
     installation: eventHandler.installation,
+    meta: eventHandler.meta,
     issue_comment: eventHandler.issueComment,
     issues: eventHandler.issues,
     pull_request: eventHandler.pullRequest,
     pull_request_review: eventHandler.pullRequestReview,
     push: eventHandler.push,
     registry_package: eventHandler.registryPackage,
+    release: eventHandler.release,
+    repositroy: eventHandler.repository,
+    workflow_dispatch: eventHandler.workflowDispatch,
     workflow_job: eventHandler.workflowJob,
     workflow_run: eventHandler.workflowRun,
   };
 
   if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) {
-    await eventHandlers[event as keyof EventHandlerInterface](payload, supabase);
+    await eventHandlers[event as keyof EventHandlerInterface](
+      payload,
+      supabase,
+    );
   }
 
   return new Response(

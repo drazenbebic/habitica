@@ -2,10 +2,14 @@ import {
   InstallationEvent,
   IssueCommentEvent,
   IssuesEvent,
+  MetaEvent,
   PullRequestEvent,
   PullRequestReviewEvent,
   PushEvent,
-  RegistryPackagePublishedEvent,
+  RegistryPackageEvent,
+  ReleaseEvent,
+  RepositoryEvent,
+  WorkflowDispatchEvent,
   WorkflowJobEvent,
   WorkflowRunEvent,
 } from 'npm:@octokit/webhooks-types@7';
@@ -42,6 +46,10 @@ class EventHandler {
       default:
         return await placeholderHandler({ action, event: 'installation' });
     }
+  };
+
+  meta = async ({ action }: MetaEvent) => {
+    return await placeholderHandler({ action, event: 'meta' });
   };
 
   issueComment = async ({ action }: IssueCommentEvent) => {
@@ -128,8 +136,23 @@ class EventHandler {
     return await pushCommitsHandler(event, this.supabase);
   };
 
-  registryPackage = async ({ action }: RegistryPackagePublishedEvent) => {
+  registryPackage = async ({ action }: RegistryPackageEvent) => {
     return await placeholderHandler({ action, event: 'registry_package' });
+  };
+
+  release = async ({ action }: ReleaseEvent) => {
+    return await placeholderHandler({ action, event: 'release' });
+  };
+
+  repository = async ({ action }: RepositoryEvent) => {
+    return await placeholderHandler({ action, event: 'repository' });
+  };
+
+  workflowDispatch = async (_event: WorkflowDispatchEvent) => {
+    return await placeholderHandler({
+      action: 'dispatch',
+      event: 'workflow_dispatch',
+    });
   };
 
   workflowJob = async ({ action }: WorkflowJobEvent) => {
