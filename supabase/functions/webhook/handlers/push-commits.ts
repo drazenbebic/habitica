@@ -8,6 +8,7 @@ export const pushCommits = async (
   supabase: SupabaseClient,
 ) => {
   console.info('[PUSH]: Event triggered.');
+
   const validCommits = commits.filter(
     ({ author }) => author.username !== 'dependabot[bot]',
   );

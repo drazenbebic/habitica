@@ -3,9 +3,33 @@ import { User } from 'npm:@octokit/webhooks-types@7';
 import { v4 } from 'npm:uuid@10';
 import HttpError from '../http-error.ts';
 
-export const suspendInstallation = async () => {};
+export const toggleInstallation = async (
+  {
+    action,
+    installationId,
+    suspended,
+  }: {
+    action: 'suspend' | 'unsuspend';
+    installationId: number;
+    suspended: boolean;
+  },
+  supabase: SupabaseClient,
+) => {
+  console.info(`[INSTALLATION:${action.toUpperCase()}]: Event triggered.`);
 
-export const unsuspendInstallation = async () => {};
+  const { error } = await supabase
+    .from('hbtc_github_installations')
+    .update({ suspended })
+    .eq('installation_id', installationId);
+
+  if (error) {
+    console.error('The GitHub Installation could not be toggled.', {
+      installationId,
+      suspended,
+      error,
+    });
+  }
+};
 
 export const deleteInstallation = async () => {};
 

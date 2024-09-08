@@ -11,7 +11,10 @@ import {
 } from 'npm:@octokit/webhooks-types@7';
 import placeholder from './placeholder.ts';
 import { SupabaseClient } from 'npm:@supabase/supabase-js@2';
-import { createInstallation } from './handlers/installation.ts';
+import {
+  createInstallation,
+  toggleInstallation,
+} from './handlers/installation.ts';
 import { pushCommits } from './handlers/push-commits.ts';
 
 class EventHandler {
@@ -30,9 +33,15 @@ class EventHandler {
 
     switch (action) {
       case 'suspend':
-        return await placeholder({ action, event: 'installation' });
+        return await toggleInstallation(
+          { action, installationId, suspended: true },
+          this.supabase,
+        );
       case 'unsuspend':
-        return await placeholder({ action, event: 'installation' });
+        return await toggleInstallation(
+          { action, installationId, suspended: false },
+          this.supabase,
+        );
       case 'deleted':
         return await placeholder({ action, event: 'installation' });
       case 'created':
