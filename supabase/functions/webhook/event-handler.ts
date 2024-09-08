@@ -52,6 +52,7 @@ class EventHandler {
     return await placeholderHandler({ action, event: 'issues' });
   };
 
+  // TODO: Split like installation.
   pullRequest = async (event: PullRequestEvent) => {
     return await pullRequestHandler(event, this.supabase);
   };
