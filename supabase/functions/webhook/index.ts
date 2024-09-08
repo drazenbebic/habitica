@@ -15,6 +15,8 @@ Deno.serve(async req => {
 
   // TODO: Webhook Secret Check.
 
+  // TODO: Suspended Installation Check.
+
   const supabase = createClient<Database>(
     Deno.env.get('SUPABASE_URL') ?? '',
     Deno.env.get('SUPABASE_ANON_KEY') ?? '',
