@@ -15,7 +15,7 @@ import {
   installationCreateHandler,
   installationDeleteHandler,
   installationToggleHandler,
-  pullRequestHandler,
+  pullRequestClosedHandler,
   pushCommitsHandler,
 } from './handlers/index.ts';
 
@@ -27,7 +27,9 @@ class EventHandler {
   }
 
   installation = async (event: InstallationEvent) => {
-    switch (event.action) {
+    const { action } = event;
+
+    switch (action) {
       case 'suspend':
         return await installationToggleHandler(event, true, this.supabase);
       case 'unsuspend':
@@ -37,10 +39,7 @@ class EventHandler {
       case 'created':
         return await installationCreateHandler(event, this.supabase);
       default:
-        return placeholderHandler({
-          action: event.action,
-          event: 'installation',
-        });
+        return await placeholderHandler({ action, event: 'installation' });
     }
   };
 
@@ -52,9 +51,55 @@ class EventHandler {
     return await placeholderHandler({ action, event: 'issues' });
   };
 
-  // TODO: Split like installation.
   pullRequest = async (event: PullRequestEvent) => {
-    return await pullRequestHandler(event, this.supabase);
+    const { action } = event;
+
+    switch (action) {
+      case 'assigned':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'auto_merge_disabled':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'auto_merge_enabled':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'closed':
+        return await pullRequestClosedHandler(event, this.supabase);
+      case 'converted_to_draft':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'demilestoned':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'dequeued':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'edited':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'enqueued':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'labeled':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'locked':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'milestoned':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'opened':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'ready_for_review':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'reopened':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'review_request_removed':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'review_requested':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'synchronize':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'unassigned':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'unlabeled':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      case 'unlocked':
+        return await placeholderHandler({ action, event: 'pull_request' });
+      default:
+        return await placeholderHandler({ action, event: 'pull_request' });
+    }
   };
 
   pullRequestReview = async ({
