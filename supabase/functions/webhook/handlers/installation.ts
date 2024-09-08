@@ -31,7 +31,75 @@ export const toggleInstallation = async (
   }
 };
 
-export const deleteInstallation = async () => {};
+export const deleteInstallation = async (
+  { installationId }: { installationId: number },
+  supabase: SupabaseClient,
+) => {
+  console.info('[INSTALLATION.DELETED]: Event triggered.');
+
+  const { data: gitHubInstallation, error: gitHubInstallationError } =
+    await supabase
+      .from('hbtc_github_installations')
+      .select('uuid')
+      .eq('installation_id', Number(installationId))
+      .single();
+
+  if (gitHubInstallationError) {
+    console.error('GITHUB_INSTALLATION_ERROR', gitHubInstallationError);
+    throw new HttpError('The installation could not be created.', 500);
+  }
+
+  const { data: gitHubUsers, error: gitHubUsersError } = await supabase
+    .from('hbtc_github_users')
+    .select('*')
+    .eq('installation_uuid', gitHubInstallation.uuid);
+
+  if (gitHubUsersError) {
+    console.error('GITHUB_USERS_ERROR', gitHubUsersError);
+    throw new HttpError(
+      'The users for the installation could not be fetched.',
+      500,
+    );
+  }
+
+  if (gitHubUsers.length > 0) {
+    const { error: habiticaUsersError } = await supabase
+      .from('hbtc_habitica_users')
+      .delete()
+      .in(
+        'github_user_uuid',
+        gitHubUsers.map(({ uuid }) => uuid),
+      );
+
+    if (habiticaUsersError) {
+      console.error('HABITICA_USERS_ERROR', habiticaUsersError);
+      throw new HttpError('The Habitica users could not be deleted.', 500);
+    }
+
+    const { error: gitHubUsersError } = await supabase
+      .from('hbtc_github_users')
+      .delete()
+      .eq('installation_uuid', gitHubInstallation.uuid);
+
+    if (gitHubUsersError) {
+      console.error('GITHUB_USERS_ERROR', gitHubUsersError);
+      throw new HttpError(
+        'The users for the installation could not be deleted.',
+        500,
+      );
+    }
+  }
+
+  const { error } = await supabase
+    .from('hbtc_github_installations')
+    .delete()
+    .eq('uuid', gitHubInstallation.uuid);
+
+  if (error) {
+    console.error('GITHUB_INSTALLATION_ERROR', error);
+    throw new HttpError('The GitHub Installation could not be deleted.', 500);
+  }
+};
 
 export const createInstallation = async (
   {
@@ -44,10 +112,11 @@ export const createInstallation = async (
   supabase: SupabaseClient,
 ) => {
   console.info('[INSTALLATION.CREATED]: Event triggered.');
+
   // Check if the installation already exists.
   const { data: existingGitHubInstallation } = await supabase
     .from('hbtc_github_installations')
-    .select('*')
+    .select('uuid')
     .eq('installation_id', Number(installationId))
     .single();
 
@@ -61,7 +130,7 @@ export const createInstallation = async (
     await supabase
       .from('hbtc_github_installations')
       .insert({ uuid: v4(), installation_id: installationId })
-      .select('*')
+      .select('uuid')
       .single();
 
   if (gitHubInstallationError) {
@@ -69,6 +138,7 @@ export const createInstallation = async (
     throw new HttpError('The installation could not be created.', 500);
   }
 
+  // Add the GitHub user.
   const { error: gitHubUserError } = await supabase
     .from('hbtc_github_users')
     .insert({

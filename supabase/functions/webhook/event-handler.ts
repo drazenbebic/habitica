@@ -13,6 +13,7 @@ import placeholder from './placeholder.ts';
 import { SupabaseClient } from 'npm:@supabase/supabase-js@2';
 import {
   createInstallation,
+  deleteInstallation,
   toggleInstallation,
 } from './handlers/installation.ts';
 import { pushCommits } from './handlers/push-commits.ts';
@@ -43,7 +44,7 @@ class EventHandler {
           this.supabase,
         );
       case 'deleted':
-        return await placeholder({ action, event: 'installation' });
+        return await deleteInstallation({ installationId }, this.supabase);
       case 'created':
         return await createInstallation(
           { installationId, sender },
