@@ -19,6 +19,7 @@ export const createInstallation = async (
   },
   supabase: SupabaseClient,
 ) => {
+  console.info('[INSTALLATION.CREATED]: Event triggered.');
   // Check if the installation already exists.
   const { data: existingGitHubInstallation } = await supabase
     .from('hbtc_github_installations')

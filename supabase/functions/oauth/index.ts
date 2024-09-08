@@ -5,7 +5,7 @@
 // Setup type definitions for built-in Supabase Runtime APIs
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
 import { createClient } from 'jsr:@supabase/supabase-js@2';
-import axios from 'npm:axios@1.7.7';
+import axios from 'npm:axios@1';
 import { v4 } from 'npm:uuid@10';
 import HttpError from '../webhook/http-error.ts';
 

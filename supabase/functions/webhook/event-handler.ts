@@ -12,6 +12,7 @@ import {
 import placeholder from './placeholder.ts';
 import { SupabaseClient } from 'npm:@supabase/supabase-js@2';
 import { createInstallation } from './handlers/installation.ts';
+import { pushCommits } from './handlers/push-commits.ts';
 
 class EventHandler {
   protected supabase;
@@ -70,7 +71,10 @@ class EventHandler {
   };
 
   push = async ({ action, commits, installation, repository }: PushEvent) => {
-    return await placeholder({ action, event: 'pull_request_review' });
+    return await pushCommits(
+      { action, commits, installation, repository },
+      this.supabase,
+    );
   };
 
   registryPackage = async ({ action }: RegistryPackagePublishedEvent) => {
