@@ -1,4 +1,4 @@
-const placeholder = async ({
+const placeholderHandler = async ({
   event,
   action,
 }: {
@@ -8,4 +8,4 @@ const placeholder = async ({
   console.log(`🚧 TODO: ${event}.${action} handler.`);
 };
 
-export default placeholder;
+export default placeholderHandler;

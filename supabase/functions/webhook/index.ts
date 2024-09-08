@@ -8,8 +8,6 @@ import { createClient } from 'npm:@supabase/supabase-js@2';
 import EventHandler from './event-handler.ts';
 import { Database } from './database.types.ts';
 
-console.log('Function "webhook" up and running!');
-
 Deno.serve(async req => {
   // const secret = Deno.env.get('GITHUB_WEBHOOK_SECRET'); // Set this in your environment variables
   // const signature = req.headers.get('X-Hub-Signature');

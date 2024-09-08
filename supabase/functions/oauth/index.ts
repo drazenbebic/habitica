@@ -9,8 +9,6 @@ import axios from 'npm:axios@1';
 import { v4 } from 'npm:uuid@10';
 import HttpError from '../webhook/http-error.ts';
 
-console.log('Function "oauth" up and running!');
-
 Deno.serve(async req => {
   const { code, installationId, userId, apiToken } = await req.json();
 

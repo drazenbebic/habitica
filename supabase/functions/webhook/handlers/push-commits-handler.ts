@@ -3,7 +3,7 @@ import { PushEvent } from 'npm:@octokit/webhooks-types@7';
 import { TaskDirection, TaskPriority, TaskType } from '../enums.ts';
 import getHabiticaApi from '../get-habitica-api.ts';
 
-export const pushCommits = async (
+export const pushCommitsHandler = async (
   { commits, repository, installation }: PushEvent,
   supabase: SupabaseClient,
 ) => {

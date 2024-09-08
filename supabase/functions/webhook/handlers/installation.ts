@@ -1,18 +1,11 @@
 import { SupabaseClient } from 'npm:@supabase/supabase-js@2';
-import { User } from 'npm:@octokit/webhooks-types@7';
+import { InstallationEvent } from 'npm:@octokit/webhooks-types@7';
 import { v4 } from 'npm:uuid@10';
 import HttpError from '../http-error.ts';
 
 export const toggleInstallation = async (
-  {
-    action,
-    installationId,
-    suspended,
-  }: {
-    action: 'suspend' | 'unsuspend';
-    installationId: number;
-    suspended: boolean;
-  },
+  { action, installation }: InstallationEvent,
+  suspended: boolean,
   supabase: SupabaseClient,
 ) => {
   console.info(`[INSTALLATION:${action.toUpperCase()}]: Event triggered.`);
@@ -20,11 +13,11 @@ export const toggleInstallation = async (
   const { error } = await supabase
     .from('hbtc_github_installations')
     .update({ suspended })
-    .eq('installation_id', installationId);
+    .eq('installation_id', installation.id);
 
   if (error) {
     console.error('The GitHub Installation could not be toggled.', {
-      installationId,
+      installation,
       suspended,
       error,
     });
@@ -32,7 +25,7 @@ export const toggleInstallation = async (
 };
 
 export const deleteInstallation = async (
-  { installationId }: { installationId: number },
+  { installation }: InstallationEvent,
   supabase: SupabaseClient,
 ) => {
   console.info('[INSTALLATION.DELETED]: Event triggered.');
@@ -41,7 +34,7 @@ export const deleteInstallation = async (
     await supabase
       .from('hbtc_github_installations')
       .select('uuid')
-      .eq('installation_id', Number(installationId))
+      .eq('installation_id', Number(installation.id))
       .single();
 
   if (gitHubInstallationError) {
@@ -102,13 +95,7 @@ export const deleteInstallation = async (
 };
 
 export const createInstallation = async (
-  {
-    installationId,
-    sender,
-  }: {
-    installationId: number;
-    sender: User;
-  },
+  { installation, sender }: InstallationEvent,
   supabase: SupabaseClient,
 ) => {
   console.info('[INSTALLATION.CREATED]: Event triggered.');
@@ -117,11 +104,13 @@ export const createInstallation = async (
   const { data: existingGitHubInstallation } = await supabase
     .from('hbtc_github_installations')
     .select('uuid')
-    .eq('installation_id', Number(installationId))
+    .eq('installation_id', Number(installation.id))
     .single();
 
   if (existingGitHubInstallation) {
-    console.error('EXISTING_GITHUB_INSTALLATION', { installationId });
+    console.error('EXISTING_GITHUB_INSTALLATION', {
+      installationId: installation.id,
+    });
     throw new HttpError('An installation with this ID already exists.', 409);
   }
 
@@ -129,7 +118,7 @@ export const createInstallation = async (
   const { data: gitHubInstallation, error: gitHubInstallationError } =
     await supabase
       .from('hbtc_github_installations')
-      .insert({ uuid: v4(), installation_id: installationId })
+      .insert({ uuid: v4(), installation_id: installation.id })
       .select('uuid')
       .single();
 
