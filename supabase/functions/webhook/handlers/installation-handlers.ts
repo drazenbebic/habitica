@@ -28,7 +28,7 @@ export const installationDeleteHandler = async (
   { installation }: InstallationEvent,
   supabase: SupabaseClient,
 ) => {
-  console.info('[INSTALLATION.DELETED]: Event triggered.');
+  console.info('[installation.deleted]: Event triggered.');
 
   const { data: gitHubInstallation, error: gitHubInstallationError } =
     await supabase
@@ -98,7 +98,7 @@ export const installationCreateHandler = async (
   { installation, sender }: InstallationEvent,
   supabase: SupabaseClient,
 ) => {
-  console.info('[INSTALLATION.CREATED]: Event triggered.');
+  console.info('[installation.created]: Event triggered.');
 
   // Check if the installation already exists.
   const { data: existingGitHubInstallation } = await supabase

@@ -13,7 +13,7 @@ export const pullRequestClosedHandler = async (
   }: PullRequestEvent,
   supabase: SupabaseClient,
 ) => {
-  console.info('[PULL_REQUEST.CLOSED]: Event triggered.');
+  console.info('[pull_request.closed]: Event triggered.');
 
   const isFeature = pullRequest.title.startsWith('feat');
   const isFix = pullRequest.title.startsWith('fix');
