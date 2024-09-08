@@ -1,4 +1,4 @@
-const placeholderHandler = async ({
+const placeholderHandler = ({
   event,
   action,
 }: {

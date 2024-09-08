@@ -8,11 +8,6 @@
     "strict": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
-    "paths": {
-      "@habitica/core": [
-        "./packages/core/src/index.ts"
-      ]
-    }
+    "baseUrl": "."
   }
 }

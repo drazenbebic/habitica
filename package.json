@@ -6,8 +6,7 @@
   "author": "Drazen Bebic <drazen.bebic@outlook.com>",
   "license": "MIT",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ],
   "engines": {
     "node": ">=18.0.0"
@@ -17,8 +16,8 @@
     "start": "yarn workspace @habitica/github-app run prod",
     "prepare": "husky",
     "expose": "ngrok start --all",
-    "lint": "eslint apps/**/*.ts packages/**/*.ts apps/**/*.tsx",
-    "lint-fix": "eslint apps/**/*.ts packages/**/*.ts apps/**/*.tsx --fix",
+    "lint": "eslint apps/**/*.ts apps/**/*.tsx",
+    "lint-fix": "eslint apps/**/*.ts apps/**/*.tsx --fix",
     "core:build": "yarn workspace @habitica/core run build",
     "github-app:dev": "nodemon --exec ts-node --require tsconfig-paths/register apps/github-app/src/app.ts",
     "github-app:build": "yarn workspace @habitica/github-app run build",
