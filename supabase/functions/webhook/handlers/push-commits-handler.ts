@@ -7,14 +7,14 @@ export const pushCommitsHandler = async (
   { commits, repository, installation }: PushEvent,
   supabase: SupabaseClient,
 ) => {
-  console.info('[PUSH]: Event triggered.');
+  console.info('[push]: Event triggered.');
 
   const validCommits = commits.filter(
     ({ author }) => author.username !== 'dependabot[bot]',
   );
 
   if (validCommits.length <= 0) {
-    console.info('[PUSH]: All commits skipped.', commits);
+    console.info('[push]: All commits skipped.', commits);
     return;
   }
 
@@ -28,7 +28,7 @@ export const pushCommitsHandler = async (
     );
 
     if (!habiticaApi) {
-      console.info('[PUSH]: Commit skipped.', commit);
+      console.info('[push]: Commit skipped.', commit);
       continue;
     }
 

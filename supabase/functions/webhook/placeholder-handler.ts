@@ -5,7 +5,7 @@ const placeholderHandler = async ({
   event: string;
   action: string;
 }) => {
-  console.log(`🚧 TODO: ${event}.${action} handler.`);
+  console.log(`[${event}.${action}]: 🚧 Under Construction 🚧`);
 };
 
 export default placeholderHandler;

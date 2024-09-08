@@ -4,9 +4,8 @@ import getHabiticaApi from '../get-habitica-api.ts';
 import getTaskByName from '../get-task-by-name.ts';
 import { TaskDirection, TaskPriority, TaskType } from '../enums.ts';
 
-export const pullRequestHandler = async (
+export const pullRequestClosedHandler = async (
   {
-    action,
     installation,
     pull_request: pullRequest,
     repository,
@@ -14,14 +13,10 @@ export const pullRequestHandler = async (
   }: PullRequestEvent,
   supabase: SupabaseClient,
 ) => {
-  console.info('[PULL_REQUEST]: Event triggered.');
+  console.info('[pull_request.closed]: Event triggered.');
 
   const isFeature = pullRequest.title.startsWith('feat');
-  const isBugFix = pullRequest.title.startsWith('fix');
-
-  if (action !== 'closed' || (!isFeature && !isBugFix)) {
-    return;
-  }
+  const isFix = pullRequest.title.startsWith('fix');
 
   const habiticaApi = await getHabiticaApi(
     installation.id,
@@ -40,7 +35,7 @@ export const pullRequestHandler = async (
     : await habiticaApi.createTask({
         text: taskName,
         type: TaskType.HABIT,
-        value: isFeature ? 5 : 3,
+        value: isFeature ? 5 : isFix ? 3 : 1,
         priority: isFeature ? TaskPriority.HIGH : TaskPriority.NORMAL,
       });
 
