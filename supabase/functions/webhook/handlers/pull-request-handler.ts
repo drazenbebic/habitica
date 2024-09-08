@@ -14,6 +14,8 @@ export const pullRequestHandler = async (
   }: PullRequestEvent,
   supabase: SupabaseClient,
 ) => {
+  console.info('[PULL_REQUEST]: Event triggered.');
+
   const isFeature = pullRequest.title.startsWith('feat');
   const isBugFix = pullRequest.title.startsWith('fix');
 

@@ -3,7 +3,7 @@ import { InstallationEvent } from 'npm:@octokit/webhooks-types@7';
 import { v4 } from 'npm:uuid@10';
 import HttpError from '../http-error.ts';
 
-export const toggleInstallation = async (
+export const installationToggleHandler = async (
   { action, installation }: InstallationEvent,
   suspended: boolean,
   supabase: SupabaseClient,
@@ -24,7 +24,7 @@ export const toggleInstallation = async (
   }
 };
 
-export const deleteInstallation = async (
+export const installationDeleteHandler = async (
   { installation }: InstallationEvent,
   supabase: SupabaseClient,
 ) => {
@@ -94,7 +94,7 @@ export const deleteInstallation = async (
   }
 };
 
-export const createInstallation = async (
+export const installationCreateHandler = async (
   { installation, sender }: InstallationEvent,
   supabase: SupabaseClient,
 ) => {
