@@ -12,12 +12,12 @@ import {
 import placeholderHandler from './placeholder-handler.ts';
 import { SupabaseClient } from 'npm:@supabase/supabase-js@2';
 import {
-  createInstallation,
-  deleteInstallation,
-  toggleInstallation,
-} from './handlers/installation.ts';
-import { pushCommitsHandler } from './handlers/push-commits-handler.ts';
-import { pullRequestHandler } from './handlers/pull-request-handler.ts';
+  installationCreateHandler,
+  installationDeleteHandler,
+  installationToggleHandler,
+  pullRequestHandler,
+  pushCommitsHandler,
+} from './handlers/index.ts';
 
 class EventHandler {
   protected supabase;
@@ -29,13 +29,13 @@ class EventHandler {
   installation = async (event: InstallationEvent) => {
     switch (event.action) {
       case 'suspend':
-        return await toggleInstallation(event, true, this.supabase);
+        return await installationToggleHandler(event, true, this.supabase);
       case 'unsuspend':
-        return await toggleInstallation(event, false, this.supabase);
+        return await installationToggleHandler(event, false, this.supabase);
       case 'deleted':
-        return await deleteInstallation(event, this.supabase);
+        return await installationDeleteHandler(event, this.supabase);
       case 'created':
-        return await createInstallation(event, this.supabase);
+        return await installationCreateHandler(event, this.supabase);
       default:
         return placeholderHandler({
           action: event.action,
