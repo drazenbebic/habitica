@@ -32,7 +32,7 @@ Deno.serve(async req => {
   const payload = await req.json();
   const eventHandler = new EventHandler(supabase);
 
-  console.log('Habitica - Webhook Triggered.', {
+  console.info('Webhook Triggered.', {
     deliveryUuid,
     event,
     hookId,
