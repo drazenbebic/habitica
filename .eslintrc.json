@@ -1,47 +1,8 @@
 {
-  "root": true,
-  "extends": ["eslint:recommended", "prettier"],
-  "ignorePatterns": ["dist", "node_modules"],
-  "overrides": [
-    {
-      "env": {
-        "node": true,
-        "commonjs": true
-      },
-      "files": ["**/*.ts", "**/*.tsx"],
-      "parser": "@typescript-eslint/parser",
-      "parserOptions": {
-        "ecmaVersion": 6
-      },
-      "plugins": ["@typescript-eslint", "prettier", "unused-imports"],
-      "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended"
-      ],
-      "rules": {
-        "@typescript-eslint/no-unused-vars": "off",
-        "unused-imports/no-unused-imports": "error",
-        "unused-imports/no-unused-vars": [
-          "warn",
-          {
-            "vars": "all",
-            "varsIgnorePattern": "^_",
-            "args": "after-used",
-            "argsIgnorePattern": "^_"
-          }
-        ],
-        "sort-imports": [
-          "error",
-          {
-            "ignoreCase": false,
-            "ignoreDeclarationSort": true,
-            "ignoreMemberSort": false,
-            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-            "allowSeparatedGroups": true
-          }
-        ]
-      }
-    }
-  ]
+  "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
+  "plugins": ["unused-imports"],
+  "rules": {
+    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-vars": "warn"
+  }
 }
