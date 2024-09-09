@@ -21,7 +21,7 @@ import {
   installationToggleHandler,
   pullRequestClosedHandler,
   pullRequestReviewSubmittedHandler,
-  pushCommitsHandler,
+  pushHandler,
 } from './handlers/index.ts';
 
 class EventHandler {
@@ -35,28 +35,37 @@ class EventHandler {
     const { action } = event;
 
     switch (action) {
+      case 'created':
+        return await installationCreateHandler(event, this.supabase);
+      case 'deleted':
+        return await installationDeleteHandler(event, this.supabase);
       case 'suspend':
         return await installationToggleHandler(event, true, this.supabase);
       case 'unsuspend':
         return await installationToggleHandler(event, false, this.supabase);
-      case 'deleted':
-        return await installationDeleteHandler(event, this.supabase);
-      case 'created':
-        return await installationCreateHandler(event, this.supabase);
+      case 'new_permissions_accepted':
       default:
         return placeholderHandler({ action, event: 'installation' });
     }
   };
 
-  meta = ({ action }: MetaEvent) => {
+  meta = async ({ action }: MetaEvent) => {
     return placeholderHandler({ action, event: 'meta' });
   };
 
-  issueComment = ({ action }: IssueCommentEvent) => {
-    return placeholderHandler({ action, event: 'issue_comment' });
+  issueComment = async (event: IssueCommentEvent) => {
+    const { action } = event;
+
+    switch (event.action) {
+      case 'created':
+      case 'deleted':
+      case 'edited':
+      default:
+        return await placeholderHandler({ action, event: 'issue_comment' });
+    }
   };
 
-  issues = ({ action }: IssuesEvent) => {
+  issues = async ({ action }: IssuesEvent) => {
     return placeholderHandler({ action, event: 'issues' });
   };
 
@@ -64,48 +73,28 @@ class EventHandler {
     const { action } = event;
 
     switch (action) {
-      case 'assigned':
-        return placeholderHandler({ action, event: 'pull_request' });
-      case 'auto_merge_disabled':
-        return placeholderHandler({ action, event: 'pull_request' });
-      case 'auto_merge_enabled':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'closed':
         return await pullRequestClosedHandler(event, this.supabase);
+      case 'assigned':
+      case 'auto_merge_disabled':
+      case 'auto_merge_enabled':
       case 'converted_to_draft':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'demilestoned':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'dequeued':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'edited':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'enqueued':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'labeled':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'locked':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'milestoned':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'opened':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'ready_for_review':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'reopened':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'review_request_removed':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'review_requested':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'synchronize':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'unassigned':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'unlabeled':
-        return placeholderHandler({ action, event: 'pull_request' });
       case 'unlocked':
-        return placeholderHandler({ action, event: 'pull_request' });
       default:
         return placeholderHandler({ action, event: 'pull_request' });
     }
@@ -115,52 +104,97 @@ class EventHandler {
     const { action } = event;
 
     switch (event.action) {
-      case 'dismissed':
-        return placeholderHandler({
-          action,
-          event: 'pull_request_review',
-        });
-      case 'edited':
-        return placeholderHandler({
-          action,
-          event: 'pull_request_review',
-        });
       case 'submitted':
-        break;
-      default:
         return await pullRequestReviewSubmittedHandler(event, this.supabase);
+      case 'dismissed':
+      case 'edited':
+      default:
+        return placeholderHandler({
+          action,
+          event: 'pull_request_review',
+        });
     }
   };
 
   push = async (event: PushEvent) => {
-    return await pushCommitsHandler(event, this.supabase);
+    return await pushHandler(event, this.supabase);
   };
 
-  registryPackage = ({ action }: RegistryPackageEvent) => {
-    return placeholderHandler({ action, event: 'registry_package' });
+  registryPackage = async (event: RegistryPackageEvent) => {
+    const { action } = event;
+
+    switch (action) {
+      case 'published':
+      case 'updated':
+      default:
+        return placeholderHandler({ action, event: 'registry_package' });
+    }
   };
 
-  release = ({ action }: ReleaseEvent) => {
-    return placeholderHandler({ action, event: 'release' });
+  release = async (event: ReleaseEvent) => {
+    const { action } = event;
+
+    switch (action) {
+      case 'created':
+      case 'deleted':
+      case 'edited':
+      case 'prereleased':
+      case 'published':
+      case 'released':
+      case 'unpublished':
+      default:
+        return placeholderHandler({ action, event: 'release' });
+    }
   };
 
-  repository = ({ action }: RepositoryEvent) => {
-    return placeholderHandler({ action, event: 'repository' });
+  repository = async (event: RepositoryEvent) => {
+    const { action } = event;
+
+    switch (action) {
+      case 'archived':
+      case 'created':
+      case 'deleted':
+      case 'edited':
+      case 'privatized':
+      case 'publicized':
+      case 'renamed':
+      case 'transferred':
+      case 'unarchived':
+      default:
+        return placeholderHandler({ action, event: 'repository' });
+    }
   };
 
-  workflowDispatch = (_event: WorkflowDispatchEvent) => {
+  workflowDispatch = async (_event: WorkflowDispatchEvent) => {
     return placeholderHandler({
       action: 'dispatch',
       event: 'workflow_dispatch',
     });
   };
 
-  workflowJob = ({ action }: WorkflowJobEvent) => {
-    return placeholderHandler({ action, event: 'workflow_job' });
+  workflowJob = async (event: WorkflowJobEvent) => {
+    const { action } = event;
+
+    switch (action) {
+      case 'completed':
+      case 'in_progress':
+      case 'queued':
+      case 'waiting':
+      default:
+        return placeholderHandler({ action, event: 'workflow_job' });
+    }
   };
 
-  workflowRun = ({ action }: WorkflowRunEvent) => {
-    return placeholderHandler({ action, event: 'workflow_run' });
+  workflowRun = async (event: WorkflowRunEvent) => {
+    const { action } = event;
+
+    switch (action) {
+      case 'completed':
+      case 'in_progress':
+      case 'requested':
+      default:
+        return placeholderHandler({ action, event: 'workflow_run' });
+    }
   };
 }
 

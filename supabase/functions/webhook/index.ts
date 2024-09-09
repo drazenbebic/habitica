@@ -4,10 +4,10 @@
 
 // Setup type definitions for built-in Supabase Runtime APIs
 import 'jsr:@supabase/functions-js/edge-runtime.d.ts';
-import { SupabaseClient, createClient } from 'npm:@supabase/supabase-js@2';
-import { WebhookEvent, WebhookEventName } from 'npm:@octokit/webhooks-types@7';
+import { createClient } from 'npm:@supabase/supabase-js@2';
 import EventHandler from './event-handler.ts';
 import { Database } from './database.types.ts';
+import { WebhookEventMap } from 'npm:@octokit/webhooks-types@7';
 
 Deno.serve(async req => {
   // const secret = Deno.env.get('GITHUB_WEBHOOK_SECRET'); // Set this in your environment variables
@@ -42,13 +42,9 @@ Deno.serve(async req => {
     payload,
   });
 
-  type EventHandlerInterface = Record<
-    Partial<WebhookEventName>,
-    (
-      event: Pick<WebhookEvent, 'action'>,
-      supabase: SupabaseClient,
-    ) => Promise<void>
-  >;
+  type EventHandlerInterface = {
+    [K in keyof WebhookEventMap]?: (event: WebhookEventMap[K]) => Promise<void>;
+  };
 
   const eventHandlers: EventHandlerInterface = {
     installation: eventHandler.installation,
@@ -60,17 +56,14 @@ Deno.serve(async req => {
     push: eventHandler.push,
     registry_package: eventHandler.registryPackage,
     release: eventHandler.release,
-    repositroy: eventHandler.repository,
+    repository: eventHandler.repository,
     workflow_dispatch: eventHandler.workflowDispatch,
     workflow_job: eventHandler.workflowJob,
     workflow_run: eventHandler.workflowRun,
   };
 
   if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) {
-    await eventHandlers[event as keyof EventHandlerInterface](
-      payload,
-      supabase,
-    );
+    await eventHandlers[event](payload);
   }
 
   return new Response(
