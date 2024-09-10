@@ -1,13 +1,18 @@
 'use client';
 
 import { NextPage } from 'next';
-import React, { FC, Suspense, useState } from 'react';
-import { Form, FormInput, FormSubmit, useFormStore } from '@ariakit/react';
-import { Button, Pane, Paragraph, TextInputField } from 'evergreen-ui';
+import React, { Suspense, useState } from 'react';
+import {
+  Form,
+  FormInput,
+  FormLabel,
+  FormSubmit,
+  useFormStore,
+} from '@ariakit/react';
 import axios from 'axios';
 import { useSearchParams } from 'next/navigation';
 
-const Search: FC = () => {
+const OAuth: NextPage = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const params = useSearchParams();
   const [values, setValues] = useState({
@@ -37,68 +42,66 @@ const Search: FC = () => {
   });
 
   return (
-    <Pane
-      display="flex"
-      flexDirection="column"
-      padding={16}
-      maxWidth={400}
-      margin="auto"
-      marginTop={100}
-    >
-      <Pane padding={16}></Pane>
-      <Pane
-        position="relative"
-        borderRadius={3}
-        borderColor="default"
-        display="grid"
-        background="tint2"
-        padding={16}
-        border
-      >
-        <Paragraph marginBottom={16}>
-          To complete the registration process, please enter your{' '}
-          <strong>Habitica User ID and API Token</strong>. These will be
-          associated with your GitHub username.
-        </Paragraph>
-        <Form resetOnSubmit={false} store={form}>
-          <FormInput
-            required
-            disabled={loading}
-            name={form.names.userId}
-            render={<TextInputField label="Habitica User ID" />}
-          />
-          <FormInput
-            required
-            disabled={loading}
-            name={form.names.apiToken}
-            render={
-              <TextInputField label="Habitica API token" type="password" />
-            }
-          />
-          <FormSubmit
-            disabled={loading}
-            render={
-              <Button
-                appearance="primary"
-                type="submit"
-                isLoading={loading}
-                size="large"
-                width="100%"
-              >
-                Submit
-              </Button>
-            }
-          />
-        </Form>
-      </Pane>
-    </Pane>
-  );
-};
-
-const OAuth: NextPage = () => {
-  return (
     <Suspense>
-      <Search />
+      <div className="flex flex-col p-4 max-w-96 mx-auto mt-20 bg-neutral-100 rounded">
+        <div className="relative rounded p-4 grid">
+          <h2 className="text-slate-700 mb-4 font-semibold text-xl">
+            Add Habitica credentials
+          </h2>
+          <p className="text-slate-700 text-sm mb-4">
+            To complete the registration process, please enter your{' '}
+            <strong>Habitica User ID and API Token</strong>. These will be
+            associated with your GitHub username.
+          </p>
+          <Form resetOnSubmit={false} store={form}>
+            <div className="mb-4">
+              <FormLabel
+                className="block text-sm mb-1 font-semibold text-slate-700"
+                name={form.names.userId}
+              >
+                User ID
+              </FormLabel>
+              <FormInput
+                className="block w-full text-lg py-2 px-6 rounded-full"
+                required
+                disabled={loading}
+                name={form.names.userId}
+              />
+            </div>
+            <div className="mb-4">
+              <FormLabel
+                className="block text-sm mb-1 font-semibold text-slate-700"
+                name={form.names.apiToken}
+              >
+                API token
+              </FormLabel>
+              <FormInput
+                className="block w-full text-lg py-2 px-6 rounded-full"
+                required
+                disabled={loading}
+                name={form.names.apiToken}
+              />
+            </div>
+            <p className="text-slate-700 text-sm mb-8">
+              You can find the User ID and API token{' '}
+              <a
+                className="underline hover:no-underline"
+                href="https://habitica.com/user/settings/siteData"
+                target="_blank"
+              >
+                here
+              </a>
+              .
+            </p>
+            <FormSubmit
+              className="p-2 bg-violet-600 rounded-full flex gap-4 items-center justify-center w-full text-lg text-white hover:bg-violet-800"
+              disabled={loading}
+            >
+              Submit
+            </FormSubmit>
+          </Form>
+        </div>
+      </div>
     </Suspense>
   );
 };
