@@ -6,7 +6,7 @@ import { signIn } from 'next-auth/react';
 import { Button } from '@ariakit/react';
 import Image from 'next/image';
 
-const OAuth: NextPage = () => {
+const SignIn: NextPage = () => {
   const services = [
     {
       label: 'Google',
@@ -35,7 +35,9 @@ const OAuth: NextPage = () => {
                 src={`https://authjs.dev/img/providers/${provider}.svg`}
               />
             </div>
-            <span className="text-lg text-neutral-800">Login with {label}</span>
+            <span className="text-lg text-neutral-800">
+              Sign in with {label}
+            </span>
           </Button>
         ))}
       </div>
@@ -43,4 +45,4 @@ const OAuth: NextPage = () => {
   );
 };
 
-export default OAuth;
+export default SignIn;
