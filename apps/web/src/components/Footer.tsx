@@ -57,7 +57,7 @@ export const Footer: FC = () => {
             <div className="flex flex-col gap-3">
               <h4 className="font-semibold text-slate-900">Resources</h4>
               <Link
-                href="https://github.com/your-username/your-repo"
+                href="https://github.com/drazenbebic/habitica"
                 target="_blank"
                 className="text-sm text-slate-600 transition-colors hover:text-violet-600"
               >
