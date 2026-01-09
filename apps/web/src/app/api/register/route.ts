@@ -12,7 +12,7 @@ const handler = async (request: NextRequest) => {
   const { code, installationId, userId, apiToken } = await request.json();
 
   const gitHubInstallation = await prisma.gitHubInstallations.findFirst({
-    where: { installationId },
+    where: { installationId: Number(installationId) },
   });
 
   if (!gitHubInstallation) {
