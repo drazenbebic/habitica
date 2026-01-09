@@ -17,10 +17,6 @@ const nextConfig = {
         protocol: 'https',
         hostname: '*.githubusercontent.com',
       },
-      {
-        protocol: 'https',
-        hostname: 'authjs.dev',
-      },
     ],
     formats: ['image/avif', 'image/webp'],
     qualities: [60, 75],

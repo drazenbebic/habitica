@@ -639,6 +639,7 @@ __metadata:
     autoprefixer: "npm:^10.4.23"
     axios: "npm:^1.13.2"
     classnames: "npm:^2.5.1"
+    clsx: "npm:^2.1.1"
     dotenv: "npm:^17.2.3"
     eslint: "npm:^9.39.2"
     eslint-config-next: "npm:^16.1.1"
@@ -2570,6 +2571,13 @@ __metadata:
   version: 0.0.1
   resolution: "client-only@npm:0.0.1"
   checksum: 10c0/9d6cfd0c19e1c96a434605added99dff48482152af791ec4172fb912a71cff9027ff174efd8cdb2160cc7f377543e0537ffc462d4f279bc4701de3f2a3c4b358
+  languageName: node
+  linkType: hard
+
+"clsx@npm:^2.1.1":
+  version: 2.1.1
+  resolution: "clsx@npm:2.1.1"
+  checksum: 10c0/c4c8eb865f8c82baab07e71bfa8897c73454881c4f99d6bc81585aecd7c441746c1399d08363dc096c550cceaf97bd4ce1e8854e1771e9998d9f94c4fe075839
   languageName: node
   linkType: hard
 

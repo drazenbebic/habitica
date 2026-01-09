@@ -4,14 +4,16 @@ import React, { FC, Suspense, useState } from 'react';
 import { NextPage } from 'next';
 import { useSearchParams } from 'next/navigation';
 
-import {
-  Form,
-  FormInput,
-  FormLabel,
-  FormSubmit,
-  useFormStore,
-} from '@ariakit/react';
+import { Form, FormSubmit, useFormStore } from '@ariakit/react';
 import axios from 'axios';
+
+import { Button } from '@/components/ui/Button';
+import { Card } from '@/components/ui/Card';
+import { CardBody } from '@/components/ui/CardBody';
+import { Content } from '@/components/ui/Content';
+import { FormInput } from '@/components/ui/FormInput';
+import { FormLabel } from '@/components/ui/FormLabel';
+import { Heading } from '@/components/ui/Heading';
 
 const HabiticaForm: FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -43,16 +45,16 @@ const HabiticaForm: FC = () => {
   });
 
   return (
-    <div className="flex flex-col p-4 max-w-96 mx-auto mt-20 bg-neutral-100 rounded">
-      <div className="relative rounded p-4 grid">
-        <h2 className="text-slate-700 mb-4 font-semibold text-xl">
+    <Card className="max-w-96 mx-auto mt-20">
+      <CardBody className="relative grid">
+        <Heading className="text-center mb-4" size="xl">
           Add Habitica credentials
-        </h2>
-        <p className="text-slate-700 text-sm mb-4">
+        </Heading>
+        <Content className="mb-4">
           To complete the registration process, please enter your{' '}
           <strong>Habitica User ID and API Token</strong>. These will be
           associated with your GitHub username.
-        </p>
+        </Content>
         <Form resetOnSubmit={false} store={form}>
           <div className="mb-4">
             <FormLabel
@@ -94,14 +96,15 @@ const HabiticaForm: FC = () => {
             .
           </p>
           <FormSubmit
-            className="p-2 bg-violet-600 rounded-full flex gap-4 items-center justify-center w-full text-lg text-white hover:bg-violet-800"
-            disabled={loading}
-          >
-            Submit
-          </FormSubmit>
+            render={
+              <Button className="w-full" isLoading={loading} disabled={loading}>
+                Submit
+              </Button>
+            }
+          />
         </Form>
-      </div>
-    </div>
+      </CardBody>
+    </Card>
   );
 };
 
