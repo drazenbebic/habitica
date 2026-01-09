@@ -31,7 +31,7 @@ export const installationDeleteHandler = async ({
 
   const gitHubInstallation = await prisma.gitHubInstallations.findFirst({
     where: {
-      installationId: installation.id,
+      installationId: Number(installation.id),
     },
   });
 
@@ -73,7 +73,7 @@ export const installationCreateHandler = async ({
   // Check if the installation already exists.
   const existingGitHubInstallation = await prisma.gitHubInstallations.findFirst(
     {
-      where: { installationId: installation.id },
+      where: { installationId: Number(installation.id) },
     },
   );
 
