@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { env } from 'process';
 
 import { TaskDirection } from './enums';
 import {
@@ -9,6 +10,8 @@ import {
   Task,
 } from './types';
 
+const habiticaUserId = env.HABITICA_USER_ID!;
+
 class HabiticaApi {
   userId: string;
   apiToken: string;
@@ -16,6 +19,7 @@ class HabiticaApi {
   headers: {
     'x-api-user': string;
     'x-api-key': string;
+    'x-client': string;
   };
 
   constructor(userId: string, apiToken: string) {
@@ -25,6 +29,7 @@ class HabiticaApi {
     this.headers = {
       'x-api-user': userId,
       'x-api-key': apiToken,
+      'x-client': `${habiticaUserId}-github-app`,
     };
   }
 
