@@ -6,7 +6,9 @@ import {
   Settings01Icon,
 } from 'hugeicons-react';
 
+import { isConnected } from '@/app/actions/is-connected';
 import { HabiticaUserForm } from '@/components/HabiticaUserForm';
+import { Badge } from '@/components/ui/Badge'; // Using your new component
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Content } from '@/components/ui/Content';
@@ -17,13 +19,13 @@ export const metadata: Metadata = {
   description:
     'Manage your Habitica API connections, configure repository webhooks, and track your gamification progress.',
   robots: {
-    index: false, // Recommended: Don't index user dashboards
+    index: false,
     follow: false,
   },
 };
 
-export default function Dashboard() {
-  const isConnected = false;
+export default async function Dashboard() {
+  const connected = await isConnected();
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
@@ -35,21 +37,15 @@ export default function Dashboard() {
           <Content>Manage your Habitica connection and repositories.</Content>
         </div>
 
-        <div className="flex items-center gap-3 rounded-full border border-slate-200 bg-white px-4 py-2 shadow-sm">
-          <div className="relative flex h-3 w-3">
-            {isConnected ? (
-              <>
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75"></span>
-                <span className="relative inline-flex h-3 w-3 rounded-full bg-emerald-500"></span>
-              </>
-            ) : (
-              <span className="h-3 w-3 rounded-full bg-slate-300"></span>
-            )}
-          </div>
-          <span className="text-sm font-medium text-slate-700">
-            {isConnected ? 'System Operational' : 'Not Connected'}
-          </span>
-        </div>
+        <Badge
+          variant={connected ? 'success' : 'neutral'}
+          size="md"
+          hasDot
+          pulsing={connected}
+          className="px-4 py-2"
+        >
+          {connected ? 'Connected' : 'Not Connected'}
+        </Badge>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">

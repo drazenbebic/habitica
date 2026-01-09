@@ -82,13 +82,13 @@ export const Footer: FC = () => {
             <div className="flex flex-col gap-3">
               <h4 className="font-semibold text-slate-900">Legal</h4>
               <Link
-                href="/legal/imprint"
+                href="/imprint"
                 className="text-sm text-slate-600 transition-colors hover:text-violet-600"
               >
                 Imprint (Impressum)
               </Link>
               <Link
-                href="/legal/privacy"
+                href="/privacy-policy"
                 className="text-sm text-slate-600 transition-colors hover:text-violet-600"
               >
                 Privacy Policy

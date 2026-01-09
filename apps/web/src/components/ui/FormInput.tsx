@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode } from 'react';
+import { ElementType, forwardRef, ReactNode } from 'react';
 
 import {
   FormInput as BaseFormInput,
@@ -7,6 +7,7 @@ import {
 import clsx from 'clsx';
 
 export type FormInputProps = BaseFormInputProps & {
+  as?: ElementType;
   leadingIcon?: ReactNode;
   wrapperClassName?: string;
 };
@@ -18,7 +19,16 @@ const errorStyles =
   'aria-[invalid=true]:border-red-500 aria-[invalid=true]:focus:border-red-500 aria-[invalid=true]:focus:ring-red-500/10 aria-[invalid=true]:bg-red-50/50';
 
 export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
-  ({ className, wrapperClassName, leadingIcon, ...props }, ref) => {
+  (
+    {
+      as: Tag = BaseFormInput,
+      className,
+      wrapperClassName,
+      leadingIcon,
+      ...props
+    },
+    ref,
+  ) => {
     return (
       <div className={clsx('relative w-full', wrapperClassName)}>
         {leadingIcon && (
@@ -27,13 +37,13 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
           </div>
         )}
 
-        <BaseFormInput
+        <Tag
           ref={ref}
           className={clsx(
             baseStyles,
             errorStyles,
             {
-              'pl-11': !!leadingIcon, // Add padding to prevent text overlap
+              'pl-11': !!leadingIcon,
             },
             className,
           )}

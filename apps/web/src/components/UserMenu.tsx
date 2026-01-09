@@ -55,7 +55,7 @@ export const UserMenu: FC = () => {
 
       <button
         onClick={() => signOut()}
-        className="group flex h-9 w-9 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500"
+        className="group flex h-9 w-9 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500 cursor-pointer"
         title="Sign Out"
       >
         <Logout04Icon size={18} />
