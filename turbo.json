@@ -1,7 +1,7 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalEnv": [
-    "DB_URL",
+    "DATABASE_URL",
     "GITHUB_CLIENT_ID",
     "GITHUB_CLIENT_SECRET",
     "GITHUB_WEBHOOK_SECRET"
