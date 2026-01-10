@@ -29,7 +29,7 @@ class HabiticaApi {
     this.headers = {
       'x-api-user': userId,
       'x-api-key': apiToken,
-      'x-client': `${habiticaUserId}-github-app`,
+      'x-client': `${habiticaUserId}-HabiticaSync`,
     };
   }
 
