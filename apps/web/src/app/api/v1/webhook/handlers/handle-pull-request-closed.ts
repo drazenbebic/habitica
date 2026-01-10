@@ -1,12 +1,8 @@
 import { EmitterWebhookEvent } from '@octokit/webhooks/types';
 
-import {
-  TaskDirection,
-  TaskPriority,
-  TaskType,
-} from '@/app/api/v1/webhook/enums';
 import getHabiticaApi from '@/app/api/v1/webhook/get-habitica-api';
 import getTaskByName from '@/app/api/v1/webhook/get-task-by-name';
+import { TaskDirection, TaskPriority, TaskType } from '@/enums/habitica';
 import logger from '@/lib/logger';
 
 export const handlePullRequestClosed = async ({

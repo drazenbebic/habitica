@@ -1,6 +1,8 @@
 import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/lib/auth';
+import HabiticaApi from '@/lib/habitica-api';
+import logger from '@/lib/logger';
 import prisma from '@/lib/prisma';
 
 export type HabiticaStats = {
@@ -15,47 +17,37 @@ export type HabiticaStats = {
 
 export async function getHabiticaStats(): Promise<HabiticaStats | null> {
   const session = await getServerSession(authOptions);
-  if (!session?.user?.name) return null;
+
+  if (!session?.user?.name) {
+    return null;
+  }
 
   const user = await prisma.githubUsers.findUnique({
     where: { login: session.user.name },
-    include: { habiticaUser: true },
+    select: {
+      habiticaUser: {
+        select: { userId: true, apiToken: true },
+      },
+    },
   });
 
   if (!user?.habiticaUser?.userId || !user?.habiticaUser?.apiToken) {
     return null;
   }
 
-  const { userId, apiToken } = user.habiticaUser;
-
   try {
-    const response = await fetch(
-      'https://habitica.com/api/v3/user?userFields=stats',
-      {
-        headers: {
-          'x-api-user': userId,
-          'x-api-key': apiToken,
-          'x-client': `${userId}-HabiticaSync`,
-        },
-        next: { revalidate: 60 },
-      },
+    const habitica = new HabiticaApi(
+      user.habiticaUser.userId,
+      user.habiticaUser.apiToken,
     );
 
-    if (!response.ok) return null;
+    const { stats } = await habitica.getUserStats({
+      next: { revalidate: 60 },
+    });
 
-    const data = await response.json();
-
-    return {
-      lvl: data.data.stats.lvl,
-      exp: data.data.stats.exp,
-      toNextLevel: data.data.stats.toNextLevel,
-      hp: data.data.stats.hp,
-      maxHealth: data.data.stats.maxHealth,
-      mp: data.data.stats.mp,
-      maxMP: data.data.stats.maxMP,
-    };
+    return stats;
   } catch (error) {
-    console.error('Failed to fetch Habitica stats:', error);
+    logger.error({ error }, 'Failed to fetch Habitica stats:');
     return null;
   }
 }

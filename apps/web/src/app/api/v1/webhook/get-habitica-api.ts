@@ -1,6 +1,5 @@
+import HabiticaApi from '@/lib/habitica-api';
 import prisma from '@/lib/prisma';
-
-import HabiticaApi from './habitica-api';
 
 const getHabiticaApi = async (
   installationId: number,
