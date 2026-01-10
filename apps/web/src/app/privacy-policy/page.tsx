@@ -44,9 +44,9 @@ const PrivacyPolicy: NextPage = () => {
             The data controller responsible for this website is:
           </Content>
           <div className="rounded-2xl bg-slate-50 p-6 text-slate-700">
-            <p className="font-semibold">Drazen Bebic</p>
-            <p>Postfach 0029 1190 Vienna, Austria</p>
-            <p>Email: habitica@bebic.dev</p>
+            <Content className="font-semibold">Drazen Bebic</Content>
+            <Content>Postfach 0029 1190 Vienna, Austria</Content>
+            <Content>Email: habitica@bebic.dev</Content>
           </div>
         </section>
 
@@ -59,22 +59,22 @@ const PrivacyPolicy: NextPage = () => {
             To provide the gamification service, we process the following data:
           </Content>
           <ul className="list-disc space-y-2 pl-5 text-slate-600">
-            <li>
+            <Content as="li">
               <strong>GitHub Account Data:</strong> Username, Avatar, and GitHub
               User ID (via NextAuth).
-            </li>
-            <li>
+            </Content>
+            <Content as="li">
               <strong>Habitica Credentials:</strong> Your Habitica User ID and
               API Token. These are stored encrypted in our database.
-            </li>
-            <li>
+            </Content>
+            <Content as="li">
               <strong>Webhook Data:</strong> Metadata about your GitHub activity
               (commits, pull requests, issue comments). <br />
               <span className="text-sm font-semibold text-violet-600">
                 Important: We do not access, read, or store your source code
                 files.
               </span>
-            </li>
+            </Content>
           </ul>
         </section>
 
@@ -135,11 +135,17 @@ const PrivacyPolicy: NextPage = () => {
           <Content className="mb-4">
             Under the GDPR, you have the following rights:
           </Content>
-          <ul className="list-disc space-y-1 pl-5 text-slate-600">
-            <li>Right to access your stored data.</li>
-            <li>Right to rectification (update your keys).</li>
-            <li>Right to erasure (delete your account via the dashboard).</li>
-            <li>Right to restrict processing (revoke GitHub App access).</li>
+          <ul className="list-disc space-y-1 pl-5">
+            <Content as="li">Right to access your stored data.</Content>
+            <Content as="li">
+              Right to rectification (update your keys).
+            </Content>
+            <Content as="li">
+              Right to erasure (delete your account via the dashboard).
+            </Content>
+            <Content as="li">
+              Right to restrict processing (revoke GitHub App access).
+            </Content>
           </ul>
         </section>
 
