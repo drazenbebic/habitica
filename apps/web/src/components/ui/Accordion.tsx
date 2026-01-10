@@ -36,7 +36,7 @@ export const Accordion = ({
       )}
     >
       <DisclosureProvider store={disclosure}>
-        <Disclosure className="flex w-full items-center justify-between px-6 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-600 focus-visible:ring-inset">
+        <Disclosure className="flex w-full items-center justify-between px-6 py-4 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-600 focus-visible:ring-inset cursor-pointer">
           <span
             className={clsx(
               'font-medium transition-colors duration-200',

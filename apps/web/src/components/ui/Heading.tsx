@@ -1,4 +1,4 @@
-import { createElement, FC, ReactNode } from 'react';
+import { createElement, ElementType, FC, ReactNode } from 'react';
 
 import clsx from 'clsx';
 
@@ -6,6 +6,7 @@ type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 type HeadingSize = '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'base';
 
 export type HeadingProps = {
+  as?: ElementType;
   level?: HeadingLevel;
   size?: HeadingSize;
   children?: ReactNode;
@@ -31,16 +32,18 @@ const defaultSizeMap: Record<HeadingLevel, HeadingSize> = {
 };
 
 export const Heading: FC<HeadingProps> = ({
+  as,
   level = 2,
   size,
   children,
   className,
   ...props
 }) => {
+  const Tag = as || `h${level}`;
   const resolvedSize = size || defaultSizeMap[level];
 
   return createElement(
-    `h${level}`,
+    Tag,
     {
       className: clsx('text-slate-900', sizes[resolvedSize], className),
       ...props,

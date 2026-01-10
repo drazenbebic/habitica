@@ -17,7 +17,6 @@ export const Header: FC = () => {
       )}
     >
       <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        {/* Left: Logo */}
         <Link
           href="/"
           className="group flex items-center gap-3 transition-opacity hover:opacity-90"

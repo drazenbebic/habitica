@@ -31,7 +31,6 @@ export const metadata: Metadata = {
 const Home: NextPage = () => {
   return (
     <div className="flex flex-col gap-20 pb-20">
-      {/* HERO SECTION */}
       <section className="relative px-4 pt-20 sm:pt-32 text-center">
         <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-[radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
 
@@ -74,7 +73,6 @@ const Home: NextPage = () => {
         </div>
       </section>
 
-      {/* HOW IT WORKS / FEATURES */}
       <section className="mx-auto max-w-5xl px-4">
         <div className="mb-12 text-center">
           <Heading level={2} size="3xl">
@@ -133,7 +131,6 @@ const Home: NextPage = () => {
         </div>
       </section>
 
-      {/* SCORING TABLE */}
       <section className="mx-auto w-full max-w-3xl px-4">
         <Card variant="elevated">
           <CardBody>
