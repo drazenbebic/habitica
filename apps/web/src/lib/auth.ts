@@ -13,6 +13,7 @@ export const authOptions: NextAuthOptions = {
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET!,
   callbacks: {
     async jwt({ token, profile }) {
       if (profile) {
