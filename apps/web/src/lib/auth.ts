@@ -32,16 +32,16 @@ export const authOptions: NextAuthOptions = {
       }
 
       const githubProfile = profile as GithubProfile;
-      const githubUser = await prisma.gitHubUsers.findFirst({
-        where: { id: githubProfile.id },
+      const githubUser = await prisma.githubUsers.findFirst({
+        where: { githubId: githubProfile.id },
       });
 
       if (!githubUser) {
         return false;
       }
 
-      await prisma.gitHubUsers.update({
-        where: { id: githubProfile.id },
+      await prisma.githubUsers.update({
+        where: { githubId: githubProfile.id },
         data: {
           nodeId: githubProfile.node_id,
           avatarUrl: githubProfile.avatar_url,
@@ -66,6 +66,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user && token.username) {
         session.user.name = token.username as string;
       }
+
       return session;
     },
   },

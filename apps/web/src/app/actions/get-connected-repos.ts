@@ -19,7 +19,7 @@ export async function getConnectedRepos(): Promise<ConnectedRepo[]> {
     return [];
   }
 
-  const user = await prisma.gitHubUsers.findUnique({
+  const user = await prisma.githubUsers.findUnique({
     where: { login: session.user.name },
     include: { installation: true },
   });

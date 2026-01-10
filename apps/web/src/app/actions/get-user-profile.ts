@@ -7,7 +7,7 @@ export async function getUserProfile() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.name) return null;
 
-  const user = await prisma.gitHubUsers.findUnique({
+  const user = await prisma.githubUsers.findUnique({
     where: { login: session.user.name },
     include: {
       habiticaUser: true,

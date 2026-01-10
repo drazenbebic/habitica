@@ -37,3 +37,10 @@ export type CreateTaskParameters = {
   down?: boolean;
   value?: number;
 };
+
+export type WebhookHeaders = {
+  deliveryUuid: string;
+  event: string;
+  signature: string;
+  hookId: string;
+};

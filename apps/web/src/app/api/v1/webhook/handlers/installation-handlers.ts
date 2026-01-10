@@ -11,7 +11,7 @@ export const installationToggleHandler = async (
 ) => {
   console.info(`[INSTALLATION:${action.toUpperCase()}]: Event triggered.`);
 
-  const updatedGitHubInstallation = await prisma.gitHubInstallations.update({
+  const updatedGitHubInstallation = await prisma.githubInstallations.update({
     data: { suspended },
     where: { installationId: installation.id },
   });
@@ -29,7 +29,7 @@ export const installationDeleteHandler = async ({
 }: InstallationEvent) => {
   console.info('[installation.deleted]: Event triggered.');
 
-  const gitHubInstallation = await prisma.gitHubInstallations.findFirst({
+  const gitHubInstallation = await prisma.githubInstallations.findFirst({
     where: {
       installationId: Number(installation.id),
     },
@@ -39,28 +39,28 @@ export const installationDeleteHandler = async ({
     throw new HttpError('The installation could not be found.', 404);
   }
 
-  const gitHubUsers = await prisma.gitHubUsers.findMany({
-    where: { installationUuid: gitHubInstallation.uuid },
+  const gitHubUsers = await prisma.githubUsers.findMany({
+    where: { installationId: gitHubInstallation.id },
   });
 
   if (gitHubUsers.length > 0) {
     await prisma.habiticaUsers.deleteMany({
       where: {
-        gitHubUserUuid: {
-          in: gitHubUsers.map(({ uuid }) => uuid),
+        githubUserId: {
+          in: gitHubUsers.map(({ id }) => id),
         },
       },
     });
 
-    await prisma.gitHubUsers.deleteMany({
+    await prisma.githubUsers.deleteMany({
       where: {
-        installationUuid: gitHubInstallation.uuid,
+        installationId: gitHubInstallation.id,
       },
     });
   }
 
-  await prisma.gitHubInstallations.delete({
-    where: { uuid: gitHubInstallation.uuid },
+  await prisma.githubInstallations.delete({
+    where: { id: gitHubInstallation.id },
   });
 };
 
@@ -70,8 +70,7 @@ export const installationCreateHandler = async ({
 }: InstallationEvent) => {
   console.info('[installation.created]: Event triggered.');
 
-  // Check if the installation already exists.
-  const existingGitHubInstallation = await prisma.gitHubInstallations.findFirst(
+  const existingGitHubInstallation = await prisma.githubInstallations.findFirst(
     {
       where: { installationId: Number(installation.id) },
     },
@@ -81,8 +80,7 @@ export const installationCreateHandler = async ({
     throw new HttpError('An installation with this ID already exists.', 409);
   }
 
-  // Create the installation.
-  const gitHubInstallation = await prisma.gitHubInstallations.create({
+  const gitHubInstallation = await prisma.githubInstallations.create({
     data: {
       uuid: v4(),
       installationId: installation.id,
@@ -94,12 +92,12 @@ export const installationCreateHandler = async ({
   }
 
   // Add the GitHub user.
-  const gitHubUser = await prisma.gitHubUsers.create({
+  const gitHubUser = await prisma.githubUsers.create({
     data: {
       uuid: v4(),
-      installationUuid: gitHubInstallation.uuid,
+      installationId: gitHubInstallation.id,
       login: sender?.login,
-      id: sender?.id,
+      githubId: sender?.id,
       nodeId: sender?.node_id,
       avatarUrl: sender?.avatar_url,
       gravatarId: sender?.gravatar_id,

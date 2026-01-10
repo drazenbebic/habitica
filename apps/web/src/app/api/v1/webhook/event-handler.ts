@@ -55,7 +55,7 @@ class EventHandler {
       case 'deleted':
       case 'edited':
       default:
-        return await placeholderHandler({ action, event: 'issue_comment' });
+        return placeholderHandler({ action, event: 'issue_comment' });
     }
   };
 

@@ -1,19 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-import { WebhookEventMap } from '@octokit/webhooks-types';
+import { WebhookEvent, WebhookEventMap } from '@octokit/webhooks-types';
 import crypto from 'crypto';
 
 import EventHandler from './event-handler';
+import { logWebhook } from './log-webhook';
+import { WebhookHeaders } from './types';
 
 const WEBHOOK_SECRET = process.env.GITHUB_WEBHOOK_SECRET!;
 
 const handler = async (request: NextRequest) => {
-  const headers = request.headers;
-  const signature = headers.get('x-hub-signature-256');
-  const deliveryUuid = headers.get('x-github-delivery');
-  const event = headers.get('x-github-event') || '';
-  const hookId = headers.get('x-github-hook-id') || '';
+  const signature = request.headers.get('x-hub-signature-256')!;
+  const deliveryUuid = request.headers.get('x-github-delivery')!;
+  const event = request.headers.get('x-github-event')!;
+  const hookId = request.headers.get('x-github-hook-id')!;
   const rawBody = await request.text();
+  const headers: WebhookHeaders = { deliveryUuid, event, signature, hookId };
 
   if (!signature) {
     return new NextResponse('Missing Signature', { status: 401 });
@@ -33,7 +35,7 @@ const handler = async (request: NextRequest) => {
     return new NextResponse('Invalid Signature', { status: 401 });
   }
 
-  const payload = JSON.parse(rawBody);
+  const payload = JSON.parse(rawBody) as WebhookEvent;
 
   const eventHandler = new EventHandler();
 
@@ -68,6 +70,10 @@ const handler = async (request: NextRequest) => {
     // @ts-expect-error
     await eventHandlers[event](payload);
   }
+
+  console.info(`[${event}]: Event processed.`);
+
+  void logWebhook(payload, headers);
 
   return NextResponse.json(
     { deliveryUuid, event, hookId, message: 'Processed' },

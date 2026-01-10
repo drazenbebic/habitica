@@ -47,6 +47,7 @@
     "uuid": "^13.0.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^10.2.0",
     "@octokit/webhooks-types": "^7.6.1",
     "@tailwindcss/postcss": "^4.1.18",
     "@types/node": "^24",

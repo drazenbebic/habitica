@@ -12,7 +12,7 @@ export async function getHabiticaCredentials() {
     return null;
   }
 
-  const user = await prisma.gitHubUsers.findUnique({
+  const user = await prisma.githubUsers.findUnique({
     where: {
       login: session.user.name,
     },

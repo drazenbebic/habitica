@@ -6,7 +6,7 @@ const getHabiticaApi = async (
   installationId: number,
   login: string,
 ): Promise<HabiticaApi | null> => {
-  const gitHubInstallation = await prisma.gitHubInstallations.findFirst({
+  const gitHubInstallation = await prisma.githubInstallations.findFirst({
     where: { installationId: Number(installationId) },
   });
 
@@ -14,8 +14,8 @@ const getHabiticaApi = async (
     return null;
   }
 
-  const gitHubUser = await prisma.gitHubUsers.findFirst({
-    where: { installationUuid: gitHubInstallation.uuid, login },
+  const gitHubUser = await prisma.githubUsers.findFirst({
+    where: { installationId: gitHubInstallation.id, login },
   });
 
   if (!gitHubUser) {
@@ -23,7 +23,7 @@ const getHabiticaApi = async (
   }
 
   const habiticaUser = await prisma.habiticaUsers.findFirst({
-    where: { gitHubUserUuid: gitHubUser.uuid },
+    where: { githubUserId: gitHubUser.id },
   });
 
   if (!habiticaUser) {

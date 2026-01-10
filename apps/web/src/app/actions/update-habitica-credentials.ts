@@ -22,7 +22,7 @@ export async function updateHabiticaCredentials(formData: {
   }
 
   try {
-    const githubUser = await prisma.gitHubUsers.findUnique({
+    const githubUser = await prisma.githubUsers.findUnique({
       where: { login: session.user.name },
     });
 
@@ -32,12 +32,12 @@ export async function updateHabiticaCredentials(formData: {
 
     await prisma.habiticaUsers.upsert({
       where: {
-        gitHubUserUuid: githubUser.uuid,
+        githubUserId: githubUser.id,
       },
       create: {
         userId: formData.userId,
         apiToken: formData.apiToken,
-        gitHubUserUuid: githubUser.uuid,
+        githubUserId: githubUser.id,
       },
       update: {
         userId: formData.userId,
