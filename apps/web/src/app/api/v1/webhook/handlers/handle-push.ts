@@ -1,17 +1,20 @@
-import { PushEvent } from '@octokit/webhooks-types';
+import { EmitterWebhookEvent } from '@octokit/webhooks/types';
 
-import { TaskDirection, TaskPriority, TaskType } from '../enums';
-import getHabiticaApi from '../get-habitica-api';
+import {
+  TaskDirection,
+  TaskPriority,
+  TaskType,
+} from '@/app/api/v1/webhook/enums';
+import getHabiticaApi from '@/app/api/v1/webhook/get-habitica-api';
+import logger from '@/lib/logger';
 
-export const pushHandler = async ({
-  commits,
-  repository,
-  installation,
-}: PushEvent) => {
-  console.info('[push]: Event triggered.');
+export const handlePush = async ({
+  payload: { commits, repository, installation },
+}: EmitterWebhookEvent<'push'>) => {
+  logger.info('Event triggered.');
 
   if (!installation?.id) {
-    console.info('[push]: Installation is missing.');
+    logger.info('Installation is missing.');
     return;
   }
 
@@ -20,7 +23,7 @@ export const pushHandler = async ({
   );
 
   if (validCommits.length <= 0) {
-    console.info('[push]: All commits skipped.', commits);
+    logger.info({ commits }, 'All commits skipped.');
     return;
   }
 
@@ -28,7 +31,7 @@ export const pushHandler = async ({
 
   for (const commit of validCommits) {
     if (!commit.author?.username) {
-      console.info('[push]: Author username missing. Commit skipped.');
+      logger.info('Author username missing. Commit skipped.');
       continue;
     }
 
@@ -38,7 +41,7 @@ export const pushHandler = async ({
     );
 
     if (!habiticaApi) {
-      console.info('[push]: Habitica user missing. Commit skipped.');
+      logger.info('Habitica user missing. Commit skipped.');
       continue;
     }
 

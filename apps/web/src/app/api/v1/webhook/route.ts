@@ -1,84 +1,83 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { after } from 'next/server';
 
-import { WebhookEvent, WebhookEventMap } from '@octokit/webhooks-types';
-import crypto from 'crypto';
+import { Webhooks } from '@octokit/webhooks';
 
-import EventHandler from './event-handler';
-import { logWebhook } from './log-webhook';
-import { WebhookHeaders } from './types';
+import { requestContext } from '@/lib/context';
+import logger from '@/lib/logger';
+import { withRetry } from '@/utils/with-retry';
 
-const WEBHOOK_SECRET = process.env.GITHUB_WEBHOOK_SECRET!;
+import { handleInstallationCreated } from './handlers/handle-installation-created';
+import { handleInstallationDeleted } from './handlers/handle-installation-deleted';
+import { handleInstallationSuspend } from './handlers/handle-installation-suspend';
+import { handleInstallationUnsuspend } from './handlers/handle-installation-unsuspend';
+import { handleLogWebhook } from './handlers/handle-log-webhook';
+import { handlePullRequestClosed } from './handlers/handle-pull-request-closed';
+import { handlePullRequestReviewSubmitted } from './handlers/handle-pull-request-review-submitted';
+import { handlePush } from './handlers/handle-push';
 
-const handler = async (request: NextRequest) => {
+const webhooks = new Webhooks({
+  secret: process.env.GITHUB_WEBHOOK_SECRET!,
+});
+
+webhooks.onAny(handleLogWebhook);
+
+webhooks.on('installation.created', handleInstallationCreated);
+webhooks.on('installation.deleted', handleInstallationDeleted);
+webhooks.on('installation.suspend', handleInstallationSuspend);
+webhooks.on('installation.unsuspend', handleInstallationUnsuspend);
+webhooks.on('pull_request.closed', handlePullRequestClosed);
+webhooks.on('pull_request_review.submitted', handlePullRequestReviewSubmitted);
+webhooks.on('push', handlePush);
+
+webhooks.onError(error => {
+  logger.error({ err: error }, '[Webhook Library Error]');
+});
+
+export const maxDuration = 60;
+
+export const dynamic = 'force-dynamic';
+
+export const POST = async (request: NextRequest) => {
   const signature = request.headers.get('x-hub-signature-256')!;
-  const deliveryUuid = request.headers.get('x-github-delivery')!;
-  const event = request.headers.get('x-github-event')!;
+  const id = request.headers.get('x-github-delivery')!;
+  const eventName = request.headers.get('x-github-event')!;
   const hookId = request.headers.get('x-github-hook-id')!;
   const rawBody = await request.text();
-  const headers: WebhookHeaders = { deliveryUuid, event, signature, hookId };
 
-  if (!signature) {
-    return new NextResponse('Missing Signature', { status: 401 });
-  }
+  const isValid = await webhooks.verify(rawBody, signature);
 
-  const hmac = crypto.createHmac('sha256', WEBHOOK_SECRET);
-  const digest = Buffer.from(
-    'sha256=' + hmac.update(rawBody).digest('hex'),
-    'utf8',
-  );
-  const checksum = Buffer.from(signature, 'utf8');
-
-  if (
-    checksum.length !== digest.length ||
-    !crypto.timingSafeEqual(digest, checksum)
-  ) {
+  if (!isValid) {
+    logger.warn('Invalid signature received');
     return new NextResponse('Invalid Signature', { status: 401 });
   }
 
-  const payload = JSON.parse(rawBody) as WebhookEvent;
+  after(async () => {
+    void requestContext.run(
+      { requestId: id, eventName, signature, hookId },
+      async () => {
+        try {
+          logger.info('Processing in background...');
 
-  const eventHandler = new EventHandler();
+          await withRetry(() =>
+            webhooks.verifyAndReceive({
+              id,
+              name: eventName,
+              payload: rawBody,
+              signature,
+            }),
+          );
 
-  console.info('Webhook Triggered.', {
-    deliveryUuid,
-    event,
-    hookId,
+          logger.info('Processed successfully.');
+        } catch (err) {
+          logger.error({ err }, 'Failed in background processing');
+        }
+      },
+    );
   });
 
-  type EventHandlerInterface = {
-    [K in keyof WebhookEventMap]?: (event: WebhookEventMap[K]) => Promise<void>;
-  };
-
-  const eventHandlers: EventHandlerInterface = {
-    installation: eventHandler.installation,
-    meta: eventHandler.meta,
-    issue_comment: eventHandler.issueComment,
-    issues: eventHandler.issues,
-    pull_request: eventHandler.pullRequest,
-    pull_request_review: eventHandler.pullRequestReview,
-    push: eventHandler.push,
-    registry_package: eventHandler.registryPackage,
-    release: eventHandler.release,
-    repository: eventHandler.repository,
-    workflow_dispatch: eventHandler.workflowDispatch,
-    workflow_job: eventHandler.workflowJob,
-    workflow_run: eventHandler.workflowRun,
-  };
-
-  if (Object.prototype.hasOwnProperty.call(eventHandlers, event)) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    await eventHandlers[event](payload);
-  }
-
-  console.info(`[${event}]: Event processed.`);
-
-  void logWebhook(payload, headers);
-
   return NextResponse.json(
-    { deliveryUuid, event, hookId, message: 'Processed' },
+    { message: 'Accepted', deliveryUuid: id },
     { status: 202 },
   );
 };
-
-export { handler as GET, handler as POST };

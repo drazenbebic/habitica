@@ -1,24 +1,27 @@
-import { PullRequestReviewSubmittedEvent } from '@octokit/webhooks-types';
+import { EmitterWebhookEvent } from '@octokit/webhooks/types';
 
-import { TaskDirection, TaskPriority, TaskType } from '../enums';
-import getHabiticaApi from '../get-habitica-api';
+import {
+  TaskDirection,
+  TaskPriority,
+  TaskType,
+} from '@/app/api/v1/webhook/enums';
+import getHabiticaApi from '@/app/api/v1/webhook/get-habitica-api';
+import logger from '@/lib/logger';
 
-export const pullRequestReviewSubmittedHandler = async ({
-  installation,
-  repository,
-  sender,
-}: PullRequestReviewSubmittedEvent) => {
-  console.log('[pull_request_review.submitted]: Event triggered.');
+export const handlePullRequestReviewSubmitted = async ({
+  payload: { installation, repository, sender },
+}: EmitterWebhookEvent<'pull_request_review.submitted'>) => {
+  logger.info('Event triggered.');
 
   if (!installation?.id) {
-    console.info('[pull_request_review.submitted]: Installation is missing.');
+    logger.info('Installation is missing.');
     return;
   }
 
   const habiticaApi = await getHabiticaApi(installation.id, sender.login);
 
   if (!habiticaApi) {
-    console.info('[pull_request_review.submitted]: Habitca user is missing.');
+    logger.info('Habitica user is missing.');
     return;
   }
 

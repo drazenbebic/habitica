@@ -1,19 +1,21 @@
-import { PullRequestEvent } from '@octokit/webhooks-types';
+import { EmitterWebhookEvent } from '@octokit/webhooks/types';
 
-import { TaskDirection, TaskPriority, TaskType } from '../enums';
-import getHabiticaApi from '../get-habitica-api';
-import getTaskByName from '../get-task-by-name';
+import {
+  TaskDirection,
+  TaskPriority,
+  TaskType,
+} from '@/app/api/v1/webhook/enums';
+import getHabiticaApi from '@/app/api/v1/webhook/get-habitica-api';
+import getTaskByName from '@/app/api/v1/webhook/get-task-by-name';
+import logger from '@/lib/logger';
 
-export const pullRequestClosedHandler = async ({
-  installation,
-  pull_request: pullRequest,
-  repository,
-  sender,
-}: PullRequestEvent) => {
-  console.info('[pull_request.closed]: Event triggered.');
+export const handlePullRequestClosed = async ({
+  payload: { installation, pull_request: pullRequest, repository, sender },
+}: EmitterWebhookEvent<'pull_request.closed'>) => {
+  logger.info('Event triggered.');
 
   if (!installation?.id) {
-    console.info('[pull_request.closed]: Installation is missing.');
+    logger.info('Installation is missing.');
     return;
   }
 
@@ -23,7 +25,7 @@ export const pullRequestClosedHandler = async ({
   const habiticaApi = await getHabiticaApi(installation.id, sender.login);
 
   if (!habiticaApi) {
-    console.info('[pull_request.closed]: Habitica user is missing.');
+    logger.info('Habitica user is missing.');
     return;
   }
 
