@@ -1,37 +1,64 @@
 'use client';
 
-import { useState } from 'react';
+import { FC, FormEvent, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
-import { Form, useFormStore } from '@ariakit/react';
 import { AlertCircleIcon, FloppyDiskIcon, Link01Icon } from 'hugeicons-react';
 
+import { updateHabiticaCredentials } from '@/app/actions/update-habitica-credentials';
 import { Button } from '@/components/ui/Button';
 import { FormInput } from '@/components/ui/FormInput';
 import { FormLabel } from '@/components/ui/FormLabel';
 
-export const HabiticaUserForm = () => {
-  const [isSaving, setIsSaving] = useState(false);
-  const [values, setValues] = useState({ userId: '', apiToken: '' });
-  const form = useFormStore({ values, setValues });
+type HabiticaCredentials = {
+  userId: string;
+  apiToken: string;
+};
 
-  const handleSave = async (e: React.FormEvent) => {
+type HabiticaUserFormProps = {
+  initialData?: HabiticaCredentials | null;
+};
+
+export const HabiticaUserForm: FC<HabiticaUserFormProps> = ({
+  initialData,
+}) => {
+  const [isSaving, setIsSaving] = useState(false);
+  const router = useRouter();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSaving(true);
-    await new Promise(resolve => setTimeout(resolve, 1500));
+
+    const formData = new FormData(e.currentTarget);
+    const userId = formData.get('userId') as string;
+    const apiToken = formData.get('apiToken') as string;
+
+    const result = await updateHabiticaCredentials({ userId, apiToken });
+
+    if (result.success) {
+      router.refresh();
+    } else {
+      console.error(result.message);
+      // TODO: Toast notification
+    }
+
     setIsSaving(false);
   };
 
   return (
-    <Form store={form} onSubmit={handleSave} className="flex flex-col gap-6">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
       <div>
-        <FormLabel name="userId" isRequired>
+        <FormLabel as="label" name="userId" htmlFor="userId" isRequired>
           User ID
         </FormLabel>
         <FormInput
+          as="input"
           id="userId"
           name="userId"
+          defaultValue={initialData?.userId}
           placeholder="e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
           leadingIcon={<Link01Icon size={20} />}
+          required
         />
         <p className="mt-2 text-xs text-slate-500">
           Find this in Habitica &gt; Settings &gt; API.
@@ -39,15 +66,18 @@ export const HabiticaUserForm = () => {
       </div>
 
       <div>
-        <FormLabel name="apiToken" isRequired>
+        <FormLabel as="label" name="apiToken" htmlFor="apiToken" isRequired>
           API Token
         </FormLabel>
         <FormInput
+          as="input"
           id="apiToken"
           name="apiToken"
           type="password"
+          defaultValue={initialData?.apiToken}
           placeholder="••••••••••••••••••••••••••••••"
           leadingIcon={<AlertCircleIcon size={20} />}
+          required
         />
       </div>
 
@@ -57,6 +87,6 @@ export const HabiticaUserForm = () => {
           Save Configuration
         </Button>
       </div>
-    </Form>
+    </form>
   );
 };

@@ -1,10 +1,13 @@
-import { ElementType, forwardRef, ReactNode } from 'react';
+import { ElementType, forwardRef, ReactNode, useState } from 'react';
 
 import {
   FormInput as BaseFormInput,
   FormInputProps as BaseFormInputProps,
 } from '@ariakit/react';
 import clsx from 'clsx';
+import { ViewIcon, ViewOffIcon } from 'hugeicons-react';
+
+import { ButtonIcon } from '@/components/ui/ButtonIcon';
 
 export type FormInputProps = BaseFormInputProps & {
   as?: ElementType;
@@ -25,10 +28,20 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
       className,
       wrapperClassName,
       leadingIcon,
+      type,
       ...props
     },
     ref,
   ) => {
+    const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+    const isPasswordType = type === 'password';
+
+    const inputType = isPasswordType
+      ? isPasswordVisible
+        ? 'text'
+        : 'password'
+      : type;
+
     return (
       <div className={clsx('relative w-full', wrapperClassName)}>
         {leadingIcon && (
@@ -39,16 +52,36 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
 
         <Tag
           ref={ref}
+          type={inputType}
           className={clsx(
             baseStyles,
             errorStyles,
             {
               'pl-11': !!leadingIcon,
+              'pr-12': isPasswordType,
             },
             className,
           )}
           {...props}
         />
+
+        {isPasswordType && (
+          <div className="absolute right-1.5 top-1/2 -translate-y-1/2">
+            <ButtonIcon
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
+              aria-label={isPasswordVisible ? 'Hide password' : 'Show password'}
+            >
+              {isPasswordVisible ? (
+                <ViewOffIcon size={20} />
+              ) : (
+                <ViewIcon size={20} />
+              )}
+            </ButtonIcon>
+          </div>
+        )}
       </div>
     );
   },

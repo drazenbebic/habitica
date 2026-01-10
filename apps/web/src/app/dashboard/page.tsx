@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Link from 'next/link';
 
 import {
   CheckmarkCircle01Icon,
@@ -6,9 +7,10 @@ import {
   Settings01Icon,
 } from 'hugeicons-react';
 
+import { getHabiticaCredentials } from '@/app/actions/get-habitica-credentials';
 import { isConnected } from '@/app/actions/is-connected';
 import { HabiticaUserForm } from '@/components/HabiticaUserForm';
-import { Badge } from '@/components/ui/Badge'; // Using your new component
+import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Content } from '@/components/ui/Content';
@@ -26,6 +28,7 @@ export const metadata: Metadata = {
 
 export default async function Dashboard() {
   const connected = await isConnected();
+  const credentials = await getHabiticaCredentials();
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
@@ -49,7 +52,6 @@ export default async function Dashboard() {
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
-        {/* Left Column: Habitica Configuration */}
         <div className="lg:col-span-2">
           <Card variant="elevated">
             <CardBody>
@@ -67,12 +69,11 @@ export default async function Dashboard() {
                 </div>
               </div>
 
-              <HabiticaUserForm />
+              <HabiticaUserForm initialData={credentials} />
             </CardBody>
           </Card>
         </div>
 
-        {/* Right Column: GitHub Repositories */}
         <div className="flex flex-col gap-6">
           <Card variant="outlined" className="bg-slate-50">
             <CardBody>
@@ -84,7 +85,6 @@ export default async function Dashboard() {
               </div>
 
               <div className="flex flex-col gap-3">
-                {/* Mock Repository Item */}
                 <div className="flex items-center justify-between rounded-xl bg-white p-3 shadow-sm ring-1 ring-slate-100">
                   <div className="flex items-center gap-3">
                     <div className="h-2 w-2 rounded-full bg-emerald-500"></div>
@@ -98,15 +98,14 @@ export default async function Dashboard() {
                   />
                 </div>
 
-                {/* Empty State / CTA */}
-                <a
+                <Link
                   href="https://github.com/apps/habitica-integration"
                   target="_blank"
                   rel="noreferrer"
                   className="group mt-2 flex items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 py-3 text-sm font-medium text-slate-500 transition-colors hover:border-violet-300 hover:bg-violet-50 hover:text-violet-600"
                 >
                   <span>+ Add Repository</span>
-                </a>
+                </Link>
               </div>
 
               <Content size="sm" className="mt-4 text-slate-500">
