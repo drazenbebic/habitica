@@ -1,5 +1,7 @@
 import { NextAuthOptions } from 'next-auth';
-import GithubProvider from 'next-auth/providers/github';
+import GithubProvider, { GithubProfile } from 'next-auth/providers/github';
+
+import prisma from '@/lib/prisma';
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -16,11 +18,49 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET!,
   callbacks: {
     async jwt({ token, profile }) {
-      if (profile) {
-        // @ts-expect-error - 'login' exists on the GitHub profile
-        token.username = profile.login;
+      const githubProfile = profile as GithubProfile;
+
+      if (githubProfile) {
+        token.username = githubProfile.login;
       }
+
       return token;
+    },
+    async signIn({ account, profile }) {
+      if (!account || !profile) {
+        return false;
+      }
+
+      const githubProfile = profile as GithubProfile;
+      const githubUser = await prisma.gitHubUsers.findFirst({
+        where: { id: githubProfile.id },
+      });
+
+      if (!githubUser) {
+        return false;
+      }
+
+      await prisma.gitHubUsers.update({
+        where: { id: githubProfile.id },
+        data: {
+          nodeId: githubProfile.node_id,
+          avatarUrl: githubProfile.avatar_url,
+          gravatarId: githubProfile.gravatar_id,
+          htmlUrl: githubProfile.html_url,
+          type: githubProfile.type,
+          name: githubProfile.name,
+          company: githubProfile.company,
+          blog: githubProfile.blog,
+          location: githubProfile.location,
+          email: githubProfile.email,
+          accessToken: account.access_token,
+          expiresIn: account.expires_at,
+          scope: account.scope,
+          tokenType: account.token_type,
+        },
+      });
+
+      return true;
     },
     async session({ session, token }) {
       if (session.user && token.username) {
@@ -28,9 +68,5 @@ export const authOptions: NextAuthOptions = {
       }
       return session;
     },
-  },
-  pages: {
-    newUser: '/installation',
-    signIn: '/api/auth/signin',
   },
 };

@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react';
 
 import clsx from 'clsx';
 
-type ContentSize = 'sm' | 'base' | 'lg';
+type ContentSize = 'xs' | 'sm' | 'base' | 'lg';
 
 export type ContentProps = {
   children?: ReactNode;
@@ -11,6 +11,7 @@ export type ContentProps = {
 };
 
 const sizes: Record<ContentSize, string> = {
+  xs: 'text-xs',
   sm: 'text-sm',
   base: 'text-base',
   lg: 'text-lg',

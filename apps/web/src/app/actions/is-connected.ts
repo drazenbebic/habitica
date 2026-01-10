@@ -19,14 +19,16 @@ export async function isConnected() {
       },
       include: {
         installation: true,
+        habiticaUser: true,
       },
     });
 
-    if (!user) {
-      return false;
-    }
-
-    if (!user.installation || user.installation.suspended) {
+    if (
+      !user ||
+      !user.habiticaUser ||
+      !user.installation ||
+      user.installation.suspended
+    ) {
       return false;
     }
 

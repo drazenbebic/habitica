@@ -1,4 +1,6 @@
+import React from 'react';
 import { Metadata } from 'next';
+import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 
 import { GithubIcon, Settings01Icon } from 'hugeicons-react';
@@ -76,7 +78,17 @@ export default async function Dashboard() {
                     Habitica Configuration
                   </Heading>
                   <Content size="sm">
-                    Enter your API credentials to enable syncing.
+                    Enter your Habitica API credentials to enable syncing. You
+                    can find these in{' '}
+                    <Link
+                      className="mx-1 font-semibold text-violet-600 hover:underline hover:text-violet-700"
+                      href="https://habitica.com/user/settings/siteData"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Habitica &gt; Settings &gt; API
+                    </Link>
+                    .
                   </Content>
                 </div>
               </div>

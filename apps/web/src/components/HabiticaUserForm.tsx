@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, FormEvent, useState } from 'react';
+import React, { FC, FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { AlertCircleIcon, FloppyDiskIcon, Link01Icon } from 'hugeicons-react';
@@ -62,9 +62,6 @@ export const HabiticaUserForm: FC<HabiticaUserFormProps> = ({
           leadingIcon={<Link01Icon size={20} />}
           required
         />
-        <p className="mt-2 text-xs text-slate-500">
-          Find this in Habitica &gt; Settings &gt; API.
-        </p>
       </div>
 
       <div>
