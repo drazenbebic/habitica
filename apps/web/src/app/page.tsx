@@ -37,7 +37,7 @@ const Home: NextPage = () => {
 
         <div className="mx-auto max-w-3xl flex flex-col items-center gap-6">
           <div className="inline-flex items-center rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-sm font-medium text-violet-700">
-            <span className="flex h-2 w-2 rounded-full bg-violet-600 mr-2"></span>
+            <span className="flex h-2 w-2 rounded-full bg-violet-600 mr-2 animate-pulse"></span>
             v1.0 is now live
           </div>
 

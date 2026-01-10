@@ -4,6 +4,8 @@ import Link from 'next/link';
 
 import { FavouriteIcon, GithubIcon, NewTwitterIcon } from 'hugeicons-react';
 
+import { FooterLink } from '@/components/FooterLink';
+
 export const Footer: FC = () => {
   const currentYear = new Date().getFullYear();
 
@@ -33,66 +35,41 @@ export const Footer: FC = () => {
           <div className="grid grid-cols-2 gap-8 lg:col-span-2 lg:grid-cols-3">
             <div className="flex flex-col gap-3">
               <h4 className="font-semibold text-slate-900">Product</h4>
-              <Link
-                href="/"
-                className="text-sm text-slate-600 transition-colors hover:text-violet-600"
-              >
-                Home
-              </Link>
-              <Link
-                href="/dashboard"
-                className="text-sm text-slate-600 transition-colors hover:text-violet-600"
-              >
-                Dashboard
-              </Link>
-              <Link
+              <FooterLink href="/">Home</FooterLink>
+              <FooterLink href="/dashboard">Dashboard</FooterLink>
+              <FooterLink href="/profile">Profile</FooterLink>
+              <FooterLink
                 href="https://github.com/apps/habitica-integration"
                 target="_blank"
-                className="text-sm text-slate-600 transition-colors hover:text-violet-600"
               >
                 Install App
-              </Link>
+              </FooterLink>
             </div>
 
             <div className="flex flex-col gap-3">
               <h4 className="font-semibold text-slate-900">Resources</h4>
-              <Link
+              <FooterLink href="/faq">FAQ</FooterLink>
+              <FooterLink
                 href="https://github.com/drazenbebic/habitica"
                 target="_blank"
-                className="text-sm text-slate-600 transition-colors hover:text-violet-600"
               >
                 GitHub Repo
-              </Link>
-              <Link
-                href="https://habitica.com"
-                target="_blank"
-                className="text-sm text-slate-600 transition-colors hover:text-violet-600"
-              >
+              </FooterLink>
+              <FooterLink href="https://habitica.com" target="_blank">
                 Habitica
-              </Link>
-              <Link
+              </FooterLink>
+              <FooterLink
                 href="https://habitica.fandom.com/wiki/Habitica_Wiki"
                 target="_blank"
-                className="text-sm text-slate-600 transition-colors hover:text-violet-600"
               >
                 Wiki
-              </Link>
+              </FooterLink>
             </div>
 
             <div className="flex flex-col gap-3">
               <h4 className="font-semibold text-slate-900">Legal</h4>
-              <Link
-                href="/imprint"
-                className="text-sm text-slate-600 transition-colors hover:text-violet-600"
-              >
-                Imprint (Impressum)
-              </Link>
-              <Link
-                href="/privacy-policy"
-                className="text-sm text-slate-600 transition-colors hover:text-violet-600"
-              >
-                Privacy Policy
-              </Link>
+              <FooterLink href="/imprint">Imprint (Impressum)</FooterLink>
+              <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
             </div>
           </div>
         </div>
@@ -107,19 +84,19 @@ export const Footer: FC = () => {
               <span>Made with</span>
               <FavouriteIcon size={16} className="text-red-500 fill-red-500" />
               <span>by</span>
-              <a
+              <Link
                 href="https://www.bebic.dev"
                 target="_blank"
                 rel="noreferrer"
                 className="font-medium text-slate-900 transition-colors hover:text-violet-600"
               >
                 Drazen Bebic
-              </a>
+              </Link>
               <span>in Vienna</span>
             </div>
 
             <div className="flex gap-4">
-              <a
+              <Link
                 href="https://github.com/drazenbebic"
                 target="_blank"
                 rel="noreferrer"
@@ -127,8 +104,8 @@ export const Footer: FC = () => {
               >
                 <GithubIcon size={20} />
                 <span className="sr-only">GitHub</span>
-              </a>
-              <a
+              </Link>
+              <Link
                 href="https://twitter.com/drazenbebic"
                 target="_blank"
                 rel="noreferrer"
@@ -136,7 +113,7 @@ export const Footer: FC = () => {
               >
                 <NewTwitterIcon size={20} />
                 <span className="sr-only">Twitter</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
