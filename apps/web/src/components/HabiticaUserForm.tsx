@@ -4,6 +4,7 @@ import { FC, FormEvent, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { AlertCircleIcon, FloppyDiskIcon, Link01Icon } from 'hugeicons-react';
+import { toast } from 'sonner';
 
 import { updateHabiticaCredentials } from '@/app/actions/update-habitica-credentials';
 import { Button } from '@/components/ui/Button';
@@ -36,10 +37,11 @@ export const HabiticaUserForm: FC<HabiticaUserFormProps> = ({
     const result = await updateHabiticaCredentials({ userId, apiToken });
 
     if (result.success) {
+      toast.success('Configuration saved successfully');
       router.refresh();
     } else {
       console.error(result.message);
-      // TODO: Toast notification
+      toast.error(result.message || 'Something went wrong');
     }
 
     setIsSaving(false);

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { signIn, signOut, useSession } from 'next-auth/react';
 
+import { Button as AriakitButton } from '@ariakit/react';
 import {
   DashboardSquare02Icon,
   GithubIcon,
@@ -53,13 +54,13 @@ export const UserMenu: FC = () => {
 
       <div className="h-5 w-px bg-slate-200"></div>
 
-      <button
+      <AriakitButton
         onClick={() => signOut()}
         className="group flex h-9 w-9 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500 cursor-pointer"
         title="Sign Out"
       >
         <Logout04Icon size={18} />
-      </button>
+      </AriakitButton>
 
       <Link href="/profile" className="ml-1">
         <div className="relative h-9 w-9 overflow-hidden rounded-full ring-2 ring-transparent transition-all hover:ring-violet-500">
