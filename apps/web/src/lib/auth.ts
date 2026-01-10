@@ -29,6 +29,7 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
+    newUser: '/installation',
     signIn: '/api/auth/signin',
   },
 };
