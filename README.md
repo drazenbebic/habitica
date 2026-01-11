@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="apps/web/public/habitica_favicon.png" alt="Habitica Sync Logo" width="120" height="120" />
+  <img src="apps/web/public/habitica_logo_square.png" alt="Habitica Sync Logo" width="120" height="120" />
   <h1>Habitica Sync</h1>
   <p>
     <strong>Turn your Commits into Gold and XP.</strong><br>

@@ -13,7 +13,7 @@ import {
 } from 'hugeicons-react';
 
 import { getUserProfile } from '@/app/actions/get-user-profile';
-import { DashboardGate } from '@/components/DashboardGate';
+import { AuthGate } from '@/components/AuthGate';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
@@ -35,7 +35,7 @@ export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return <DashboardGate />;
+    return <AuthGate />;
   }
 
   const profile = await getUserProfile();

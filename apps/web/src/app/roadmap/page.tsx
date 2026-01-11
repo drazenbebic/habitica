@@ -8,8 +8,8 @@ import {
   StarIcon,
 } from 'hugeicons-react';
 
-import { RoadmapFeatureItem } from '@/components/RoadmapFeatureItem';
-import { RoadmapPhase } from '@/components/RoadmapPhase';
+import { RoadmapFeatureItem } from '@/components/roadmap/RoadmapFeatureItem';
+import { RoadmapPhase } from '@/components/roadmap/RoadmapPhase';
 import { Button } from '@/components/ui/Button';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';

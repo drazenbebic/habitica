@@ -52,23 +52,20 @@ class HabiticaApi {
     return json.data;
   }
 
-  createTask = (payload: CreateTaskParameters): Promise<Task> => {
+  createTask = (payload: CreateTaskParameters) => {
     return this.request<Task>('/tasks/user', {
       method: 'POST',
       body: JSON.stringify(payload),
     });
   };
 
-  getTasks = (): Promise<Task[]> => {
+  getTasks = () => {
     return this.request<Task[]>('/tasks/user', {
       method: 'GET',
     });
   };
 
-  scoreTask = (
-    taskId: string,
-    direction: TaskDirection,
-  ): Promise<ScoreTaskResponse> => {
+  scoreTask = (taskId: string, direction: TaskDirection) => {
     return this.request<ScoreTaskResponse>(
       `/tasks/${taskId}/score/${direction}`,
       {
@@ -77,24 +74,21 @@ class HabiticaApi {
     );
   };
 
-  tagTask = (taskId: string, tagId: string): Promise<Task> => {
+  tagTask = (taskId: string, tagId: string) => {
     return this.request<Task>(`/tasks/${taskId}/tags/${tagId}`, {
       method: 'POST',
     });
   };
 
-  addChecklistItemToTask = (
-    taskId: string,
-    payload: ChecklistItem,
-  ): Promise<Task> => {
+  addChecklistItemToTask = (taskId: string, payload: ChecklistItem) => {
     return this.request<Task>(`/tasks/${taskId}/checklist`, {
       method: 'POST',
       body: JSON.stringify(payload),
     });
   };
 
-  getUserStats = (options?: RequestInit): Promise<{ stats: UserStats }> => {
-    return this.request<{ stats: UserStats }>('/user?userFields=stats', {
+  getUserStats = (options?: RequestInit) => {
+    return this.request<{ stats: UserStats }>('/user', {
       method: 'GET',
       ...options,
     });
