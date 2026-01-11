@@ -34,18 +34,23 @@ export const handleLogWebhook = async ({
 
   const { signature, hookId } = ctx;
 
-  await prisma.webhookLogs.create({
-    data: {
-      uuid: v4(),
-      deliveryUuid: id,
-      event: name,
-      signature,
-      hookId,
-      githubUserId: githubUser.id,
-      // @ts-expect-error Just a type mismatch
-      payload,
-    },
-  });
+  try {
+    await prisma.webhookLogs.create({
+      data: {
+        uuid: v4(),
+        deliveryUuid: id,
+        event: name,
+        signature,
+        hookId,
+        githubUserId: githubUser.id,
+        // @ts-expect-error Just a type mismatch
+        payload,
+      },
+    });
+  } catch (error) {
+    logger.error(`Webhook log could not be created: ${error}`);
+    return;
+  }
 
   logger.info('Event logged.');
 };

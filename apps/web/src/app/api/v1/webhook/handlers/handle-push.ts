@@ -41,18 +41,22 @@ export const handlePush = async ({
       continue;
     }
 
-    const tasks = await habiticaApi.getTasks();
-    const existingTask = tasks.find(task => task.text === taskName);
-    const task = existingTask
-      ? existingTask
-      : await habiticaApi.createTask({
-          text: taskName,
-          type: TaskType.HABIT,
-          value: 1,
-          priority: TaskPriority.LOW,
-        });
-
-    await habiticaApi.scoreTask(task.id, TaskDirection.UP);
+    try {
+      const tasks = await habiticaApi.getTasks();
+      const existingTask = tasks.find(task => task.text === taskName);
+      const task = existingTask
+        ? existingTask
+        : await habiticaApi.createTask({
+            text: taskName,
+            type: TaskType.HABIT,
+            value: 1,
+            priority: TaskPriority.LOW,
+          });
+      await habiticaApi.scoreTask(task.id, TaskDirection.UP);
+    } catch (error) {
+      logger.error(`Habitica API Error: ${error}`);
+      return;
+    }
 
     logger.info('Event processed.');
   }
