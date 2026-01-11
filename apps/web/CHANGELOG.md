@@ -1,5 +1,16 @@
 # Changelog
 
+## [0.3.0](https://github.com/drazenbebic/habitica/compare/web-v0.2.1...web-v0.3.0) (2026-01-11)
+
+
+### Features
+
+* add `/roadmap` page ([7aa3dd0](https://github.com/drazenbebic/habitica/commit/7aa3dd02d88bb5681717e4210421ce58dc37d702))
+* add `package.published` webhook event handler ([a20f7ec](https://github.com/drazenbebic/habitica/commit/a20f7ecb9ed0728ae1356717094079f68d00c2d7))
+* improve dashboard page loading times ([ce2b0fb](https://github.com/drazenbebic/habitica/commit/ce2b0fb8fcf3a0aff73ef1b671d1f901ee64ac7b))
+* update `README.md` ([63ebb6c](https://github.com/drazenbebic/habitica/commit/63ebb6c7d23bb6135db6faa6ac9bf5423b3ecec3))
+* various page updates ([8c604fe](https://github.com/drazenbebic/habitica/commit/8c604fe45ce21a35708b12168007c1a1ebc8f54b))
+
 ## [0.2.1](https://github.com/drazenbebic/habitica/compare/web-v0.2.0...web-v0.2.1) (2026-01-11)
 
 
