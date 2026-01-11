@@ -12,6 +12,7 @@
     "analyze": "ANALYZE=true next build --webpack",
     "analyze:turbopack": "next experimental-analyze",
     "lint": "eslint",
+    "expose": "ngrok http 3000",
     "prisma:studio": "prisma studio",
     "prisma:db:pull": "prisma db pull",
     "prisma:db:push": "prisma db push",

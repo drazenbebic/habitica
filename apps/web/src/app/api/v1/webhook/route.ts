@@ -53,7 +53,7 @@ export const POST = async (request: NextRequest) => {
   }
 
   after(async () => {
-    void requestContext.run(
+    await requestContext.run(
       { requestId: id, eventName, signature, hookId },
       async () => {
         try {
