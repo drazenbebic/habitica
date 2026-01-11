@@ -28,6 +28,7 @@ export const handleLogWebhook = async ({
   });
 
   if (!githubUser) {
+    logger.error('Sender could not be identified. Cannot log event.');
     return;
   }
 

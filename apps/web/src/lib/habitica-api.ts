@@ -1,4 +1,5 @@
 import { TaskDirection } from '@/enums/habitica';
+import logger from '@/lib/logger';
 import {
   APIResponse,
   ChecklistItem,
@@ -39,10 +40,11 @@ class HabiticaApi {
 
     if (!response.ok) {
       const errorText = await response.text();
+      const message = `Habitica API Error [${response.status}]: ${errorText || response.statusText}`;
 
-      throw new Error(
-        `Habitica API Error [${response.status}]: ${errorText || response.statusText}`,
-      );
+      logger.error(message);
+
+      throw new Error(message);
     }
 
     const json = (await response.json()) as APIResponse<T>;
