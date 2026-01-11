@@ -1,5 +1,7 @@
 import bundleAnalyzer from '@next/bundle-analyzer';
 
+import packageJson from './package.json' with { type: 'json' };
+
 const withBundleAnalyzer = bundleAnalyzer({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -26,6 +28,9 @@ const nextConfig = {
     inlineCss: true,
   },
   transpilePackages: ['@ariakit/react'],
+  env: {
+    NEXT_PUBLIC_APP_VERSION: packageJson.version,
+  },
 };
 
 export default withBundleAnalyzer(nextConfig);

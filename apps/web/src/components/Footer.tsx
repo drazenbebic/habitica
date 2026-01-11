@@ -8,6 +8,7 @@ import { FooterLink } from '@/components/FooterLink';
 
 export const Footer: FC = () => {
   const currentYear = new Date().getFullYear();
+  const version = process.env.NEXT_PUBLIC_APP_VERSION;
 
   return (
     <footer className="border-t border-slate-200 bg-slate-50 pt-16 pb-8">
@@ -79,10 +80,23 @@ export const Footer: FC = () => {
             &copy; {currentYear} Habitica Sync. Not affiliated with Habitica.
           </p>
 
+          <div>
+            {!!version && (
+              <span className="hidden text-xs text-slate-400 sm:inline-block">
+                v{version}
+              </span>
+            )}
+            {!!version && (
+              <p className="text-center text-xs text-slate-400 sm:hidden">
+                v{version}
+              </p>
+            )}
+          </div>
+
           <div className="flex items-center gap-6">
-            <div className="flex items-center gap-1.5 text-sm text-slate-500">
+            <div className="hidden items-center gap-1.5 text-sm text-slate-500 md:flex">
               <span>Made with</span>
-              <FavouriteIcon size={16} className="text-red-500 fill-red-500" />
+              <FavouriteIcon size={16} className="fill-red-500 text-red-500" />
               <span>by</span>
               <Link
                 href="https://www.bebic.dev"
