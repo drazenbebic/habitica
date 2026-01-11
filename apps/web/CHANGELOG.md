@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.1](https://github.com/drazenbebic/habitica/compare/web-v0.2.0...web-v0.2.1) (2026-01-11)
+
+
+### Bug Fixes
+
+* display correct version on homepage ([#182](https://github.com/drazenbebic/habitica/issues/182)) ([633360e](https://github.com/drazenbebic/habitica/commit/633360e2c0dfc6c93f26a0f1cb4d4827e9daaaa3))
+
 ## [0.2.0](https://github.com/drazenbebic/habitica/compare/web-v0.1.0...web-v0.2.0) (2026-01-11)
 
 
