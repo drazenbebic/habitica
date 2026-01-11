@@ -3,6 +3,7 @@
 import { FC, useState } from 'react';
 import Link from 'next/link';
 
+import clsx from 'clsx';
 import {
   ArrowDown01Icon,
   ArrowUp01Icon,
@@ -34,9 +35,10 @@ export const RepoList: FC<RepoListProps> = ({ repos }) => {
             >
               <div className="flex items-center gap-3 overflow-hidden">
                 <div
-                  className={`h-2 w-2 shrink-0 rounded-full ${
-                    repo.private ? 'bg-amber-500' : 'bg-emerald-500'
-                  }`}
+                  className={clsx('h-2 w-2 shrink-0 rounded-full', {
+                    'bg-amber-500': repo.private,
+                    'bg-emerald-500': !repo.private,
+                  })}
                   title={repo.private ? 'Private' : 'Public'}
                 />
                 <span className="truncate text-sm font-medium text-slate-700">

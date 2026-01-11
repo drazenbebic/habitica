@@ -3,11 +3,14 @@ import Link from 'next/link';
 
 import {
   ArrowRight01Icon,
+  Calendar03Icon,
   CheckmarkCircle01Icon,
   GitCommitIcon,
   GithubIcon,
   GitMergeIcon,
   GitPullRequestIcon,
+  StarIcon,
+  Target02Icon,
 } from 'hugeicons-react';
 
 import { RewardRow } from '@/components/RewardRow';
@@ -152,6 +155,48 @@ const Home: NextPage = () => {
             </CardBody>
           </Card>
         </div>
+      </section>
+
+      <section className="mx-auto w-full max-w-3xl px-4 text-center">
+        <Card
+          variant="outlined"
+          className="relative overflow-hidden border-violet-200 bg-linear-to-b from-white via-violet-50/30 to-violet-100/30 shadow-xs"
+        >
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#8b5cf6_1px,transparent_1px)] bg-size-[20px_20px] opacity-[0.04]"></div>
+
+          <div className="pointer-events-none absolute -left-8 -top-8 text-violet-200/60 opacity-50">
+            <StarIcon size={80} className="-rotate-12" />
+          </div>
+          <div className="pointer-events-none absolute -bottom-8 -right-8 text-violet-200/60 opacity-50">
+            <Target02Icon size={80} className="rotate-12" />
+          </div>
+
+          <CardBody className="relative z-10 flex flex-col items-center px-6 py-12 sm:px-12">
+            <Pill
+              variant="neutral"
+              className="mb-4 border-violet-200 bg-white/80 text-violet-700 shadow-xs backdrop-blur-sm"
+            >
+              ✨ Upcoming Features
+            </Pill>
+
+            <Heading level={2} size="3xl" className="mb-4 text-slate-900">
+              We are just{' '}
+              <span className="text-violet-600">getting started.</span>
+            </Heading>
+
+            <Content size="lg" className="mx-auto mb-8 max-w-lg text-slate-600">
+              From difficulty multipliers to coding streaks, check out what we
+              have planned for the next release.
+            </Content>
+
+            <Link href="/roadmap">
+              <Button size="lg" className="shadow-lg shadow-violet-200/50">
+                <Calendar03Icon size={20} className="mr-2" />
+                View Roadmap
+              </Button>
+            </Link>
+          </CardBody>
+        </Card>
       </section>
 
       <section className="mx-auto w-full max-w-3xl px-4">
