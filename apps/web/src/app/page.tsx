@@ -16,6 +16,7 @@ import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
+import { Pill } from '@/components/ui/Pill';
 
 export const metadata: Metadata = {
   title: 'Habitica Sync - Gamify Your GitHub Workflow',
@@ -28,17 +29,39 @@ export const metadata: Metadata = {
   },
 };
 
+const version = process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0';
+
 const Home: NextPage = () => {
   return (
     <div className="flex flex-col gap-20 pb-20">
       <section className="relative px-4 pt-20 sm:pt-32 text-center">
         <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-[radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
 
-        <div className="mx-auto max-w-3xl flex flex-col items-center gap-6">
-          <div className="inline-flex items-center rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-sm font-medium text-violet-700">
-            <span className="flex h-2 w-2 rounded-full bg-violet-600 mr-2 animate-pulse"></span>
-            v1.0 is now live
-          </div>
+        <div className="mx-auto flex max-w-3xl flex-col items-center gap-6">
+          <Pill
+            variant="shiny"
+            href={`https://github.com/drazenbebic/habitica/releases/tag/web-v${version}`}
+            target="_blank"
+          >
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-500"></span>
+            </span>
+
+            <span className="font-medium text-slate-600 group-hover:text-violet-700 transition-colors">
+              v{version} is now live
+            </span>
+
+            <span className="h-3 w-px bg-slate-200 group-hover:bg-violet-200 transition-colors"></span>
+
+            <span className="flex items-center gap-1 text-slate-400 group-hover:text-violet-600 transition-colors">
+              <span className="text-xs font-medium">Changelog</span>
+              <ArrowRight01Icon
+                size={14}
+                className="-ml-1 translate-x-0 opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100"
+              />
+            </span>
+          </Pill>
 
           <Heading level={1} size="4xl">
             Turn your Commits into <br />
