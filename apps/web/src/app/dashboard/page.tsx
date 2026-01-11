@@ -70,7 +70,7 @@ export default async function Dashboard() {
           <Card variant="elevated">
             <CardBody>
               <div className="mb-6 flex items-center gap-3 border-b border-slate-100 pb-6">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-100 text-violet-600">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-violet-100 text-violet-600">
                   <Settings01Icon size={20} />
                 </div>
                 <div>
