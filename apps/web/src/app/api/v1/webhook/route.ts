@@ -31,7 +31,7 @@ webhooks.on('pull_request_review.submitted', handlePullRequestReviewSubmitted);
 webhooks.on('push', handlePush);
 
 webhooks.onError(error => {
-  logger.error({ err: error }, '[Webhook Library Error]');
+  logger.error({ error }, '[Webhook Library Error]');
 });
 
 export const maxDuration = 60;
@@ -57,7 +57,7 @@ export const POST = async (request: NextRequest) => {
       { requestId: id, eventName, signature, hookId },
       async () => {
         try {
-          logger.info('Processing in background...');
+          logger.info('Processing in background.');
 
           await withRetry(() =>
             webhooks.verifyAndReceive({
@@ -69,8 +69,8 @@ export const POST = async (request: NextRequest) => {
           );
 
           logger.info('Processed successfully.');
-        } catch (err) {
-          logger.error({ err }, 'Failed in background processing');
+        } catch (error) {
+          logger.error({ error }, 'Background processing failed.');
         }
       },
     );

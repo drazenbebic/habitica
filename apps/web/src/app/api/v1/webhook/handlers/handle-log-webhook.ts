@@ -21,6 +21,7 @@ export const handleLogWebhook = async ({
 
   if (!payload.sender?.id) {
     logger.error('Sender could not be identified. Cannot log event.');
+    return;
   }
 
   const githubUser = await prisma.githubUsers.findFirst({
@@ -48,9 +49,9 @@ export const handleLogWebhook = async ({
       },
     });
   } catch (error) {
-    logger.error(`Webhook log could not be created: ${error}`);
+    logger.error({ error }, 'Webhook logging failed.');
     return;
   }
 
-  logger.info('Event logged.');
+  logger.info('Webhook logged.');
 };

@@ -54,7 +54,7 @@ export const handlePush = async ({
           });
       await habiticaApi.scoreTask(task.id, TaskDirection.UP);
     } catch (error) {
-      logger.error(`Habitica API Error: ${error}`);
+      logger.error({ error }, 'Habitica API Error');
       return;
     }
 
