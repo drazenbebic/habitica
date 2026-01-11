@@ -1,23 +1,34 @@
 'use client';
 
-import { FC, useState } from 'react';
+import {
+  FC,
+  startTransition,
+  useActionState,
+  useEffect,
+  useState,
+} from 'react';
 import Link from 'next/link';
 
+import clsx from 'clsx';
 import {
   ArrowDown01Icon,
   ArrowUp01Icon,
   CheckmarkCircle01Icon,
 } from 'hugeicons-react';
 
-import { ConnectedRepo } from '@/app/actions/get-connected-repos';
+import { getConnectedRepos } from '@/app/actions/get-connected-repos';
 import { Button } from '@/components/ui/Button';
+import { Skeleton } from '@/components/ui/Skeleton';
 
-type RepoListProps = {
-  repos: ConnectedRepo[];
-};
-
-export const RepoList: FC<RepoListProps> = ({ repos }) => {
+export const DashboardRepositoryList: FC = () => {
+  const [repos, action, isPending] = useActionState(getConnectedRepos, []);
   const [isExpanded, setIsExpanded] = useState(false);
+
+  useEffect(() => {
+    startTransition(() => {
+      action();
+    });
+  }, [action]);
 
   const MAX_VISIBLE = 5;
   const visibleRepos = isExpanded ? repos : repos.slice(0, MAX_VISIBLE);
@@ -25,7 +36,22 @@ export const RepoList: FC<RepoListProps> = ({ repos }) => {
 
   return (
     <div className="flex flex-col gap-3">
-      {repos.length > 0 ? (
+      {isPending ? (
+        <>
+          {[...Array(3)].map((_, i) => (
+            <div
+              key={i}
+              className="flex items-center justify-between rounded-xl bg-white p-3 shadow-sm ring-1 ring-slate-100"
+            >
+              <div className="flex items-center gap-3">
+                <Skeleton className="h-2 w-2 rounded-full" />
+                <Skeleton className="h-4 w-32" />
+              </div>
+              <Skeleton className="h-4 w-4 rounded-full" />
+            </div>
+          ))}
+        </>
+      ) : repos.length > 0 ? (
         <>
           {visibleRepos.map(repo => (
             <div
@@ -34,9 +60,10 @@ export const RepoList: FC<RepoListProps> = ({ repos }) => {
             >
               <div className="flex items-center gap-3 overflow-hidden">
                 <div
-                  className={`h-2 w-2 shrink-0 rounded-full ${
-                    repo.private ? 'bg-amber-500' : 'bg-emerald-500'
-                  }`}
+                  className={clsx('h-2 w-2 shrink-0 rounded-full', {
+                    'bg-amber-500': repo.private,
+                    'bg-emerald-500': !repo.private,
+                  })}
                   title={repo.private ? 'Private' : 'Public'}
                 />
                 <span className="truncate text-sm font-medium text-slate-700">

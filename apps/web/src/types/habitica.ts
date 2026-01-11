@@ -42,13 +42,28 @@ export type Task = {
 };
 
 export type UserStats = {
-  lvl: number;
+  class: string;
+  str: number;
+  con: number;
+  int: number;
+  per: number;
   exp: number;
-  toNextLevel: number;
+  lvl: number;
+  gp: number;
   hp: number;
   maxHealth: number;
   mp: number;
   maxMP: number;
+  points: number;
+  toNextLevel: number;
+  userId: string;
+  buffs: Buffs;
+  training: {
+    str: number;
+    con: number;
+    int: number;
+    per: number;
+  };
 };
 
 export type CreateTaskParameters = {
@@ -94,6 +109,19 @@ export type APIResponse<M> = {
   notifications: string[];
 };
 
+export type Buffs = {
+  str: number;
+  con: number;
+  int: number;
+  per: number;
+  stealth: number;
+  streaks: boolean;
+  snowball: boolean;
+  spookySparkles: boolean;
+  shinySeed: boolean;
+  seafoam: boolean;
+};
+
 export type ScoreTaskResponse = {
   delta: number;
   _tmp: Record<string, string | number>;
@@ -108,18 +136,7 @@ export type ScoreTaskResponse = {
   con: number;
   int: number;
   per: number;
-  buffs: {
-    str: number;
-    con: number;
-    int: number;
-    per: number;
-    stealth: number;
-    streaks: boolean;
-    snowball: boolean;
-    spookySparkles: boolean;
-    shinySeed: boolean;
-    seafoam: boolean;
-  };
+  buffs: Buffs;
   training: {
     str: number;
     con: number;

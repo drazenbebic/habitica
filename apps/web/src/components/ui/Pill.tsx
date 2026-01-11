@@ -1,6 +1,8 @@
 import { ElementType, FC, ReactNode } from 'react';
 import Link from 'next/link';
 
+import clsx from 'clsx';
+
 interface PillProps {
   children: ReactNode;
   href?: string;
@@ -47,11 +49,13 @@ export const Pill: FC<PillProps> = ({
       )}
 
       <span
-        className={`relative flex h-full w-full items-center justify-center gap-2 rounded-full ${
-          variant === 'shiny'
-            ? 'bg-white px-3 py-1 backdrop-blur-3xl transition-colors group-hover:bg-slate-50'
-            : ''
-        }`}
+        className={clsx(
+          'relative flex h-full w-full items-center justify-center gap-2 rounded-full',
+          {
+            'bg-white px-3 py-1 backdrop-blur-3xl transition-colors group-hover:bg-slate-50':
+              variant === 'shiny',
+          },
+        )}
       >
         {children}
       </span>
@@ -62,7 +66,13 @@ export const Pill: FC<PillProps> = ({
     <Tag
       href={href}
       target={target}
-      className={`${baseStyles} ${variant !== 'shiny' ? sizeStyles[size] : ''} ${variants[variant]} ${isLink ? 'cursor-pointer' : ''} ${className}`}
+      className={clsx(
+        baseStyles,
+        variant !== 'shiny' && sizeStyles[size],
+        variants[variant],
+        isLink && 'cursor-pointer',
+        className,
+      )}
     >
       {content}
     </Tag>

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 
-export const DashboardGate = () => {
+export const AuthGate = () => {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
       <div className="relative mb-8 flex h-24 w-24 items-center justify-center rounded-3xl bg-slate-50 text-slate-400 ring-1 ring-slate-100">

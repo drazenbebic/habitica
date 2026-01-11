@@ -11,6 +11,8 @@ export const metadata: Metadata = {
     'We protect your code and data. Learn about our GDPR compliance, zero-storage policy for source code, and secure infrastructure in Frankfurt.',
 };
 
+const LAST_UPDATED = '11.01.2026';
+
 const PrivacyPolicy: NextPage = () => {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:py-20">
@@ -18,7 +20,7 @@ const PrivacyPolicy: NextPage = () => {
         <Heading level={1} className="mb-4">
           Privacy Policy
         </Heading>
-        <Content size="lg">Last updated: 09.01.2026</Content>
+        <Content size="lg">Last updated: ${LAST_UPDATED}</Content>
       </div>
 
       <div className="flex flex-col gap-10">
@@ -141,7 +143,7 @@ const PrivacyPolicy: NextPage = () => {
               Right to rectification (update your keys).
             </Content>
             <Content as="li">
-              Right to erasure (delete your account via the dashboard).
+              Right to erasure (delete your account via the GitHub App).
             </Content>
             <Content as="li">
               Right to restrict processing (revoke GitHub App access).

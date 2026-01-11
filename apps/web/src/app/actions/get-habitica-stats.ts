@@ -1,21 +1,14 @@
+'use server';
+
 import { getServerSession } from 'next-auth';
 
 import { authOptions } from '@/lib/auth';
 import HabiticaApi from '@/lib/habitica-api';
 import logger from '@/lib/logger';
 import prisma from '@/lib/prisma';
+import { UserStats } from '@/types/habitica';
 
-export type HabiticaStats = {
-  lvl: number;
-  exp: number;
-  toNextLevel: number;
-  mp: number;
-  hp: number;
-  maxHealth: number;
-  maxMP: number;
-};
-
-export async function getHabiticaStats(): Promise<HabiticaStats | null> {
+export async function getHabiticaStats(): Promise<UserStats | null> {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.name) {

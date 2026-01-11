@@ -5,15 +5,11 @@ import { getServerSession } from 'next-auth';
 
 import { GithubIcon, Settings01Icon } from 'hugeicons-react';
 
-import { getConnectedRepos } from '@/app/actions/get-connected-repos';
-import { getHabiticaCredentials } from '@/app/actions/get-habitica-credentials';
-import { getHabiticaStats } from '@/app/actions/get-habitica-stats';
-import { isConnected } from '@/app/actions/is-connected';
-import { DashboardGate } from '@/components/DashboardGate';
-import { HabiticaStatsCard } from '@/components/HabiticaStatsCard';
-import { HabiticaUserForm } from '@/components/HabiticaUserForm';
-import { RepoList } from '@/components/RepoList';
-import { Badge } from '@/components/ui/Badge';
+import { AuthGate } from '@/components/AuthGate';
+import { DashboardHabiticaStatsCard } from '@/components/dashboard/DashboardHabiticaStatsCard';
+import { DashboardHabiticaUserForm } from '@/components/dashboard/DashboardHabiticaUserForm';
+import { DashboardIsConnected } from '@/components/dashboard/DashboardIsConnected';
+import { DashboardRepositoryList } from '@/components/dashboard/DashboardRepositoryList';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Content } from '@/components/ui/Content';
@@ -34,15 +30,8 @@ export default async function Dashboard() {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return <DashboardGate />;
+    return <AuthGate />;
   }
-
-  const [connected, credentials, repos, stats] = await Promise.all([
-    isConnected(),
-    getHabiticaCredentials(),
-    getConnectedRepos(),
-    getHabiticaStats(),
-  ]);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-12">
@@ -54,15 +43,7 @@ export default async function Dashboard() {
           <Content>Manage your Habitica connection and repositories.</Content>
         </div>
 
-        <Badge
-          variant={connected ? 'success' : 'neutral'}
-          size="md"
-          hasDot
-          pulsing={connected}
-          className="px-4 py-2"
-        >
-          {connected ? 'Connected' : 'Not Connected'}
-        </Badge>
+        <DashboardIsConnected />
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
@@ -93,13 +74,13 @@ export default async function Dashboard() {
                 </div>
               </div>
 
-              <HabiticaUserForm initialData={credentials} />
+              <DashboardHabiticaUserForm />
             </CardBody>
           </Card>
         </div>
 
         <div className="flex flex-col gap-6">
-          <HabiticaStatsCard stats={stats} />
+          <DashboardHabiticaStatsCard />
 
           <Card variant="outlined" className="bg-slate-50">
             <CardBody>
@@ -110,7 +91,7 @@ export default async function Dashboard() {
                 </Heading>
               </div>
 
-              <RepoList repos={repos} />
+              <DashboardRepositoryList />
 
               <Content size="sm" className="mt-4 text-slate-500">
                 Install the GitHub App on your repositories to start tracking

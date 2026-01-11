@@ -6,6 +6,7 @@ const getTaskByName = async (
   taskName: string,
 ): Promise<Task | undefined> => {
   const tasks = await habiticaApi.getTasks();
+
   return tasks.find(task => task.text === taskName);
 };
 
