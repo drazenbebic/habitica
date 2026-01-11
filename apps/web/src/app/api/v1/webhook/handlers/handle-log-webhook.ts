@@ -10,6 +10,8 @@ export const handleLogWebhook = async ({
   name,
   payload,
 }: EmitterWebhookEvent) => {
+  logger.info('Logging webhook.');
+
   const ctx = getRequestContext();
 
   if (!ctx) {
@@ -44,5 +46,5 @@ export const handleLogWebhook = async ({
     },
   });
 
-  logger.info(`Event logged.`);
+  logger.info('Event logged.');
 };

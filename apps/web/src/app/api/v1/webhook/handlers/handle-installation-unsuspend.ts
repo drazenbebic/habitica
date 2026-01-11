@@ -18,4 +18,6 @@ export const handleInstallationUnsuspend = async ({
       '[installation.suspend]: The installation could not be unsuspended.',
     );
   }
+
+  logger.info('Event processed.');
 };

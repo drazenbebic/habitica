@@ -16,7 +16,7 @@ export const handleInstallationCreated = async ({
   );
 
   if (existingGitHubInstallation) {
-    logger.warn('Installation already exists, skipping.');
+    logger.info('Installation already exists, skipping.');
     return;
   }
 
@@ -54,4 +54,6 @@ export const handleInstallationCreated = async ({
       '[installation.created]: The GitHub User could not be created.',
     );
   }
+
+  logger.info('Event processed.');
 };

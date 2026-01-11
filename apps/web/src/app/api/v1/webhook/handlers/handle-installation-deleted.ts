@@ -43,4 +43,6 @@ export const handleInstallationDeleted = async ({
   await prisma.githubInstallations.delete({
     where: { id: gitHubInstallation.id },
   });
+
+  logger.info('Event processed.');
 };

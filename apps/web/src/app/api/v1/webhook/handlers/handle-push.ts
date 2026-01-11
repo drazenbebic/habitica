@@ -53,5 +53,7 @@ export const handlePush = async ({
         });
 
     await habiticaApi.scoreTask(task.id, TaskDirection.UP);
+
+    logger.info('Event processed.');
   }
 };
