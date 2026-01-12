@@ -99,58 +99,79 @@ const Home: NextPage = () => {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-4">
-        <div className="mb-12 text-center">
-          <Heading level={2} size="3xl">
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <div className="mb-16 text-center">
+          <Heading level={2} size="3xl" className="tracking-tight">
             How it works
           </Heading>
-          <Content className="mt-4">
+          <Content className="mt-4 text-lg text-slate-600">
             Simple, secure, and set-and-forget.
           </Content>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3">
-          <Card variant="flat" className="bg-slate-50/50">
-            <CardBody>
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-100 text-blue-600">
-                <GithubIcon size={24} />
+        <div className="relative grid gap-8 md:grid-cols-3">
+          <div className="absolute top-[50%] left-0 hidden w-full px-16 md:block">
+            <div className="h-0.5 w-full border-t-2 border-dashed border-slate-200" />
+          </div>
+
+          <Card
+            variant="elevated"
+            isHoverable
+            className="shadow-blue-900/5! hover:shadow-blue-900/20!"
+          >
+            <CardBody className="items-center text-center">
+              <div className="relative mb-2 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-50 to-blue-100 text-blue-600 shadow-inner ring-4 ring-white">
+                <GithubIcon size={32} />
+                <div className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white ring-2 ring-white">
+                  1
+                </div>
               </div>
               <Heading level={3} size="lg">
-                1. Install App
+                Install App
               </Heading>
-              <Content size="sm">
+              <Content size="sm" className="text-slate-500">
                 Install our GitHub App on your repositories. We only listen to
-                webhooks. We never read your source code.
+                webhooks.
               </Content>
             </CardBody>
           </Card>
 
-          <Card variant="flat" className="bg-slate-50/50">
-            <CardBody>
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-100 text-violet-600">
-                <CheckmarkCircle01Icon size={24} />
+          <Card variant="elevated" isHoverable>
+            <CardBody className="items-center text-center">
+              <div className="relative mb-2 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-violet-50 to-violet-100 text-violet-600 shadow-inner ring-4 ring-white">
+                <CheckmarkCircle01Icon size={32} />
+                <div className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-violet-600 text-xs font-bold text-white ring-2 ring-white">
+                  2
+                </div>
               </div>
               <Heading level={3} size="lg">
-                2. Link Account
+                Link Account
               </Heading>
-              <Content size="sm">
+              <Content size="sm" className="text-slate-500">
                 Sign in and add your Habitica API keys. Your data is encrypted
-                and stored securely.
+                at rest.
               </Content>
             </CardBody>
           </Card>
 
-          <Card variant="flat" className="bg-slate-50/50">
-            <CardBody>
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-100 text-emerald-600">
-                <GitMergeIcon size={24} />
+          <Card
+            variant="elevated"
+            isHoverable
+            className="shadow-emerald-900/5! hover:shadow-emerald-900/20!"
+          >
+            <CardBody className="items-center text-center">
+              <div className="relative mb-2 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-emerald-50 to-emerald-100 text-emerald-600 shadow-inner ring-4 ring-white">
+                <GitMergeIcon size={32} />
+                <div className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-xs font-bold text-white ring-2 ring-white">
+                  3
+                </div>
               </div>
               <Heading level={3} size="lg">
-                3. Get Rewards
+                Get Rewards
               </Heading>
-              <Content size="sm">
+              <Content size="sm" className="text-slate-500">
                 Push code, merge PRs, or review code. Watch your character gain
-                XP and Gold automatically.
+                XP automatically.
               </Content>
             </CardBody>
           </Card>
