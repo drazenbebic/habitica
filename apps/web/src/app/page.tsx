@@ -9,6 +9,7 @@ import {
   GithubIcon,
   GitMergeIcon,
   GitPullRequestIcon,
+  PackageIcon,
   StarIcon,
   Target02Icon,
 } from 'hugeicons-react';
@@ -253,6 +254,11 @@ const Home: NextPage = () => {
                   />
                 }
                 action="Review Code"
+                reward="+3 XP"
+              />
+              <RewardRow
+                icon={<PackageIcon size={20} className="text-orange-500" />}
+                action="Publish a Package"
                 reward="+3 XP"
               />
               <RewardRow
