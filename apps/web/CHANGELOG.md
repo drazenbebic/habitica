@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.3](https://github.com/drazenbebic/habitica/compare/web-v0.4.2...web-v0.4.3) (2026-01-12)
+
+
+### Bug Fixes
+
+* update profile page styling ([5e0676c](https://github.com/drazenbebic/habitica/commit/5e0676c2e1ead07967a90de006ca1eab33619ba3))
+
 ## [0.4.2](https://github.com/drazenbebic/habitica/compare/web-v0.4.1...web-v0.4.2) (2026-01-12)
 
 
