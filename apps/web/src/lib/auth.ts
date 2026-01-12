@@ -1,3 +1,4 @@
+import { cookies } from 'next/headers';
 import { NextAuthOptions } from 'next-auth';
 import GithubProvider, { GithubProfile } from 'next-auth/providers/github';
 
@@ -37,7 +38,15 @@ export const authOptions: NextAuthOptions = {
       });
 
       if (!githubUser) {
-        return false;
+        const cookieStore = await cookies();
+        const callbackUrl =
+          cookieStore.get('next-auth.callback-url')?.value ||
+          cookieStore.get('__Secure-next-auth.callback-url')?.value ||
+          '/';
+
+        const separator = callbackUrl.includes('?') ? '&' : '?';
+
+        return `${callbackUrl}${separator}error=GithubAppNotInstalled`;
       }
 
       await prisma.githubUsers.update({
