@@ -45,7 +45,7 @@ jobs:
       - name: Deploy to Vercel
         id: vercel
         run: |
-          URL=$(vercel deploy --prod --wait --token=${{ secrets.VERCEL_TOKEN }})
+          URL=$(vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }})
           echo "url=$URL" >> $GITHUB_OUTPUT
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
