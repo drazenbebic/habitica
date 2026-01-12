@@ -14,14 +14,34 @@ datasource db {
 }
 
 model GithubInstallations {
-  id             BigInt        @id @default(autoincrement()) @map("id") @db.BigInt
-  uuid           String        @unique @default(uuid()) @map("uuid") @db.VarChar(36)
-  code           String?       @map("code") @db.VarChar(20)
-  installationId Int           @unique @map("installation_id") @db.Integer()
-  suspended      Boolean?      @default(false) @map("suspended") @db.Boolean
-  githubUsers    GithubUsers[] @relation("GithubInstallationsGithubUsers")
+  id                   BigInt                       @id @default(autoincrement()) @map("id") @db.BigInt
+  uuid                 String                       @unique @default(uuid()) @map("uuid") @db.VarChar(36)
+  code                 String?                      @map("code") @db.VarChar(20)
+  installationId       Int                          @unique @map("installation_id") @db.Integer()
+  suspended            Boolean?                     @default(false) @map("suspended") @db.Boolean
+  githubUsers          GithubUsers[]                @relation("GithubInstallationsGithubUsers")
+  selectedRepositories GithubSelectedRepositories[] @relation("GithubInstallationsSelectedRepos")
+  createdAt            DateTime                     @default(now()) @map("created_at")
+  updatedAt            DateTime                     @updatedAt @map("updated_at")
 
   @@map(name: "github_installations")
+}
+
+model GithubSelectedRepositories {
+  id                 BigInt              @id @default(autoincrement()) @map("id") @db.BigInt
+  uuid               String              @unique @default(uuid()) @map("uuid") @db.VarChar(36)
+  installation       GithubInstallations @relation("GithubInstallationsSelectedRepos", fields: [installationId], references: [id], onDelete: Cascade)
+  installationId     BigInt              @map("installation_id") @db.BigInt
+  githubRepositoryId Int                 @map("github_repository_id") @db.Integer
+  nodeId             String              @map("node_id") @db.VarChar(255)
+  name               String              @map("name") @db.VarChar(255)
+  fullName           String              @map("full_name") @db.VarChar(255)
+  private            Boolean             @default(false) @map("private") @db.Boolean
+  createdAt          DateTime            @default(now()) @map("created_at")
+  updatedAt          DateTime            @updatedAt @map("updated_at")
+
+  @@unique([installationId, githubRepositoryId])
+  @@map("github_selected_repositories")
 }
 
 model GithubUsers {
@@ -49,6 +69,8 @@ model GithubUsers {
   tokenType             String?             @map("token_type") @db.VarChar(20)
   habiticaUser          HabiticaUsers?      @relation("HabiticaUsersGithubUsers")
   webhookLogs           WebhookLogs[]       @relation("GithubUsersWebhookLogs")
+  createdAt             DateTime            @default(now()) @map("created_at")
+  updatedAt             DateTime            @updatedAt @map("updated_at")
 
   @@map(name: "github_users")
 }
@@ -60,6 +82,8 @@ model HabiticaUsers {
   githubUserId BigInt      @unique @map("github_user_id") @db.BigInt
   userId       String      @unique @map("user_id") @db.VarChar(255)
   apiToken     String      @map("api_token") @db.VarChar(255)
+  createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
 
   @@map(name: "habitica_users")
 }
@@ -75,6 +99,7 @@ model WebhookLogs {
   githubUserId BigInt      @map("github_user_id") @db.BigInt
   payload      Json?       @map("payload") @db.JsonB
   createdAt    DateTime    @default(now()) @map("created_at")
+  updatedAt    DateTime    @updatedAt @map("updated_at")
 
   @@map("webhook_logs")
 }

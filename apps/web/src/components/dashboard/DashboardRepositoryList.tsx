@@ -13,7 +13,8 @@ import clsx from 'clsx';
 import {
   ArrowDown01Icon,
   ArrowUp01Icon,
-  CheckmarkCircle01Icon,
+  Globe02Icon,
+  SquareLock01Icon,
 } from 'hugeicons-react';
 
 import { getConnectedRepos } from '@/app/actions/get-connected-repos';
@@ -30,7 +31,7 @@ export const DashboardRepositoryList: FC = () => {
     });
   }, [action]);
 
-  const MAX_VISIBLE = 5;
+  const MAX_VISIBLE = 3;
   const visibleRepos = isExpanded ? repos : repos.slice(0, MAX_VISIBLE);
   const hasHiddenItems = repos.length > MAX_VISIBLE;
 
@@ -54,31 +55,38 @@ export const DashboardRepositoryList: FC = () => {
       ) : repos.length > 0 ? (
         <>
           {visibleRepos.map(repo => (
-            <div
+            <Link
               key={repo.id}
               className="flex items-center justify-between rounded-xl bg-white p-3 shadow-sm ring-1 ring-slate-100 transition-shadow hover:shadow-md"
+              href={repo.htmlUrl}
+              target="_blank"
+              rel="noreferrer"
             >
               <div className="flex items-center gap-3 overflow-hidden">
                 <div
-                  className={clsx('h-2 w-2 shrink-0 rounded-full', {
-                    'bg-amber-500': repo.private,
-                    'bg-emerald-500': !repo.private,
-                  })}
-                  title={repo.private ? 'Private' : 'Public'}
-                />
+                  className={clsx(
+                    'flex h-6 w-6 shrink-0 items-center justify-center rounded-lg',
+                    {
+                      'bg-amber-100 text-amber-600': repo.private,
+                      'bg-emerald-100 text-emerald-600': !repo.private,
+                    },
+                  )}
+                  title={
+                    repo.private ? 'Private Repository' : 'Public Repository'
+                  }
+                >
+                  {repo.private ? (
+                    <SquareLock01Icon className="h-4 w-4" />
+                  ) : (
+                    <Globe02Icon className="h-4 w-4" />
+                  )}
+                </div>
+
                 <span className="truncate text-sm font-medium text-slate-700">
                   {repo.name}
                 </span>
               </div>
-              <a
-                href={repo.htmlUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="text-slate-400 hover:text-violet-600"
-              >
-                <CheckmarkCircle01Icon size={16} className="text-emerald-500" />
-              </a>
-            </div>
+            </Link>
           ))}
 
           {hasHiddenItems && (

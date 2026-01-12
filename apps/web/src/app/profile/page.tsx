@@ -41,7 +41,7 @@ export default async function ProfilePage() {
   const profile = await getUserProfile();
 
   if (!profile) {
-    return null; // Or a 404/Error component
+    return null;
   }
 
   return (

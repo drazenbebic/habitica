@@ -7,6 +7,8 @@ import {
   Webhooks,
 } from '@octokit/webhooks';
 
+import { handleInstallationRepositoriesAdded } from '@/app/api/v1/webhook/handlers/handle-installation-repositories-added';
+import { handleInstallationRepositoriesRemoved } from '@/app/api/v1/webhook/handlers/handle-installation-repositories-removed';
 import { requestContext } from '@/lib/context';
 import logger from '@/lib/logger';
 import { withRetry } from '@/utils/with-retry';
@@ -32,6 +34,8 @@ const webhookHandlerMap: Partial<{
 }> = {
   'installation.created': handleInstallationCreated,
   'installation.deleted': handleInstallationDeleted,
+  'installation_repositories.added': handleInstallationRepositoriesAdded,
+  'installation_repositories.removed': handleInstallationRepositoriesRemoved,
   'installation.suspend': handleInstallationSuspend,
   'installation.unsuspend': handleInstallationUnsuspend,
   'package.published': handlePackagePublished,

@@ -4,7 +4,7 @@ import logger from '@/lib/logger';
 import prisma from '@/lib/prisma';
 
 export const handleInstallationCreated = async ({
-  payload: { installation, sender },
+  payload: { installation, sender, repositories },
 }: EmitterWebhookEvent<'installation.created'>) => {
   logger.info({ installationId: installation.id }, 'Event triggered.');
 
@@ -18,28 +18,51 @@ export const handleInstallationCreated = async ({
     return;
   }
 
-  await prisma.$transaction(async tx => {
-    const githubInstallation = await tx.githubInstallations.create({
-      data: {
-        installationId: installation.id,
-      },
-    });
+  try {
+    await prisma.$transaction(async tx => {
+      const githubInstallation = await tx.githubInstallations.create({
+        data: {
+          installationId: installation.id,
+        },
+      });
 
-    await tx.githubUsers.create({
-      data: {
-        installationId: githubInstallation.id,
-        login: sender.login,
-        githubId: sender.id,
-        nodeId: sender.node_id,
-        avatarUrl: sender.avatar_url,
-        gravatarId: sender.gravatar_id,
-        htmlUrl: sender.html_url,
-        type: sender.type,
-        name: sender.name,
-        email: sender.email,
-      },
-    });
-  });
+      await tx.githubUsers.create({
+        data: {
+          installationId: githubInstallation.id,
+          login: sender.login,
+          githubId: sender.id,
+          nodeId: sender.node_id,
+          avatarUrl: sender.avatar_url,
+          gravatarId: sender.gravatar_id,
+          htmlUrl: sender.html_url,
+          type: sender.type,
+          name: sender.name,
+          email: sender.email,
+        },
+      });
 
-  logger.info('Event processed.');
+      if (repositories && repositories.length > 0) {
+        await tx.githubSelectedRepositories.createMany({
+          data: repositories.map(repository => ({
+            installationId: githubInstallation.id,
+            githubRepositoryId: repository.id,
+            nodeId: repository.node_id,
+            name: repository.name,
+            fullName: repository.full_name,
+            private: repository.private,
+          })),
+          skipDuplicates: true,
+        });
+
+        logger.info(
+          { count: repositories.length },
+          'Initial repositories added.',
+        );
+      }
+    });
+  } catch (error) {
+    console.error('TX FAILED:', error);
+  }
+
+  logger.info({ installationId: installation.id }, 'Installation created.');
 };

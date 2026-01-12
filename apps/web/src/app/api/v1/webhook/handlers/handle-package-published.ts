@@ -1,4 +1,4 @@
-import { EmitterWebhookEvent } from '@octokit/webhooks/types';
+import { EmitterWebhookEvent } from '@octokit/webhooks';
 
 import getHabiticaApi from '@/app/api/v1/webhook/get-habitica-api';
 import { TaskDirection, TaskPriority, TaskType } from '@/enums/habitica';
@@ -6,31 +6,57 @@ import logger from '@/lib/logger';
 import prisma from '@/lib/prisma';
 
 export const handlePackagePublished = async ({
-  payload: { installation, package: githubPackage, sender },
+  payload: { installation, package: githubPackage, sender, repository },
 }: EmitterWebhookEvent<'package.published'>) => {
-  logger.info('Event triggered.');
+  if (!installation?.id || !repository) {
+    logger.info('Ignored: Missing installation or repository.');
+    return;
+  }
 
-  if (!installation?.id) {
-    logger.info('Installation is missing.');
+  const githubInstallation = await prisma.githubInstallations.findUnique({
+    where: { installationId: installation.id },
+    select: {
+      suspended: true,
+      selectedRepositories: {
+        where: { githubRepositoryId: repository.id },
+        select: { id: true },
+        take: 1,
+      },
+    },
+  });
+
+  if (!githubInstallation) {
+    logger.info('Ignored: Installation not found.');
+    return;
+  }
+
+  if (githubInstallation.suspended) {
+    logger.info('Ignored: Installation is suspended.');
+    return;
+  }
+
+  if (githubInstallation.selectedRepositories.length === 0) {
+    logger.info(
+      { repositoryId: repository.id },
+      'Ignored: Repository not whitelisted.',
+    );
     return;
   }
 
   const githubUser = await prisma.githubUsers.findUnique({
     where: { githubId: sender.id },
-    include: {
-      habiticaUser: true,
-    },
+    select: { habiticaUser: true },
   });
 
   if (!githubUser?.habiticaUser) {
-    logger.error('Sender or Habitica connection could not be identified.');
+    logger.warn('Ignored: Sender not linked to Habitica.');
     return;
   }
 
   const habiticaApi = await getHabiticaApi(installation.id, sender.login);
 
   if (!habiticaApi) {
-    logger.info('Habitica API initialization failed.');
+    logger.error('Habitica API initialization failed.');
     return;
   }
 
@@ -49,9 +75,9 @@ export const handlePackagePublished = async ({
       }));
 
     await habiticaApi.scoreTask(task.id, TaskDirection.UP);
+
+    logger.info('Event processed.');
   } catch (error) {
     logger.error({ error }, 'Habitica API Error');
   }
-
-  logger.info('Event processed.');
 };

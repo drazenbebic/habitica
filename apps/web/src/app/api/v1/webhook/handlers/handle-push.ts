@@ -1,63 +1,112 @@
-import { EmitterWebhookEvent } from '@octokit/webhooks/types';
+import { EmitterWebhookEvent } from '@octokit/webhooks';
 
 import getHabiticaApi from '@/app/api/v1/webhook/get-habitica-api';
 import { TaskDirection, TaskPriority, TaskType } from '@/enums/habitica';
 import logger from '@/lib/logger';
+import prisma from '@/lib/prisma';
 
 export const handlePush = async ({
   payload: { commits, repository, installation },
 }: EmitterWebhookEvent<'push'>) => {
-  logger.info('Event triggered.');
+  if (!installation?.id || !repository) {
+    logger.info('Ignored: Missing installation or repository.');
+    return;
+  }
 
-  if (!installation?.id) {
-    logger.info('Installation is missing.');
+  const githubInstallation = await prisma.githubInstallations.findUnique({
+    where: { installationId: installation.id },
+    select: {
+      suspended: true,
+      selectedRepositories: {
+        where: { githubRepositoryId: repository.id },
+        select: { id: true },
+        take: 1,
+      },
+    },
+  });
+
+  if (!githubInstallation) {
+    logger.info('Ignored: Installation not found.');
+    return;
+  }
+
+  if (githubInstallation.suspended) {
+    logger.info('Ignored: Installation is suspended.');
+    return;
+  }
+
+  if (githubInstallation.selectedRepositories.length === 0) {
+    logger.info(
+      { repoId: repository.id },
+      'Ignored: Repository not whitelisted.',
+    );
     return;
   }
 
   const validCommits = commits.filter(
-    ({ author }) => author.username !== 'dependabot[bot]',
+    commit =>
+      commit.author.username && commit.author.username !== 'dependabot[bot]',
   );
 
-  if (validCommits.length <= 0) {
-    logger.info({ commits }, 'All commits skipped.');
+  if (validCommits.length === 0) {
+    logger.info('Ignored: No valid commits found.');
     return;
   }
 
-  const taskName = `Push commits to the "${repository.name}" repository`;
+  // Extract unique usernames to minimize DB queries
+  const authorUsernames = [
+    ...new Set(validCommits.map(c => c.author.username!)),
+  ];
 
-  for (const commit of validCommits) {
-    if (!commit.author?.username) {
-      logger.info('Author username missing. Commit skipped.');
-      continue;
-    }
+  const githubUsers = await prisma.githubUsers.findMany({
+    where: {
+      login: { in: authorUsernames },
+      habiticaUser: { isNot: null },
+    },
+    include: { habiticaUser: true },
+  });
 
-    const habiticaApi = await getHabiticaApi(
-      installation.id,
-      commit.author.username,
-    );
+  if (githubUsers.length === 0) {
+    return;
+  }
 
-    if (!habiticaApi) {
-      logger.info('Habitica user missing. Commit skipped.');
-      continue;
-    }
+  await Promise.all(
+    githubUsers.map(async user => {
+      // Count how many commits this specific user owns in this push
+      const userCommitCount = validCommits.filter(
+        commit => commit.author.username === user.login,
+      ).length;
 
-    try {
-      const tasks = await habiticaApi.getTasks();
-      const existingTask = tasks.find(task => task.text === taskName);
-      const task = existingTask
-        ? existingTask
-        : await habiticaApi.createTask({
+      const habiticaApi = await getHabiticaApi(installation.id, user.login);
+
+      if (!habiticaApi) {
+        logger.error('Habitica API initialization failed.');
+        return;
+      }
+
+      const taskName = `Pushed a commit to the "${repository.name}" repository`;
+
+      try {
+        const tasks = await habiticaApi.getTasks();
+
+        const task =
+          tasks.find(t => t.text === taskName) ||
+          (await habiticaApi.createTask({
             text: taskName,
             type: TaskType.HABIT,
             value: 1,
             priority: TaskPriority.LOW,
-          });
-      await habiticaApi.scoreTask(task.id, TaskDirection.UP);
-    } catch (error) {
-      logger.error({ error }, 'Habitica API Error');
-      return;
-    }
+          }));
 
-    logger.info('Event processed.');
-  }
+        // Score the task X times (sequentially to ensure reliability)
+        for (let i = 0; i < userCommitCount; i++) {
+          await habiticaApi.scoreTask(task.id, TaskDirection.UP);
+        }
+
+        logger.info('Event processed successfully.');
+      } catch (error) {
+        logger.error({ error }, 'Habitica API Error');
+      }
+    }),
+  );
 };
