@@ -10,15 +10,11 @@ async function createSeededUser(index: number) {
     const installationId = faker.number.int({ min: 1, max: 2147483647 });
 
     const installation = await tx.githubInstallations.create({
-      data: {
-        uuid: v4(),
-        installationId,
-      },
+      data: { installationId },
     });
 
     const githubUser = await tx.githubUsers.create({
       data: {
-        uuid: v4(),
         installationId: installation.id,
         login: faker.internet.username() + index,
         githubId: faker.number.int({ max: 9999999 }),
@@ -34,11 +30,34 @@ async function createSeededUser(index: number) {
 
     await tx.habiticaUsers.create({
       data: {
-        uuid: v4(),
         githubUserId: githubUser.id,
         userId: v4(),
-        apiToken: faker.string.alphanumeric(32),
+        apiToken: v4(),
       },
+    });
+
+    const webhookLogsCreateData = Array.from(Array(100)).map(() => {
+      return {
+        deliveryUuid: v4(),
+        event: faker.helpers.arrayElement([
+          'installation.created',
+          'installation.deleted',
+          'installation.suspend',
+          'installation.unsuspend',
+          'package.published',
+          'pull_request.closed',
+          'pull_request_review.submitted',
+          'push',
+        ]),
+        signature: `sha256=${faker.string.alphanumeric(64)}`.toLowerCase(),
+        hookId: faker.number.int({ min: 400000000, max: 499999999 }).toString(),
+        githubUserId: githubUser.id,
+        payload: { data: 'dummy' },
+      };
+    });
+
+    await tx.webhookLogs.createMany({
+      data: webhookLogsCreateData,
     });
 
     return {
