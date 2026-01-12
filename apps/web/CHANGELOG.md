@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.4.0](https://github.com/drazenbebic/habitica/compare/web-v0.3.0...web-v0.4.0) (2026-01-12)
+
+
+### Features
+
+* add terms and conditions page, update data privacy ([21f36f4](https://github.com/drazenbebic/habitica/commit/21f36f4a55d84c368ee39e4698af04a7f9a404de))
+* encrypt habitica api token in the database ([ed175d5](https://github.com/drazenbebic/habitica/commit/ed175d5b23b061bc713a9c687aa9b9f2271a06b7))
+
+
+### Bug Fixes
+
+* add jest setup ([7146c7d](https://github.com/drazenbebic/habitica/commit/7146c7d2f51250ddad8482383972e5b929c8849e))
+* cascade db entities on delete ([79eedf5](https://github.com/drazenbebic/habitica/commit/79eedf5ac5981f86805bbbb5d66f2893728caf8c))
+* display error message when app not installed ([5de52f4](https://github.com/drazenbebic/habitica/commit/5de52f4cae2d03d6447c5ba2500065cbcbd5031f))
+
 ## [0.3.0](https://github.com/drazenbebic/habitica/compare/web-v0.2.1...web-v0.3.0) (2026-01-11)
 
 
