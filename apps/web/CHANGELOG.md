@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.1](https://github.com/drazenbebic/habitica/compare/web-v0.4.0...web-v0.4.1) (2026-01-12)
+
+
+### Bug Fixes
+
+* improve "how it works" section on homepage ([819e028](https://github.com/drazenbebic/habitica/commit/819e028bdda83bef003eddd579c363ce35a73ea3))
+
 ## [0.4.0](https://github.com/drazenbebic/habitica/compare/web-v0.3.0...web-v0.4.0) (2026-01-12)
 
 
