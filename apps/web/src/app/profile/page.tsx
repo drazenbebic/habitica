@@ -41,93 +41,115 @@ export default async function ProfilePage() {
   const profile = await getUserProfile();
 
   if (!profile) {
-    return null;
+    return null; // Or a 404/Error component
   }
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-12">
-      <Heading level={1} size="3xl" className="mb-2">
-        Adventurer Profile
-      </Heading>
-      <Content className="mb-10">
-        Your personal identity card and connection status.
-      </Content>
+    <div className="mx-auto max-w-5xl px-4 py-12">
+      <div className="mb-10">
+        <Heading
+          level={1}
+          size="3xl"
+          className="mb-2 bg-linear-to-r from-violet-700 to-indigo-600 bg-clip-text text-transparent"
+        >
+          Adventurer Profile
+        </Heading>
+        <Content size="lg" className="text-slate-600">
+          Your personal identity card and connection status.
+        </Content>
+      </div>
 
-      <div className="grid gap-6 md:grid-cols-3">
-        <div className="md:col-span-1">
-          <Card variant="elevated" className="overflow-hidden text-center">
-            <div className="h-24 w-full bg-linear-to-br from-violet-600 to-indigo-600"></div>
-            <div className="relative -mt-12 px-6 pb-6">
-              <div className="mx-auto inline-flex rounded-full bg-white p-1.5 shadow-md">
+      <div className="grid gap-8 lg:grid-cols-12">
+        <div className="lg:col-span-4">
+          <Card
+            variant="elevated"
+            className="overflow-hidden border-0 shadow-xl shadow-violet-900/5 ring-1 ring-slate-900/5"
+          >
+            <div className="h-32 w-full bg-linear-to-br from-violet-600 via-indigo-600 to-blue-600 relative">
+              <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-20" />
+            </div>
+
+            <div className="relative -mt-16 px-6 pb-8 text-center">
+              <div className="mx-auto inline-flex rounded-full bg-white p-2 shadow-lg">
                 <Image
                   src={profile.avatar || '/placeholder-avatar.png'}
                   alt={profile.handle}
-                  width={96}
-                  height={96}
-                  className="rounded-full bg-slate-100"
+                  width={112}
+                  height={112}
+                  className="rounded-full bg-slate-100 object-cover"
+                  priority
                 />
               </div>
 
-              <div className="mt-3">
-                <Heading level={2} size="lg">
+              <div className="mt-4">
+                <Heading level={2} size="xl" className="tracking-tight">
                   {profile.name}
                 </Heading>
-                <p className="text-sm font-medium text-slate-500">
+                <p className="text-base font-medium text-slate-500">
                   @{profile.handle}
                 </p>
               </div>
 
-              <div className="mt-4 flex flex-wrap justify-center gap-2">
+              <div className="mt-6 flex justify-center">
                 <Badge
                   variant={profile.isLinked ? 'success' : 'warning'}
-                  size="sm"
+                  size="md"
                   hasDot
+                  className="shadow-sm"
                 >
-                  {profile.isLinked ? 'Sync Active' : 'No Sync'}
+                  {profile.isLinked ? 'Sync Active' : 'No Sync Configured'}
                 </Badge>
               </div>
             </div>
           </Card>
         </div>
 
-        <div className="flex flex-col gap-6 md:col-span-2">
-          <Card variant="outlined" className="bg-white">
-            <CardBody className="flex flex-col gap-1">
-              <Heading
-                level={3}
-                size="base"
-                className="mb-4 border-b border-slate-100 pb-2"
-              >
-                Contact & Details
-              </Heading>
+        <div className="flex flex-col gap-6 lg:col-span-8">
+          <Card variant="flat" className="h-full bg-white/50 backdrop-blur-sm">
+            <CardBody>
+              <div className="flex items-center justify-between border-b border-slate-100 pb-6 mb-2">
+                <div>
+                  <Heading level={3} size="lg">
+                    Contact & Details
+                  </Heading>
+                  <Content size="sm" className="mt-1">
+                    Public information from your GitHub profile.
+                  </Content>
+                </div>
+              </div>
 
-              <DetailRow
-                icon={<Mail01Icon size={18} />}
-                label="Email"
-                value={profile.email || 'Not visible'}
-              />
-              <DetailRow
-                icon={<Building03Icon size={18} />}
-                label="Company"
-                value={profile.company || 'Freelance'}
-              />
-              <DetailRow
-                icon={<Location01Icon size={18} />}
-                label="Location"
-                value={profile.location || 'Unknown Realm'}
-              />
-              <DetailRow
-                icon={<Globe02Icon size={18} />}
-                label="Website"
-                value={profile.website}
-                isLink
-              />
-              <DetailRow
-                icon={<GithubIcon size={18} />}
-                label="GitHub Profile"
-                value={profile.githubUrl}
-                isLink
-              />
+              <div className="flex flex-col divide-y divide-slate-100">
+                <DetailRow
+                  icon={<Mail01Icon size={18} />}
+                  label="Email Address"
+                  value={profile.email}
+                  fallback="Not public"
+                />
+                <DetailRow
+                  icon={<Building03Icon size={18} />}
+                  label="Company"
+                  value={profile.company}
+                  fallback="Freelance"
+                />
+                <DetailRow
+                  icon={<Location01Icon size={18} />}
+                  label="Location"
+                  value={profile.location}
+                  fallback="Unknown Realm"
+                />
+                <DetailRow
+                  icon={<Globe02Icon size={18} />}
+                  label="Website"
+                  value={profile.website}
+                  isLink
+                />
+                <DetailRow
+                  icon={<GithubIcon size={18} />}
+                  label="GitHub Profile"
+                  value={profile.githubUrl}
+                  isLink
+                />
+              </div>
             </CardBody>
           </Card>
         </div>
@@ -140,31 +162,50 @@ const DetailRow = ({
   icon,
   label,
   value,
+  fallback,
   isLink,
 }: {
   icon: ReactNode;
   label: string;
-  value: string | null;
+  value: string | null | undefined;
+  fallback?: string;
   isLink?: boolean;
 }) => {
-  if (!value) return null;
+  const displayValue = value || fallback;
+
+  if (!displayValue) {
+    return null;
+  }
+
   return (
-    <div className="flex items-center justify-between py-1 first:pt-0 last:pb-0">
-      <div className="flex items-center gap-3 text-slate-500">
-        {icon}
-        <span className="text-sm">{label}</span>
+    <div className="group flex items-center justify-between py-4 transition-colors hover:bg-slate-50/50 sm:px-4 sm:-mx-4 sm:rounded-xl">
+      <div className="flex items-center gap-4">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-50 text-slate-500 transition-colors group-hover:bg-white group-hover:text-violet-600 group-hover:shadow-sm ring-1 ring-slate-900/5">
+          {icon}
+        </div>
+        <span className="text-sm font-medium text-slate-600">{label}</span>
       </div>
-      {isLink ? (
-        <Link
-          href={value}
-          target="_blank"
-          className="text-sm font-medium text-violet-600 hover:underline"
-        >
-          {value.replace(/^https?:\/\//, '')}
-        </Link>
-      ) : (
-        <span className="text-sm font-medium text-slate-900">{value}</span>
-      )}
+
+      <div className="text-right">
+        {isLink && value ? (
+          <Link
+            href={value}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm font-semibold text-violet-600 hover:text-violet-700 hover:underline decoration-violet-300 underline-offset-4"
+          >
+            {value.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+          </Link>
+        ) : (
+          <span
+            className={`text-sm font-medium ${
+              !value ? 'text-slate-400 italic' : 'text-slate-900'
+            }`}
+          >
+            {displayValue}
+          </span>
+        )}
+      </div>
     </div>
   );
 };
