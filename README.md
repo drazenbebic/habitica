@@ -7,8 +7,8 @@
   </p>
 
   <p>
-    <a href="https://github.com/drazenbebic/habitica/actions/workflows/release.yaml">
-      <img src="https://img.shields.io/github/actions/workflow/status/drazenbebic/habitica/release.yaml?branch=main" alt="Build Status">
+    <a href="https://github.com/drazenbebic/habitica/actions/workflows/release-deploy.yaml">
+      <img src="https://img.shields.io/github/actions/workflow/status/drazenbebic/habitica/release-deploy.yaml?branch=main" alt="Build Status">
     </a>
     <a href="LICENSE.md">
       <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License: AGPL v3">
