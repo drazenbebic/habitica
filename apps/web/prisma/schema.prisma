@@ -27,7 +27,7 @@ model GithubInstallations {
 model GithubUsers {
   id                    BigInt              @id @default(autoincrement()) @map("id") @db.BigInt
   uuid                  String              @unique @default(uuid()) @map("uuid") @db.VarChar(36)
-  installation          GithubInstallations @relation("GithubInstallationsGithubUsers", fields: [installationId], references: [id])
+  installation          GithubInstallations @relation("GithubInstallationsGithubUsers", fields: [installationId], references: [id], onDelete: Cascade)
   installationId        BigInt              @unique @map("installation_id") @db.BigInt
   githubId              Int                 @unique @map("github_id") @db.Integer
   login                 String              @unique @map("login") @db.VarChar(255)
@@ -56,7 +56,7 @@ model GithubUsers {
 model HabiticaUsers {
   id           BigInt      @id @default(autoincrement()) @map("id") @db.BigInt
   uuid         String      @unique @default(uuid()) @map("uuid") @db.VarChar(36)
-  githubUser   GithubUsers @relation("HabiticaUsersGithubUsers", fields: [githubUserId], references: [id])
+  githubUser   GithubUsers @relation("HabiticaUsersGithubUsers", fields: [githubUserId], references: [id], onDelete: Cascade)
   githubUserId BigInt      @unique @map("github_user_id") @db.BigInt
   userId       String      @unique @map("user_id") @db.VarChar(255)
   apiToken     String      @map("api_token") @db.VarChar(255)
@@ -65,16 +65,16 @@ model HabiticaUsers {
 }
 
 model WebhookLogs {
-  id           BigInt       @id @default(autoincrement()) @map("id") @db.BigInt
-  uuid         String       @unique @default(uuid()) @map("uuid") @db.VarChar(36)
-  deliveryUuid String       @unique @map("delivery_uuid") @db.VarChar(36)
-  event        String       @map("event") @db.VarChar(255)
-  signature    String       @map("signature") @db.VarChar(255)
-  hookId       String       @map("hook_id") @db.VarChar(255)
-  githubUser   GithubUsers? @relation("GithubUsersWebhookLogs", fields: [githubUserId], references: [id])
-  githubUserId BigInt?      @map("github_user_id") @db.BigInt
-  payload      Json?        @map("payload") @db.JsonB
-  createdAt    DateTime     @default(now()) @map("created_at")
+  id           BigInt      @id @default(autoincrement()) @map("id") @db.BigInt
+  uuid         String      @unique @default(uuid()) @map("uuid") @db.VarChar(36)
+  deliveryUuid String      @unique @map("delivery_uuid") @db.VarChar(36)
+  event        String      @map("event") @db.VarChar(255)
+  signature    String      @map("signature") @db.VarChar(255)
+  hookId       String      @map("hook_id") @db.VarChar(255)
+  githubUser   GithubUsers @relation("GithubUsersWebhookLogs", fields: [githubUserId], references: [id], onDelete: Cascade)
+  githubUserId BigInt      @map("github_user_id") @db.BigInt
+  payload      Json?       @map("payload") @db.JsonB
+  createdAt    DateTime    @default(now()) @map("created_at")
 
   @@map("webhook_logs")
 }

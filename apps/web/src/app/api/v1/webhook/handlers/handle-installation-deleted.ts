@@ -8,41 +8,17 @@ export const handleInstallationDeleted = async ({
 }: EmitterWebhookEvent<'installation.deleted'>) => {
   logger.info('Event triggered.');
 
-  const gitHubInstallation = await prisma.githubInstallations.findFirst({
-    where: {
-      installationId: Number(installation.id),
-    },
-  });
-
-  if (!gitHubInstallation) {
-    throw new Error(
-      '[installation.deleted]: The installation could not be found.',
-    );
-  }
-
-  const gitHubUsers = await prisma.githubUsers.findMany({
-    where: { installationId: gitHubInstallation.id },
-  });
-
-  if (gitHubUsers.length > 0) {
-    await prisma.habiticaUsers.deleteMany({
+  try {
+    await prisma.githubInstallations.delete({
       where: {
-        githubUserId: {
-          in: gitHubUsers.map(({ id }) => id),
-        },
+        installationId: Number(installation.id),
       },
     });
 
-    await prisma.githubUsers.deleteMany({
-      where: {
-        installationId: gitHubInstallation.id,
-      },
-    });
+    logger.info('Installation and all related data deleted successfully.');
+  } catch (error) {
+    logger.error({ error }, 'Failed to delete installation.');
   }
-
-  await prisma.githubInstallations.delete({
-    where: { id: gitHubInstallation.id },
-  });
 
   logger.info('Event processed.');
 };

@@ -1,5 +1,4 @@
 import { EmitterWebhookEvent } from '@octokit/webhooks/types';
-import { v4 } from 'uuid';
 
 import logger from '@/lib/logger';
 import prisma from '@/lib/prisma';
@@ -9,51 +8,38 @@ export const handleInstallationCreated = async ({
 }: EmitterWebhookEvent<'installation.created'>) => {
   logger.info({ installationId: installation.id }, 'Event triggered.');
 
-  const existingGitHubInstallation = await prisma.githubInstallations.findFirst(
-    {
+  const existingGithubInstallation =
+    await prisma.githubInstallations.findUnique({
       where: { installationId: Number(installation.id) },
-    },
-  );
+    });
 
-  if (existingGitHubInstallation) {
+  if (existingGithubInstallation) {
     logger.info('Installation already exists, skipping.');
     return;
   }
 
-  const gitHubInstallation = await prisma.githubInstallations.create({
-    data: {
-      uuid: v4(),
-      installationId: installation.id,
-    },
+  await prisma.$transaction(async tx => {
+    const githubInstallation = await tx.githubInstallations.create({
+      data: {
+        installationId: installation.id,
+      },
+    });
+
+    await tx.githubUsers.create({
+      data: {
+        installationId: githubInstallation.id,
+        login: sender.login,
+        githubId: sender.id,
+        nodeId: sender.node_id,
+        avatarUrl: sender.avatar_url,
+        gravatarId: sender.gravatar_id,
+        htmlUrl: sender.html_url,
+        type: sender.type,
+        name: sender.name,
+        email: sender.email,
+      },
+    });
   });
-
-  if (!gitHubInstallation) {
-    throw new Error(
-      '[installation.created]: Prisma failed to create installation record.',
-    );
-  }
-
-  const gitHubUser = await prisma.githubUsers.create({
-    data: {
-      uuid: v4(),
-      installationId: gitHubInstallation.id,
-      login: sender?.login,
-      githubId: sender?.id,
-      nodeId: sender?.node_id,
-      avatarUrl: sender?.avatar_url,
-      gravatarId: sender?.gravatar_id,
-      htmlUrl: sender?.html_url,
-      type: sender?.type,
-      name: sender?.name,
-      email: sender?.email,
-    },
-  });
-
-  if (!gitHubUser) {
-    throw new Error(
-      '[installation.created]: The GitHub User could not be created.',
-    );
-  }
 
   logger.info('Event processed.');
 };
