@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.4.2](https://github.com/drazenbebic/habitica/compare/web-v0.4.1...web-v0.4.2) (2026-01-12)
+
+
+### Bug Fixes
+
+* add "publish a package" to reward on homepage ([01faa06](https://github.com/drazenbebic/habitica/commit/01faa06e038fbe64b84aea29ca66b1a1a83baa03))
+
 ## [0.4.1](https://github.com/drazenbebic/habitica/compare/web-v0.4.0...web-v0.4.1) (2026-01-12)
 
 
