@@ -1,7 +1,8 @@
 import crypto from 'crypto';
+import { env } from 'process';
 
 const ALGORITHM = 'aes-256-gcm';
-const SECRET_KEY = process.env.ENCRYPTION_KEY || '';
+const SECRET_KEY = env.ENCRYPTION_KEY || '';
 
 if (SECRET_KEY.length < 32) {
   throw new Error('ENCRYPTION_KEY must be at least 32 characters long.');
@@ -10,7 +11,7 @@ if (SECRET_KEY.length < 32) {
 const KEY = crypto.createHash('sha256').update(SECRET_KEY).digest();
 
 export const encrypt = (text: string): string => {
-  const iv = crypto.randomBytes(16); // Initialization Vector
+  const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(ALGORITHM, KEY, iv);
 
   let encrypted = cipher.update(text, 'utf8', 'hex');
