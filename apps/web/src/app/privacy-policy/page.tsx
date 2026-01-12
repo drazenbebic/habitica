@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     'We protect your code and data. Learn about our GDPR compliance, zero-storage policy for source code, and secure infrastructure in Frankfurt.',
 };
 
-const LAST_UPDATED = '11.01.2026';
+const LAST_UPDATED = '12.01.2026';
 
 const PrivacyPolicy: NextPage = () => {
   return (
@@ -20,7 +20,7 @@ const PrivacyPolicy: NextPage = () => {
         <Heading level={1} className="mb-4">
           Privacy Policy
         </Heading>
-        <Content size="lg">Last updated: ${LAST_UPDATED}</Content>
+        <Content size="lg">Last updated: {LAST_UPDATED}</Content>
       </div>
 
       <div className="flex flex-col gap-10">
@@ -67,7 +67,11 @@ const PrivacyPolicy: NextPage = () => {
             </Content>
             <Content as="li">
               <strong>Habitica Credentials:</strong> Your Habitica User ID and
-              API Token. These are stored encrypted in our database.
+              API Token. These are stored using{' '}
+              <strong>AES-256 encryption</strong>
+              (Advanced Encryption Standard) in our database. We cannot see your
+              raw token, and it is only decrypted momentarily to send requests
+              to Habitica on your behalf.
             </Content>
             <Content as="li">
               <strong>Webhook Data:</strong> Metadata about your GitHub activity
@@ -80,10 +84,33 @@ const PrivacyPolicy: NextPage = () => {
           </ul>
         </section>
 
-        {/* 4. Infrastructure & Processors */}
+        {/* 4. Cookies and local storage */}
         <section>
           <Heading level={2} size="xl" className="mb-4">
-            4. Infrastructure & Data Processors
+            4. Cookies & Local Storage
+          </Heading>
+          <Content className="mb-4">
+            We use a minimal number of cookies that are strictly necessary for
+            the application to function. We do not use cookies for advertising
+            or marketing purposes.
+          </Content>
+          <ul className="list-disc space-y-2 pl-5 text-slate-600">
+            <Content as="li">
+              <strong>Authentication (NextAuth):</strong> We use secure,
+              http-only cookies (e.g., <code>next-auth.session-token</code>) to
+              maintain your active session while you are logged in.
+            </Content>
+            <Content as="li">
+              <strong>Preferences:</strong> We may use LocalStorage to remember
+              your UI preferences (e.g., dismissing a welcome message).
+            </Content>
+          </ul>
+        </section>
+
+        {/* 5. Infrastructure & Processors */}
+        <section>
+          <Heading level={2} size="xl" className="mb-4">
+            5. Infrastructure & Data Processors
           </Heading>
           <Content className="mb-4">
             We use strictly selected third-party service providers to host our
@@ -93,7 +120,7 @@ const PrivacyPolicy: NextPage = () => {
           <div className="space-y-6">
             <div>
               <Heading level={3} size="lg" className="mb-2">
-                4.1. Hosting (Vercel)
+                5.1. Hosting (Vercel)
               </Heading>
               <Content>
                 Our website and API functions are hosted on{' '}
@@ -106,7 +133,7 @@ const PrivacyPolicy: NextPage = () => {
 
             <div>
               <Heading level={3} size="lg" className="mb-2">
-                4.2. Database (Neon)
+                5.2. Database (Neon)
               </Heading>
               <Content>
                 Our database is provided by <strong>Neon Inc.</strong> We have
@@ -118,7 +145,7 @@ const PrivacyPolicy: NextPage = () => {
 
             <div>
               <Heading level={3} size="lg" className="mb-2">
-                4.3. Habitica API
+                5.3. Habitica API
               </Heading>
               <Content>
                 To score your habits, we transmit command data (e.g., &#34;Score
@@ -126,13 +153,28 @@ const PrivacyPolicy: NextPage = () => {
                 necessary for the core functionality of the app.
               </Content>
             </div>
+
+            <div>
+              <Heading level={3} size="lg" className="mb-2">
+                5.4. Analytics & Performance
+              </Heading>
+              <Content>
+                We use <strong>Vercel Analytics</strong> and{' '}
+                <strong>Speed Insights</strong>
+                to monitor the performance and reliability of our website. These
+                tools collect anonymous usage data (e.g., page load speeds,
+                device type, and country). This data is aggregated and does not
+                identify individual visitors. We do not use tracking cookies for
+                analytics.
+              </Content>
+            </div>
           </div>
         </section>
 
-        {/* 5. User Rights */}
+        {/* 6. User Rights */}
         <section>
           <Heading level={2} size="xl" className="mb-4">
-            5. Your Rights (GDPR)
+            6. Your Rights (GDPR)
           </Heading>
           <Content className="mb-4">
             Under the GDPR, you have the following rights:

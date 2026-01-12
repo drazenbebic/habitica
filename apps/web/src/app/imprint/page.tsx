@@ -6,7 +6,7 @@ import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 
 export const metadata: Metadata = {
-  title: 'Imprint (Impressum) | Habitica Sync',
+  title: 'Imprint | Habitica Sync',
   description:
     'Legal disclosure and provider identification for Habitica Sync. Operated by Drazen Bebic in Vienna, Austria.',
 };
@@ -18,7 +18,7 @@ const Imprint: NextPage = () => {
         <Heading level={1} className="mb-4">
           Imprint
         </Heading>
-        <Content size="lg">Legal Disclosure (Impressum)</Content>
+        <Content size="lg">Legal Disclosure</Content>
       </div>
 
       <div className="flex flex-col gap-10">

@@ -69,8 +69,11 @@ export const Footer: FC = () => {
 
             <div className="flex flex-col gap-3">
               <h4 className="font-semibold text-slate-900">Legal</h4>
-              <FooterLink href="/imprint">Imprint (Impressum)</FooterLink>
+              <FooterLink href="/imprint">Imprint</FooterLink>
               <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
+              <FooterLink href="/terms-and-conditions">
+                Terms and Conditions
+              </FooterLink>
             </div>
           </div>
         </div>

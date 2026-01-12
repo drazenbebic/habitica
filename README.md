@@ -7,9 +7,15 @@
   </p>
 
   <p>
-    <a href="https://github.com/drazenbebic/habitica/actions"><img src="https://img.shields.io/github/actions/workflow/status/drazenbebic/habitica/release.yaml?branch=main" alt="Build Status"></a>
-    <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT"></a>
-    <a href="https://twitter.com/drazenbebic"><img src="https://img.shields.io/twitter/follow/drazenbebic?style=social" alt="Follow on Twitter"></a>
+    <a href="https://github.com/drazenbebic/habitica/actions/workflows/release.yaml">
+      <img src="https://img.shields.io/github/actions/workflow/status/drazenbebic/habitica/release.yaml?branch=main" alt="Build Status">
+    </a>
+    <a href="LICENSE.md">
+      <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License: AGPL v3">
+    </a>
+    <a href="https://twitter.com/drazenbebic">
+      <img src="https://img.shields.io/twitter/follow/drazenbebic?style=social" alt="Follow on Twitter">
+    </a>
   </p>
 </div>
 
@@ -24,19 +30,22 @@ It is built with **Next.js**, **Prisma**, and **PostgreSQL**.
 ## Features
 
 - **Automated Rewards**:
-    - **Push Commits**: Earn XP for every commit (with anti-spam caps).
-    - **Pull Requests**: Get a large XP boost for opening and merging PRs.
-    - **Code Reviews**: Incentivize team collaboration by rewarding code reviews.
-- **Secure**: Uses GitHub Apps and Webhook signatures verification.
+  - **Push Commits**: Earn XP for every commit (with configurable anti-spam caps).
+  - **Pull Requests**: Get a large XP boost for opening and merging PRs.
+  - **Code Reviews**: Incentivize team collaboration by rewarding code reviews.
+- **Bank-Grade Security**:
+  - **AES-256 Encryption**: User API tokens are encrypted at rest.
+  - **Webhook Verification**: Strictly verifies GitHub SHA-256 signatures to prevent spoofing.
 - **Configurable**: Define your own difficulty multipliers (e.g., "Hard Mode" for legacy repos).
-- **Open Source**: Host it yourself or use the hosted version.
+- **Open Source**: Licensed under AGPLv3.
 
 ## Tech Stack
 
 - **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
-- **Database**: PostgreSQL
+- **Database**: PostgreSQL (via Neon or Docker)
 - **ORM**: [Prisma](https://www.prisma.io/)
-- **Styling**: Tailwind CSS
+- **Encryption**: AES-256-GCM
+- **Styling**: Tailwind CSS 
 - **Authentication**: NextAuth.js / GitHub OAuth
 - **Deployment**: Vercel
 
@@ -99,7 +108,7 @@ Please ensure you use the provided Pull Request Template.
 
 ## License
 
-Distributed under the MIT License.
+Distributed under the GNU Affero General Public License v3.0 (AGPL-3.0). See `LICENSE.md` for more information.
 
 ## Author
 
