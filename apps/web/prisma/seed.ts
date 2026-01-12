@@ -49,12 +49,9 @@ async function createSeededUser(index: number) {
 }
 
 async function main() {
-  console.log(`🌱 Seeding ${AMOUNT_TO_CREATE} users...`);
-
   for (let i = 0; i < AMOUNT_TO_CREATE; i++) {
     try {
-      const result = await createSeededUser(i);
-      console.log(`✅ Created set ${i + 1}: ${result.user}`);
+      await createSeededUser(i);
     } catch (error) {
       console.error(`❌ Failed to create set ${i + 1}:`, error);
     }
