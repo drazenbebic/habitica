@@ -19,7 +19,7 @@ export const Footer: FC = () => {
             <Link href="/" className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 shadow-md shadow-violet-600/20">
                 <Image
-                  src="/habitica_white.png"
+                  src="/octogriffin_white.png"
                   alt="Habitica Sync Logo"
                   width={20}
                   height={20}

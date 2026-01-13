@@ -33,8 +33,8 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: '/habitica_logo_square.png',
-        href: '/habitica_logo_square.png',
+        url: '/octogriffin_logo_square.png',
+        href: '/octogriffin_logo_square.png',
       },
     ],
   },
