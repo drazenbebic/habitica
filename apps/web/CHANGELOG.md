@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1](https://github.com/drazenbebic/habitica/compare/web-v0.5.0...web-v0.5.1) (2026-01-13)
+
+
+### Bug Fixes
+
+* replace habitica logo with octogriffin ([54f91e5](https://github.com/drazenbebic/habitica/commit/54f91e5810b70f3a0204c62a2ab5f0cd7a98cc04))
+
 ## [0.5.0](https://github.com/drazenbebic/habitica/compare/web-v0.4.3...web-v0.5.0) (2026-01-13)
 
 
