@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.5.0](https://github.com/drazenbebic/habitica/compare/web-v0.4.3...web-v0.5.0) (2026-01-13)
+
+
+### Features
+
+* add `useFormattedDate` hook and Timestamp component ([91dc52d](https://github.com/drazenbebic/habitica/commit/91dc52d3f740301a3c5fc2c62a0fe1965921ae19))
+* add support for enabling/disabling repositories ([e50aa66](https://github.com/drazenbebic/habitica/commit/e50aa66aeb4dfd949e81183da36db8a27d90dace))
+
+
+### Bug Fixes
+
+* implement correct heading levels in the footer ([1384b63](https://github.com/drazenbebic/habitica/commit/1384b63504cff849eab8ab4e875186020d382d8a))
+* remove redundant class names ([d594c64](https://github.com/drazenbebic/habitica/commit/d594c64e023d7e4135343ccd44cf24a8f2bba350))
+* show shiny pill animation in unhovered state ([3f84440](https://github.com/drazenbebic/habitica/commit/3f84440196bbf4ef5af9ac9b2e1fe55f3029b84a))
+
 ## [0.4.3](https://github.com/drazenbebic/habitica/compare/web-v0.4.2...web-v0.4.3) (2026-01-12)
 
 
