@@ -45,7 +45,7 @@ export const Pill: FC<PillProps> = ({
   const content = (
     <>
       {variant === 'shiny' && (
-        <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#F1F5F9_0%,#F1F5F9_50%,#8B5CF6_100%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        <span className="absolute inset-[-1000%] animate-[spin_4s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#F1F5F9_0%,#F1F5F9_50%,#8B5CF6_100%)] opacity-75 transition-opacity duration-500 group-hover:opacity-100" />
       )}
 
       <span
