@@ -162,10 +162,10 @@ const TermsAndConditions: NextPage = () => {
 
         {/* Contact */}
         <section className="rounded-3xl bg-slate-50 p-8 text-center">
-          <Heading level={2} size="lg" className="mb-2 text-slate-900">
+          <Heading level={2} size="lg" className="mb-2">
             Contact Us
           </Heading>
-          <Content className="mb-4 text-slate-600">
+          <Content className="mb-4">
             For any legal inquiries regarding these terms, please contact:
           </Content>
           <Link

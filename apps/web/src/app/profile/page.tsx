@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 
+import clsx from 'clsx';
 import {
   Building03Icon,
   GithubIcon,
@@ -54,7 +55,7 @@ export default async function ProfilePage() {
         >
           Adventurer Profile
         </Heading>
-        <Content size="lg" className="text-slate-600">
+        <Content size="lg">
           Your personal identity card and connection status.
         </Content>
       </div>
@@ -85,9 +86,9 @@ export default async function ProfilePage() {
                 <Heading level={2} size="xl" className="tracking-tight">
                   {profile.name}
                 </Heading>
-                <p className="text-base font-medium text-slate-500">
+                <Content color="violet" className="font-medium">
                   @{profile.handle}
-                </p>
+                </Content>
               </div>
 
               <div className="mt-6 flex justify-center">
@@ -198,9 +199,10 @@ const DetailRow = ({
           </Link>
         ) : (
           <span
-            className={`text-sm font-medium ${
-              !value ? 'text-slate-400 italic' : 'text-slate-900'
-            }`}
+            className={clsx('text-sm font-medium', {
+              'text-slate-900': value,
+              'text-slate-400 italic': !value,
+            })}
           >
             {displayValue}
           </span>

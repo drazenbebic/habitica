@@ -31,7 +31,7 @@ const RoadmapPage: NextPage = () => {
           </span>
         </Heading>
 
-        <Content size="lg" className="max-w-xl text-slate-500">
+        <Content size="lg" className="max-w-xl">
           We are building the ultimate RPG workflow tool. Here is a look at the
           features currently in the forge.
         </Content>

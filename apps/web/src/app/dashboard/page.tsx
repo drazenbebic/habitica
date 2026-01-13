@@ -93,7 +93,7 @@ export default async function Dashboard() {
 
               <DashboardRepositoryList />
 
-              <Content size="sm" className="mt-4 text-slate-500">
+              <Content size="sm" className="mt-4">
                 Install the GitHub App on your repositories to start tracking
                 commits.
               </Content>

@@ -10,6 +10,7 @@ import {
   GitMergeIcon,
   GitPullRequestIcon,
   PackageIcon,
+  Rocket01Icon,
   StarIcon,
   Target02Icon,
 } from 'hugeicons-react';
@@ -105,7 +106,7 @@ const Home: NextPage = () => {
           <Heading level={2} size="3xl" className="tracking-tight">
             How it works
           </Heading>
-          <Content className="mt-4 text-lg text-slate-600">
+          <Content className="mt-4" size="lg">
             Simple, secure, and set-and-forget.
           </Content>
         </div>
@@ -130,7 +131,7 @@ const Home: NextPage = () => {
               <Heading level={3} size="lg">
                 Install App
               </Heading>
-              <Content size="sm" className="text-slate-500">
+              <Content size="sm">
                 Install our GitHub App on your repositories. We only listen to
                 webhooks.
               </Content>
@@ -148,7 +149,7 @@ const Home: NextPage = () => {
               <Heading level={3} size="lg">
                 Link Account
               </Heading>
-              <Content size="sm" className="text-slate-500">
+              <Content size="sm">
                 Sign in and add your Habitica API keys. Your data is encrypted
                 at rest.
               </Content>
@@ -170,7 +171,7 @@ const Home: NextPage = () => {
               <Heading level={3} size="lg">
                 Get Rewards
               </Heading>
-              <Content size="sm" className="text-slate-500">
+              <Content size="sm">
                 Push code, merge PRs, or review code. Watch your character gain
                 XP automatically.
               </Content>
@@ -196,17 +197,25 @@ const Home: NextPage = () => {
           <CardBody className="relative z-10 flex flex-col items-center px-6 py-12 sm:px-12">
             <Pill
               variant="neutral"
-              className="mb-4 border-violet-200 bg-white/80 text-violet-700 shadow-xs backdrop-blur-sm"
+              className="mb-4 inline-flex items-center gap-1.5 border-violet-200 bg-white/80 shadow-xs backdrop-blur-sm"
             >
-              ✨ Upcoming Features
+              <Rocket01Icon size={14} className="shrink-0" />
+              <Content
+                color="violet"
+                as="span"
+                size="sm"
+                className="font-semibold"
+              >
+                Upcoming Features
+              </Content>
             </Pill>
 
-            <Heading level={2} size="3xl" className="mb-4 text-slate-900">
+            <Heading level={2} size="3xl" className="mb-4">
               We are just{' '}
               <span className="text-violet-600">getting started.</span>
             </Heading>
 
-            <Content size="lg" className="mx-auto mb-8 max-w-lg text-slate-600">
+            <Content size="lg" className="mx-auto mb-8 max-w-lg">
               From difficulty multipliers to coding streaks, check out what we
               have planned for the next release.
             </Content>

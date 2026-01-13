@@ -4,6 +4,7 @@ import clsx from 'clsx';
 
 type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 type HeadingSize = '4xl' | '3xl' | '2xl' | 'xl' | 'lg' | 'base';
+type HeadingColor = 'slate' | 'violet';
 
 export type HeadingProps = {
   as?: ElementType;
@@ -11,6 +12,7 @@ export type HeadingProps = {
   size?: HeadingSize;
   children?: ReactNode;
   className?: string;
+  color?: HeadingColor;
 };
 
 const sizes: Record<HeadingSize, string> = {
@@ -20,6 +22,11 @@ const sizes: Record<HeadingSize, string> = {
   xl: 'text-xl font-bold tracking-tight',
   lg: 'text-lg font-semibold tracking-tight',
   base: 'text-base font-semibold tracking-tight',
+};
+
+const colors: Record<HeadingColor, string> = {
+  slate: 'text-slate-900',
+  violet: 'text-violet-900',
 };
 
 const defaultSizeMap: Record<HeadingLevel, HeadingSize> = {
@@ -37,6 +44,7 @@ export const Heading: FC<HeadingProps> = ({
   size,
   children,
   className,
+  color = 'slate',
   ...props
 }) => {
   const Tag = as || `h${level}`;
@@ -45,7 +53,7 @@ export const Heading: FC<HeadingProps> = ({
   return createElement(
     Tag,
     {
-      className: clsx('text-slate-900', sizes[resolvedSize], className),
+      className: clsx(sizes[resolvedSize], colors[color], className),
       ...props,
     },
     children,

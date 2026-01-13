@@ -20,7 +20,7 @@ export const RoadmapFeatureItem: FC<RoadmapFeatureItemProps> = ({
       <div className="absolute left-0 top-1.5 h-3.5 w-3.5 rounded-full border-2 border-slate-100 bg-white"></div>
 
       <div className="mb-2 flex flex-wrap items-center gap-x-3 gap-y-1">
-        <Heading level={4} size="base" className="font-semibold text-slate-900">
+        <Heading level={4} size="base" className="font-semibold">
           {title}
         </Heading>
         {tags.map(tag => (
@@ -29,9 +29,7 @@ export const RoadmapFeatureItem: FC<RoadmapFeatureItemProps> = ({
           </Badge>
         ))}
       </div>
-      <Content size="sm" className="leading-relaxed text-slate-500">
-        {description}
-      </Content>
+      <Content size="sm">{description}</Content>
     </div>
   );
 };

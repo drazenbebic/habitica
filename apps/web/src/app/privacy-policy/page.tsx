@@ -13,6 +13,26 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = '12.01.2026';
 
+type ApiResponse<T> = {
+  items: T[];
+  total: number;
+  lastPage: number;
+};
+
+type User = {
+  id: number;
+  name: string;
+};
+
+type Product = {
+  id: number;
+  price: number;
+};
+
+function add(a: number, b: number) {
+  return a + b;
+}
+
 const PrivacyPolicy: NextPage = () => {
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:py-20">
@@ -45,7 +65,7 @@ const PrivacyPolicy: NextPage = () => {
           <Content className="mb-2">
             The data controller responsible for this website is:
           </Content>
-          <div className="rounded-2xl bg-slate-50 p-6 text-slate-700">
+          <div className="rounded-2xl bg-slate-50 px-6 py-4 text-slate-700">
             <Content className="font-semibold">Drazen Bebic</Content>
             <Content>Postfach 0029 1190 Vienna, Austria</Content>
             <Content>Email: habitica@bebic.dev</Content>
@@ -60,7 +80,7 @@ const PrivacyPolicy: NextPage = () => {
           <Content className="mb-4">
             To provide the gamification service, we process the following data:
           </Content>
-          <ul className="list-disc space-y-2 pl-5 text-slate-600">
+          <ul className="mb-4 list-disc space-y-2 pl-6">
             <Content as="li">
               <strong>GitHub Account Data:</strong> Username, Avatar, and GitHub
               User ID (via NextAuth).
@@ -75,13 +95,16 @@ const PrivacyPolicy: NextPage = () => {
             </Content>
             <Content as="li">
               <strong>Webhook Data:</strong> Metadata about your GitHub activity
-              (commits, pull requests, issue comments). <br />
-              <span className="text-sm font-semibold text-violet-600">
-                Important: We do not access, read, or store your source code
-                files.
-              </span>
+              (commits, pull requests, issue comments).
             </Content>
           </ul>
+
+          <blockquote className="px-6 py-4 rounded-2xl bg-violet-100">
+            <Content className="font-medium" color="violet">
+              Important: We do not access, read, or store your source code
+              files.
+            </Content>
+          </blockquote>
         </section>
 
         {/* 4. Cookies and local storage */}
@@ -94,7 +117,7 @@ const PrivacyPolicy: NextPage = () => {
             the application to function. We do not use cookies for advertising
             or marketing purposes.
           </Content>
-          <ul className="list-disc space-y-2 pl-5 text-slate-600">
+          <ul className="list-disc space-y-2 pl-6">
             <Content as="li">
               <strong>Authentication (NextAuth):</strong> We use secure,
               http-only cookies (e.g., <code>next-auth.session-token</code>) to
@@ -179,7 +202,7 @@ const PrivacyPolicy: NextPage = () => {
           <Content className="mb-4">
             Under the GDPR, you have the following rights:
           </Content>
-          <ul className="list-disc space-y-1 pl-5">
+          <ul className="list-disc space-y-1 pl-6">
             <Content as="li">Right to access your stored data.</Content>
             <Content as="li">
               Right to rectification (update your keys).
@@ -195,10 +218,10 @@ const PrivacyPolicy: NextPage = () => {
 
         {/* 6. Contact */}
         <section className="rounded-3xl bg-violet-50 p-8 text-center">
-          <Heading level={2} size="lg" className="mb-2 text-violet-900">
+          <Heading level={2} size="lg" className="mb-2" color="violet">
             Questions?
           </Heading>
-          <Content className="mb-4 text-violet-800">
+          <Content className="mb-4" color="violet">
             If you have any questions about this policy, please contact us at:
           </Content>
           <Link

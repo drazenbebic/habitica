@@ -4,7 +4,6 @@ import {
   Children,
   cloneElement,
   isValidElement,
-  ReactElement,
   ReactNode,
   useMemo,
   useState,
@@ -14,10 +13,8 @@ import clsx from 'clsx';
 
 import { AccordionProps } from '@/components/ui/Accordion';
 
-function isAccordionElement(
-  child: ReactNode,
-): child is ReactElement<AccordionProps> {
-  return isValidElement(child);
+function isAccordionElement(child: ReactNode) {
+  return isValidElement<AccordionProps>(child);
 }
 
 type AccordionGroupProps = {

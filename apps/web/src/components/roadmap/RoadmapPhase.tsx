@@ -58,13 +58,10 @@ export const RoadmapPhase: FC<RoadmapPhaseProps> = ({
                   {icon}
                 </div>
                 <div>
-                  <Heading level={3} size="lg" className="text-slate-900">
+                  <Heading level={3} size="lg">
                     {phase}
                   </Heading>
-                  <Content
-                    size="xs"
-                    className="font-medium uppercase tracking-wider text-slate-500"
-                  >
+                  <Content size="xs" className="font-semibold uppercase">
                     {status}
                   </Content>
                 </div>

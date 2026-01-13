@@ -30,10 +30,10 @@ const Imprint: NextPage = () => {
 
           <div className="grid gap-6 sm:grid-cols-2">
             <div>
-              <Heading level={3} size="base" className="mb-1 text-slate-500">
+              <Heading level={3} size="base" className="mb-1">
                 Media Owner & Publisher
               </Heading>
-              <Content className="font-medium text-slate-900">
+              <Content className="font-medium">
                 Drazen Bebic
                 <br />
                 Postfatch 0029 1190 Vienna
@@ -43,7 +43,7 @@ const Imprint: NextPage = () => {
             </div>
 
             <div>
-              <Heading level={3} size="base" className="mb-1 text-slate-500">
+              <Heading level={3} size="base" className="mb-1">
                 Contact
               </Heading>
               <Content>
@@ -68,7 +68,7 @@ const Imprint: NextPage = () => {
           </Heading>
           <div className="space-y-4">
             <div>
-              <Heading level={3} size="base" className="mb-1 text-slate-500">
+              <Heading level={3} size="base" className="mb-1">
                 Business Purpose
               </Heading>
               <Content>
@@ -78,7 +78,7 @@ const Imprint: NextPage = () => {
             </div>
 
             <div>
-              <Heading level={3} size="base" className="mb-1 text-slate-500">
+              <Heading level={3} size="base" className="mb-1">
                 Applicable Legislation
               </Heading>
               <Content>
