@@ -10,7 +10,7 @@ export type FooterLinkProps = {
 export const FooterLink: FC<FooterLinkProps> = ({ children, href, target }) => (
   <Link
     href={href}
-    className="text-sm text-slate-600 transition-colors hover:text-violet-600"
+    className="text-sm text-slate-600 transition-colors hover:text-violet-600 hover:underline"
     target={target}
   >
     {children}

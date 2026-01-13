@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { FavouriteIcon, GithubIcon, NewTwitterIcon } from 'hugeicons-react';
 
 import { FooterLink } from '@/components/FooterLink';
+import { Heading } from '@/components/ui/Heading';
 
 export const Footer: FC = () => {
   const currentYear = new Date().getFullYear();
@@ -35,7 +36,9 @@ export const Footer: FC = () => {
 
           <div className="grid grid-cols-2 gap-8 lg:col-span-2 lg:grid-cols-3">
             <div className="flex flex-col gap-3">
-              <h4 className="font-semibold text-slate-900">Product</h4>
+              <Heading level={3} className="font-semibold text-base">
+                Product
+              </Heading>
               <FooterLink href="/">Home</FooterLink>
               <FooterLink href="/dashboard">Dashboard</FooterLink>
               <FooterLink href="/profile">Profile</FooterLink>
@@ -48,7 +51,9 @@ export const Footer: FC = () => {
             </div>
 
             <div className="flex flex-col gap-3">
-              <h4 className="font-semibold text-slate-900">Resources</h4>
+              <Heading level={3} className="font-semibold text-base">
+                Resources
+              </Heading>
               <FooterLink href="/faq">FAQ</FooterLink>
               <FooterLink
                 href="https://github.com/drazenbebic/habitica"
@@ -68,7 +73,9 @@ export const Footer: FC = () => {
             </div>
 
             <div className="flex flex-col gap-3">
-              <h4 className="font-semibold text-slate-900">Legal</h4>
+              <Heading level={3} className="font-semibold text-base">
+                Legal
+              </Heading>
               <FooterLink href="/imprint">Imprint</FooterLink>
               <FooterLink href="/privacy-policy">Privacy Policy</FooterLink>
               <FooterLink href="/terms-and-conditions">
