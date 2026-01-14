@@ -6,6 +6,8 @@ import { FavouriteIcon, GithubIcon, NewTwitterIcon } from 'hugeicons-react';
 
 import { FooterLink } from '@/components/FooterLink';
 import { Heading } from '@/components/ui/Heading';
+import { githubAppUrl } from '@/utils/github-app-url';
+import { githubRepositoryUrl } from '@/utils/github-repository-url';
 
 export const Footer: FC = () => {
   const currentYear = new Date().getFullYear();
@@ -42,10 +44,7 @@ export const Footer: FC = () => {
               <FooterLink href="/">Home</FooterLink>
               <FooterLink href="/dashboard">Dashboard</FooterLink>
               <FooterLink href="/profile">Profile</FooterLink>
-              <FooterLink
-                href="https://github.com/apps/habitica-integration"
-                target="_blank"
-              >
+              <FooterLink href={githubAppUrl()} target="_blank">
                 Install App
               </FooterLink>
             </div>
@@ -55,10 +54,7 @@ export const Footer: FC = () => {
                 Resources
               </Heading>
               <FooterLink href="/faq">FAQ</FooterLink>
-              <FooterLink
-                href="https://github.com/drazenbebic/habitica"
-                target="_blank"
-              >
+              <FooterLink href={githubRepositoryUrl()} target="_blank">
                 GitHub Repo
               </FooterLink>
               <FooterLink href="https://habitica.com" target="_blank">

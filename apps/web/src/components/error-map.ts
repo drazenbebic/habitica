@@ -1,5 +1,7 @@
 import { toast } from 'sonner';
 
+import { githubAppUrl } from '@/utils/github-app-url';
+
 export const errorMap = {
   GithubAppNotInstalled: () => {
     toast.error('Access Denied', {
@@ -7,8 +9,7 @@ export const errorMap = {
       duration: 8000,
       action: {
         label: 'Install App',
-        onClick: () =>
-          window.open('https://github.com/apps/habitica-integration', '_blank'),
+        onClick: () => window.open(githubAppUrl(), '_blank'),
       },
     });
   },

@@ -14,6 +14,7 @@ import { Button } from '@/components/ui/Button';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { Pill } from '@/components/ui/Pill';
+import { githubRepositoryUrl } from '@/utils/github-repository-url';
 
 export const metadata: Metadata = {
   title: 'Roadmap - Habitica Sync',
@@ -117,10 +118,7 @@ const RoadmapPage: NextPage = () => {
             Our roadmap is driven by developers like you.
           </Content>
         </div>
-        <Link
-          href="https://github.com/drazenbebic/habitica/issues"
-          target="_blank"
-        >
+        <Link href={githubRepositoryUrl('/issues')} target="_blank">
           <Button variant="primary" size="lg">
             Submit Feature Request
           </Button>

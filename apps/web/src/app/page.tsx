@@ -22,6 +22,8 @@ import { CardBody } from '@/components/ui/CardBody';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { Pill } from '@/components/ui/Pill';
+import { githubAppUrl } from '@/utils/github-app-url';
+import { githubRepositoryUrl } from '@/utils/github-repository-url';
 
 export const metadata: Metadata = {
   title: 'Habitica Sync - Gamify Your GitHub Workflow',
@@ -45,7 +47,7 @@ const Home: NextPage = () => {
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-6">
           <Pill
             variant="shiny"
-            href={`https://github.com/drazenbebic/habitica/releases/tag/web-v${version}`}
+            href={githubRepositoryUrl(`/releases/tag/web-v${version}`)}
             target="_blank"
           >
             <span className="relative flex h-2 w-2">
@@ -79,10 +81,7 @@ const Home: NextPage = () => {
           </Content>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-            <Link
-              href="https://github.com/apps/habitica-integration"
-              target="_blank"
-            >
+            <Link href={githubAppUrl()} target="_blank">
               <Button size="lg">
                 Get Started
                 <ArrowRight01Icon size={20} className="ml-2" />
