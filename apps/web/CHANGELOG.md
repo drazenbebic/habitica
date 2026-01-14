@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.2](https://github.com/drazenbebic/octogriffin/compare/web-v0.6.1...web-v0.6.2) (2026-01-14)
+
+
+### Bug Fixes
+
+* use correct github app url in dashboard repo list ([7a7c63d](https://github.com/drazenbebic/octogriffin/commit/7a7c63d9dae691f454bd4f79c1b3ae3263560cc5))
+
 ## [0.6.1](https://github.com/drazenbebic/octogriffin/compare/web-v0.6.0...web-v0.6.1) (2026-01-14)
 
 
