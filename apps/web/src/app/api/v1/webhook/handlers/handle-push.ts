@@ -45,7 +45,7 @@ export const handlePush = async ({
 
   const validCommits = commits.filter(
     commit =>
-      commit.author.username && commit.author.username !== 'dependabot[bot]',
+      commit.author.username && !commit.author.username.includes('[bot]'),
   );
 
   if (validCommits.length === 0) {
