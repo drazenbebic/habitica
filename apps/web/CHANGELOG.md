@@ -1,5 +1,20 @@
 # Changelog
 
+## [0.6.0](https://github.com/drazenbebic/octogriffin/compare/web-v0.5.1...web-v0.6.0) (2026-01-14)
+
+
+### Features
+
+* rename habitica sync to octogriffin ([31253a7](https://github.com/drazenbebic/octogriffin/commit/31253a7272aad5a4af76abf29a5ec40315b725f5))
+
+
+### Bug Fixes
+
+* add ko-fi button to footer ([c805b4b](https://github.com/drazenbebic/octogriffin/commit/c805b4b4a9e282b6c2342a6705b56b1136f51a62))
+* correct roadmap of the control-freak update ([ba1c64c](https://github.com/drazenbebic/octogriffin/commit/ba1c64c5b35f26785368f1c71cd0f1a7fc2891c0))
+* exclude all bots from push event ([3a163ff](https://github.com/drazenbebic/octogriffin/commit/3a163ff206b91337df0a512b54a1a15e4c054d34))
+* use env variable for github app url ([ccc9b99](https://github.com/drazenbebic/octogriffin/commit/ccc9b99c517451e50534ac5f7a20c536b5bc8137))
+
 ## [0.5.1](https://github.com/drazenbebic/habitica/compare/web-v0.5.0...web-v0.5.1) (2026-01-13)
 
 
