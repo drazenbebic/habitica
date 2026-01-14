@@ -87,10 +87,7 @@ const Home: NextPage = () => {
                 <ArrowRight01Icon size={20} className="ml-2" />
               </Button>
             </Link>
-            <Link
-              href="https://github.com/drazenbebic/habitica"
-              target="_blank"
-            >
+            <Link href={githubRepositoryUrl()} target="_blank">
               <Button variant="secondary" size="lg">
                 <GithubIcon size={20} className="mr-2" />
                 Open Source
