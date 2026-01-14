@@ -2,7 +2,12 @@ import { FC } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { FavouriteIcon, GithubIcon, NewTwitterIcon } from 'hugeicons-react';
+import {
+  Coffee01Icon,
+  FavouriteIcon,
+  GithubIcon,
+  NewTwitterIcon,
+} from 'hugeicons-react';
 
 import { FooterLink } from '@/components/FooterLink';
 import { Heading } from '@/components/ui/Heading';
@@ -34,6 +39,16 @@ export const Footer: FC = () => {
               Level up your RPG character automatically while you code. Open
               source, secure, and built for developers.
             </p>
+
+            <Link
+              href="https://ko-fi.com/drazen"
+              target="_blank"
+              rel="noreferrer"
+              className="mt-2 inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-bold text-slate-700 shadow-sm transition-all hover:border-[#FF5E5B] hover:text-[#FF5E5B] hover:shadow-md active:scale-95"
+            >
+              <Coffee01Icon size={18} className="text-[#FF5E5B]" />
+              <span>Buy me a coffee</span>
+            </Link>
           </div>
 
           <div className="grid grid-cols-2 gap-8 lg:col-span-2 lg:grid-cols-3">
@@ -88,12 +103,12 @@ export const Footer: FC = () => {
 
           <div>
             {!!version && (
-              <span className="hidden text-xs text-slate-400 sm:inline-block">
+              <span className="hidden text-xs text-slate-500 sm:inline-block">
                 v{version}
               </span>
             )}
             {!!version && (
-              <p className="text-center text-xs text-slate-400 sm:hidden">
+              <p className="text-center text-xs text-slate-500 sm:hidden">
                 v{version}
               </p>
             )}
