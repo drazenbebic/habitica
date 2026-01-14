@@ -46,7 +46,7 @@ const RoadmapPage: NextPage = () => {
       </div>
 
       <div className="relative mx-auto max-w-3xl">
-        <div className="absolute left-8 top-4 bottom-4 w-px bg-linear-to-b from-violet-500 via-slate-200 to-transparent hidden md:block"></div>
+        <div className="hidden absolute left-8 top-4 bottom-4 w-px bg-linear-to-b from-violet-500 via-slate-200 to-transparent md:block"></div>
 
         <div className="space-y-12">
           <RoadmapPhase
@@ -58,14 +58,14 @@ const RoadmapPage: NextPage = () => {
             isFirst
           >
             <RoadmapFeatureItem
-              title="Event Weight Configuration"
-              description="A settings dashboard allowing you to customize exactly how much XP each action (Push, PR, Merge) is worth."
+              title="Custom Event Triggers"
+              description="Full control over the cause-and-effect pipeline. Map specific GitHub Webhooks (e.g. 'Pull Request Review') to specific Habitica Habits. You decide the habit name, direction (score +/-), and difficulty (0.1 to 2.0)."
               tags={['Customization', 'Backend']}
             />
             <RoadmapFeatureItem
-              title="Repository Filtering"
-              description="Toggle specific repositories to 'Ignored' status so your dotfiles or test projects don't bloat your stats."
-              tags={['Settings']}
+              title="Repository Difficulty Multipliers"
+              description="Not all code is created equal. Mark complex repositories as 'Hard Mode' to apply a custom XP multiplier (e.g., 1.5x) to all actions performed within them."
+              tags={['Settings', 'Balancing']}
             />
           </RoadmapPhase>
 
@@ -109,7 +109,7 @@ const RoadmapPage: NextPage = () => {
         </div>
       </div>
 
-      <div className="mt-24 flex flex-col items-center justify-center gap-4 text-center border-t border-slate-100 pt-12">
+      <div className="mt-24 flex flex-col items-center justify-center gap-4 border-t border-slate-100 pt-12 text-center">
         <div>
           <Heading level={3} size="xl" className="mb-2">
             Have a better idea?
