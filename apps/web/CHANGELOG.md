@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/drazenbebic/octogriffin/compare/web-v0.6.0...web-v0.6.1) (2026-01-14)
+
+
+### Bug Fixes
+
+* update contact email ([dbdca64](https://github.com/drazenbebic/octogriffin/commit/dbdca64fbc70e9b3e7cf80eb394859843a786d38))
+
 ## [0.6.0](https://github.com/drazenbebic/octogriffin/compare/web-v0.5.1...web-v0.6.0) (2026-01-14)
 
 
