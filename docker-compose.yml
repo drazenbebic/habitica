@@ -1,6 +1,6 @@
 services:
   database:
-    container_name: habitica_database
+    container_name: octogriffin_database
     image: postgres:15.2
     restart: unless-stopped
     environment:

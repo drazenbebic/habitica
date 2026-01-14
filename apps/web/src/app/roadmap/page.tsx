@@ -17,8 +17,8 @@ import { Pill } from '@/components/ui/Pill';
 import { githubRepositoryUrl } from '@/utils/github-repository-url';
 
 export const metadata: Metadata = {
-  title: 'Roadmap - Habitica Sync',
-  description: 'Our development plan for the future of Habitica Sync.',
+  title: 'Roadmap - Octogriffin',
+  description: 'Our development plan for the future of Octogriffin.',
 };
 
 const RoadmapPage: NextPage = () => {

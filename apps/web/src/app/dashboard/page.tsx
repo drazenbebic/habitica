@@ -17,7 +17,7 @@ import { Heading } from '@/components/ui/Heading';
 import { authOptions } from '@/lib/auth';
 
 export const metadata: Metadata = {
-  title: 'Dashboard | Habitica Sync',
+  title: 'Dashboard | Octogriffin',
   description:
     'Manage your Habitica API connections, configure repository webhooks, and track your gamification progress.',
   robots: {

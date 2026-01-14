@@ -59,7 +59,7 @@ describe('@/lib/habitica-api.ts', () => {
         expect.objectContaining({
           'x-api-user': userId,
           'x-api-key': apiToken,
-          'x-client': `${userId}-HabiticaSync`,
+          'x-client': `${userId}-Octogriffin`,
           'Content-Type': 'application/json',
         }),
       );

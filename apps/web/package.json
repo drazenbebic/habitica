@@ -1,5 +1,5 @@
 {
-  "name": "@habitica/web",
+  "name": "@octogriffin/web",
   "version": "0.5.1",
   "private": true,
   "author": "Drazen Bebic <drazen.bebic@outlook.com>",
@@ -13,7 +13,7 @@
     "analyze:turbopack": "next experimental-analyze",
     "lint": "eslint",
     "test": "jest",
-    "expose": "ngrok start habitica",
+    "expose": "ngrok start octogriffin",
     "prisma:studio": "prisma studio",
     "prisma:db:pull": "prisma db pull",
     "prisma:db:push": "prisma db push",

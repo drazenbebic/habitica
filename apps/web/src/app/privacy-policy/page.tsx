@@ -6,32 +6,12 @@ import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Habitica Sync',
+  title: 'Privacy Policy | Octogriffin',
   description:
     'We protect your code and data. Learn about our GDPR compliance, zero-storage policy for source code, and secure infrastructure in Frankfurt.',
 };
 
 const LAST_UPDATED = '12.01.2026';
-
-type ApiResponse<T> = {
-  items: T[];
-  total: number;
-  lastPage: number;
-};
-
-type User = {
-  id: number;
-  name: string;
-};
-
-type Product = {
-  id: number;
-  price: number;
-};
-
-function add(a: number, b: number) {
-  return a + b;
-}
 
 const PrivacyPolicy: NextPage = () => {
   return (

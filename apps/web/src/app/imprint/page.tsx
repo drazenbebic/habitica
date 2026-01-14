@@ -6,9 +6,9 @@ import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 
 export const metadata: Metadata = {
-  title: 'Imprint | Habitica Sync',
+  title: 'Imprint | Octogriffin',
   description:
-    'Legal disclosure and provider identification for Habitica Sync. Operated by Drazen Bebic in Vienna, Austria.',
+    'Legal disclosure and provider identification for Octogriffin. Operated by Drazen Bebic in Vienna, Austria.',
 };
 
 const Imprint: NextPage = () => {

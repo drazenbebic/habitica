@@ -27,13 +27,13 @@ export const Footer: FC = () => {
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600 shadow-md shadow-violet-600/20">
                 <Image
                   src="/octogriffin_white.png"
-                  alt="Habitica Sync Logo"
+                  alt="Octogriffin Logo"
                   width={20}
                   height={20}
                   className="h-5 w-5 object-contain"
                 />
               </div>
-              <span className="font-bold text-slate-900">Habitica Sync</span>
+              <span className="font-bold text-slate-900">Octogriffin</span>
             </Link>
             <p className="max-w-xs text-sm leading-relaxed text-slate-500">
               Level up your RPG character automatically while you code. Open
@@ -98,7 +98,7 @@ export const Footer: FC = () => {
 
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-slate-200 pt-8 sm:flex-row">
           <p className="text-sm text-slate-500">
-            &copy; {currentYear} Habitica Sync. Not affiliated with Habitica.
+            &copy; {currentYear} Octogriffin. Not affiliated with Habitica.
           </p>
 
           <div>

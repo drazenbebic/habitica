@@ -23,7 +23,7 @@ import { Heading } from '@/components/ui/Heading';
 import { authOptions } from '@/lib/auth';
 
 export const metadata: Metadata = {
-  title: 'Profile | Habitica Sync',
+  title: 'Profile | Octogriffin',
   description:
     'View your adventurer identity, manage account details, and check your Habitica connection status.',
   robots: {

@@ -38,7 +38,7 @@ jobs:
         id: deployment
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          environment-url: https://habitica.bebic.dev
+          environment-url: https://octogriffin.com
           environment: Production
           initial-status: in_progress
 

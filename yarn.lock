@@ -1096,63 +1096,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@habitica/web@workspace:apps/web":
-  version: 0.0.0-use.local
-  resolution: "@habitica/web@workspace:apps/web"
-  dependencies:
-    "@ariakit/react": "npm:^0.4.20"
-    "@faker-js/faker": "npm:^10.2.0"
-    "@next/bundle-analyzer": "npm:^16.1.1"
-    "@octokit/webhooks": "npm:^14.2.0"
-    "@octokit/webhooks-types": "npm:^7.6.1"
-    "@prisma/adapter-pg": "npm:^7.2.0"
-    "@prisma/client": "npm:^7.2.0"
-    "@tailwindcss/postcss": "npm:^4.1.18"
-    "@testing-library/dom": "npm:^10.4.1"
-    "@testing-library/react": "npm:^16.3.1"
-    "@types/jest": "npm:^30.0.0"
-    "@types/node": "npm:^24"
-    "@types/pg": "npm:^8.16.0"
-    "@types/react": "npm:^19"
-    "@types/react-dom": "npm:^19"
-    "@vercel/analytics": "npm:^1.6.1"
-    "@vercel/config": "npm:^0.0.25"
-    "@vercel/speed-insights": "npm:^1.3.1"
-    autoprefixer: "npm:^10.4.23"
-    classnames: "npm:^2.5.1"
-    clsx: "npm:^2.1.1"
-    dotenv: "npm:^17.2.3"
-    eslint: "npm:^9.39.2"
-    eslint-config-next: "npm:^16.1.1"
-    eslint-config-prettier: "npm:^10.1.8"
-    eslint-plugin-prettier: "npm:^5.5.4"
-    eslint-plugin-simple-import-sort: "npm:^12.1.1"
-    eslint-plugin-unused-imports: "npm:^4.3.0"
-    hugeicons-react: "npm:^0.3.0"
-    husky: "npm:^9.1.7"
-    jest: "npm:^30.2.0"
-    jest-environment-jsdom: "npm:^30.2.0"
-    jest-mock-extended: "npm:^4.0.0"
-    next: "npm:^16.1.1"
-    next-auth: "npm:^4.24.13"
-    octokit: "npm:^5.0.5"
-    pg: "npm:^8.16.3"
-    pino: "npm:^10.1.1"
-    pino-pretty: "npm:^13.1.3"
-    prettier: "npm:^3.7.4"
-    prisma: "npm:^7.2.0"
-    react: "npm:^19.2.3"
-    react-dom: "npm:^19.2.3"
-    sass: "npm:^1.97.2"
-    sonner: "npm:^2.0.7"
-    tailwindcss: "npm:^4.1.18"
-    ts-jest: "npm:^29.4.6"
-    tsx: "npm:^4.21.0"
-    typescript: "npm:^5.9.3"
-    uuid: "npm:^13.0.0"
-  languageName: unknown
-  linkType: soft
-
 "@hono/node-server@npm:1.19.6":
   version: 1.19.6
   resolution: "@hono/node-server@npm:1.19.6"
@@ -1978,6 +1921,63 @@ __metadata:
   checksum: 10c0/26e376d780f60ff16e874a0ac9bc3399186846baae0b6e1352286385ac134d900cc5dafaded77f38d77f86898fc923ae1cee9d7399f0275b1aa24878915d722b
   languageName: node
   linkType: hard
+
+"@octogriffin/web@workspace:apps/web":
+  version: 0.0.0-use.local
+  resolution: "@octogriffin/web@workspace:apps/web"
+  dependencies:
+    "@ariakit/react": "npm:^0.4.20"
+    "@faker-js/faker": "npm:^10.2.0"
+    "@next/bundle-analyzer": "npm:^16.1.1"
+    "@octokit/webhooks": "npm:^14.2.0"
+    "@octokit/webhooks-types": "npm:^7.6.1"
+    "@prisma/adapter-pg": "npm:^7.2.0"
+    "@prisma/client": "npm:^7.2.0"
+    "@tailwindcss/postcss": "npm:^4.1.18"
+    "@testing-library/dom": "npm:^10.4.1"
+    "@testing-library/react": "npm:^16.3.1"
+    "@types/jest": "npm:^30.0.0"
+    "@types/node": "npm:^24"
+    "@types/pg": "npm:^8.16.0"
+    "@types/react": "npm:^19"
+    "@types/react-dom": "npm:^19"
+    "@vercel/analytics": "npm:^1.6.1"
+    "@vercel/config": "npm:^0.0.25"
+    "@vercel/speed-insights": "npm:^1.3.1"
+    autoprefixer: "npm:^10.4.23"
+    classnames: "npm:^2.5.1"
+    clsx: "npm:^2.1.1"
+    dotenv: "npm:^17.2.3"
+    eslint: "npm:^9.39.2"
+    eslint-config-next: "npm:^16.1.1"
+    eslint-config-prettier: "npm:^10.1.8"
+    eslint-plugin-prettier: "npm:^5.5.4"
+    eslint-plugin-simple-import-sort: "npm:^12.1.1"
+    eslint-plugin-unused-imports: "npm:^4.3.0"
+    hugeicons-react: "npm:^0.3.0"
+    husky: "npm:^9.1.7"
+    jest: "npm:^30.2.0"
+    jest-environment-jsdom: "npm:^30.2.0"
+    jest-mock-extended: "npm:^4.0.0"
+    next: "npm:^16.1.1"
+    next-auth: "npm:^4.24.13"
+    octokit: "npm:^5.0.5"
+    pg: "npm:^8.16.3"
+    pino: "npm:^10.1.1"
+    pino-pretty: "npm:^13.1.3"
+    prettier: "npm:^3.7.4"
+    prisma: "npm:^7.2.0"
+    react: "npm:^19.2.3"
+    react-dom: "npm:^19.2.3"
+    sass: "npm:^1.97.2"
+    sonner: "npm:^2.0.7"
+    tailwindcss: "npm:^4.1.18"
+    ts-jest: "npm:^29.4.6"
+    tsx: "npm:^4.21.0"
+    typescript: "npm:^5.9.3"
+    uuid: "npm:^13.0.0"
+  languageName: unknown
+  linkType: soft
 
 "@octokit/app@npm:^16.1.2":
   version: 16.1.2
@@ -5870,17 +5870,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"habitica.bebic.dev@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "habitica.bebic.dev@workspace:."
-  dependencies:
-    "@commitlint/cli": "npm:^20.3.1"
-    "@commitlint/config-conventional": "npm:^20.3.1"
-    husky: "npm:^9.1.7"
-    turbo: "npm:^2.7.3"
-  languageName: unknown
-  linkType: soft
-
 "handlebars@npm:^4.7.8":
   version: 4.7.8
   resolution: "handlebars@npm:4.7.8"
@@ -8138,6 +8127,17 @@ __metadata:
   checksum: 10c0/3c47814fdc64842ae3d5a74bc9d06bdd8d21563c04d9939bf6716a9c00596a4ebc342552f8934013d1ec991c74e3671b26710a0c51815f0b603795605ab6b2c9
   languageName: node
   linkType: hard
+
+"octogriffin.com@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "octogriffin.com@workspace:."
+  dependencies:
+    "@commitlint/cli": "npm:^20.3.1"
+    "@commitlint/config-conventional": "npm:^20.3.1"
+    husky: "npm:^9.1.7"
+    turbo: "npm:^2.7.3"
+  languageName: unknown
+  linkType: soft
 
 "octokit@npm:^5.0.5":
   version: 5.0.5

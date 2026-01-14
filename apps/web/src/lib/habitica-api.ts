@@ -19,7 +19,7 @@ class HabiticaApi {
       'Content-Type': 'application/json',
       'x-api-user': userId,
       'x-api-key': apiToken,
-      'x-client': `${userId}-HabiticaSync`,
+      'x-client': `${userId}-Octogriffin`,
     };
   }
 

@@ -10,9 +10,9 @@ import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 
 export const metadata: Metadata = {
-  title: 'FAQ | Habitica Sync',
+  title: 'FAQ | Octogriffin',
   description:
-    'Common questions about how Habitica Sync processes your GitHub activity and rewards you.',
+    'Common questions about how Octogriffin processes your GitHub activity and rewards you.',
 };
 
 export default function FaqPage() {
@@ -97,7 +97,7 @@ export default function FaqPage() {
 
         <Accordion title="Is this free to use?">
           <Content>
-            Yes! Habitica Sync is a passion project built by developers, for
+            Yes! Octogriffin is a passion project built by developers, for
             developers. It is currently free to use. In the future, we may
             introduce a premium tier for advanced analytics or team features,
             but the core syncing will always remain free.

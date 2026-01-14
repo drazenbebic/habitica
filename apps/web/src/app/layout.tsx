@@ -27,8 +27,8 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Habitica Sync',
-    default: 'Habitica Sync',
+    template: '%s | Octogriffin',
+    default: 'Octogriffin',
   },
   icons: {
     icon: [

@@ -6,9 +6,9 @@ import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions | Habitica Sync',
+  title: 'Terms & Conditions | Octogriffin',
   description:
-    'User agreement, usage guidelines, and liability disclaimers for the Habitica Sync GitHub integration.',
+    'User agreement, usage guidelines, and liability disclaimers for the Octogriffin GitHub integration.',
 };
 
 const LAST_UPDATED = '12.01.2026';
@@ -30,7 +30,7 @@ const TermsAndConditions: NextPage = () => {
             1. Introduction
           </Heading>
           <Content className="mb-4">
-            Welcome to <strong>Habitica Sync</strong>. By accessing our website,
+            Welcome to <strong>Octogriffin</strong>. By accessing our website,
             installing our GitHub App, or using our services, you agree to be
             bound by these Terms and Conditions.
           </Content>
@@ -48,7 +48,7 @@ const TermsAndConditions: NextPage = () => {
             2. Description of Service
           </Heading>
           <Content className="mb-4">
-            Habitica Sync is a third-party integration tool that connects GitHub
+            Octogriffin is a third-party integration tool that connects GitHub
             activity to the Habitica gamification platform.
           </Content>
           <ul className="list-disc space-y-2 pl-5 text-slate-600">
@@ -119,7 +119,7 @@ const TermsAndConditions: NextPage = () => {
             5. Intellectual Property
           </Heading>
           <Content className="mb-4">
-            <strong>5.1. Source Code:</strong> The source code for Habitica Sync
+            <strong>5.1. Source Code:</strong> The source code for Octogriffin
             is available under the{' '}
             <strong>GNU Affero General Public License v3.0 (AGPL-3.0)</strong>.
             You are free to view, modify, and self-host a copy of the software
@@ -127,11 +127,11 @@ const TermsAndConditions: NextPage = () => {
           </Content>
           <Content>
             <strong>5.2. Service & Trademarks:</strong> While the code is open
-            source, the &#34;Habitica Sync&#34; service provided on this
-            website, the visual design, the &#34;Habitica Sync&#34; name, and
-            the branding are the intellectual property of the Operator. You may
-            not use our trademarks or trade dress in a way that causes confusion
-            or implies affiliation.
+            source, the &#34;Octogriffin&#34; service provided on this website,
+            the visual design, the &#34;Octogriffin&#34; name, and the branding
+            are the intellectual property of the Operator. You may not use our
+            trademarks or trade dress in a way that causes confusion or implies
+            affiliation.
           </Content>
         </section>
 

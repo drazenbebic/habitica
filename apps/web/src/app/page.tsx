@@ -26,11 +26,11 @@ import { githubAppUrl } from '@/utils/github-app-url';
 import { githubRepositoryUrl } from '@/utils/github-repository-url';
 
 export const metadata: Metadata = {
-  title: 'Habitica Sync - Gamify Your GitHub Workflow',
+  title: 'Octogriffin - Gamify Your GitHub Workflow',
   description:
     'Level up your RPG character automatically while you code. Connect GitHub to Habitica and turn commits, PRs, and reviews into XP, Gold, and Loot.',
   openGraph: {
-    title: 'Habitica Sync - Gamify Your GitHub Workflow',
+    title: 'Octogriffin - Gamify Your GitHub Workflow',
     description:
       'Turn your code commits into RPG rewards. Open source and secure.',
   },
@@ -76,8 +76,9 @@ const Home: NextPage = () => {
           </Heading>
 
           <Content size="lg" className="max-w-2xl text-center">
-            Connect your GitHub Account to our Habitica App. Level up your
-            character, find items, and slay monsters just by writing code.
+            Connect your GitHub Account to our Octogriffin App. Level up your
+            Habitica character, find items, and slay monsters just by writing
+            code.
           </Content>
 
           <div className="flex flex-wrap items-center justify-center gap-4 pt-4">

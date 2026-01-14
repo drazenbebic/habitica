@@ -3,7 +3,7 @@
   "packages": {
     "apps/web": {
       "release-type": "node",
-      "package-name": "@habitica/web",
+      "package-name": "@octogriffin/web",
       "changelog-path": "CHANGELOG.md"
     }
   }

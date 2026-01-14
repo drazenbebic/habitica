@@ -24,14 +24,14 @@ export const Header: FC = () => {
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600 text-white shadow-lg shadow-violet-600/20 ring-1 ring-black/5 transition-transform duration-200 group-hover:scale-105 group-active:scale-95">
             <Image
               src="/octogriffin_white.png"
-              alt="Habitica Sync Logo"
+              alt="Octogriffin Logo"
               width={24}
               height={24}
               className="h-6 w-6 object-contain"
             />
           </div>
           <span className="hidden font-bold tracking-tight text-slate-900 sm:block">
-            Habitica Sync
+            Octogriffin
           </span>
         </Link>
 

@@ -1,6 +1,6 @@
 <div align="center">
-  <img src="apps/web/public/habitica_logo_square.png" alt="Habitica Sync Logo" width="120" height="120" />
-  <h1>Habitica Sync</h1>
+  <img src="apps/web/public/octogriffin_logo_square.png" alt="Octogriffin Logo" width="120" height="120" />
+  <h1>Octogriffin</h1>
   <p>
     <strong>Turn your Commits into Gold and XP.</strong><br>
     Gamify your open-source work and professional development by connecting GitHub to Habitica.
@@ -23,7 +23,7 @@
 
 ## About
 
-**Habitica Sync** acts as a bridge between your GitHub workflow and your Habitica RPG character. Instead of manually checking off "Did code today" tasks, this application listens to GitHub webhooks and automatically rewards you based on the complexity and impact of your work.
+**Octogriffin** acts as a bridge between your GitHub workflow and your Habitica RPG character. Instead of manually checking off "Did code today" tasks, this application listens to GitHub webhooks and automatically rewards you based on the complexity and impact of your work.
 
 It is built with **Next.js**, **Prisma**, and **PostgreSQL**.
 
