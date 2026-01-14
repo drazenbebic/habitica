@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
+import { supportEmail } from '@/utils/support-email';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy | Octogriffin',
@@ -14,6 +15,8 @@ export const metadata: Metadata = {
 const LAST_UPDATED = '12.01.2026';
 
 const PrivacyPolicy: NextPage = () => {
+  const email = supportEmail();
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:py-20">
       <div className="mb-10 border-b border-slate-200 pb-8">
@@ -48,7 +51,7 @@ const PrivacyPolicy: NextPage = () => {
           <div className="rounded-2xl bg-slate-50 px-6 py-4 text-slate-700">
             <Content className="font-semibold">Drazen Bebic</Content>
             <Content>Postfach 0029 1190 Vienna, Austria</Content>
-            <Content>Email: habitica@bebic.dev</Content>
+            <Content>Email: {email}</Content>
           </div>
         </section>
 
@@ -205,10 +208,10 @@ const PrivacyPolicy: NextPage = () => {
             If you have any questions about this policy, please contact us at:
           </Content>
           <Link
-            href="mailto:habitica@bebic.dev"
+            href={`mailto:${email}`}
             className="font-bold text-violet-600 hover:underline"
           >
-            habitica@bebic.dev
+            {email}
           </Link>
         </section>
       </div>

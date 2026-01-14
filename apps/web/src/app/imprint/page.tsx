@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
+import { supportEmail } from '@/utils/support-email';
 
 export const metadata: Metadata = {
   title: 'Imprint | Octogriffin',
@@ -12,6 +13,8 @@ export const metadata: Metadata = {
 };
 
 const Imprint: NextPage = () => {
+  const email = supportEmail();
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:py-20">
       <div className="mb-10 border-b border-slate-200 pb-8">
@@ -50,10 +53,10 @@ const Imprint: NextPage = () => {
                 <span className="block">
                   <span className="font-medium text-slate-900">Email:</span>{' '}
                   <Link
-                    href="mailto:habitica@bebic.dev"
+                    href={`mailto:${email}`}
                     className="text-violet-600 hover:underline"
                   >
-                    habitica@bebic.dev
+                    {email}
                   </Link>
                 </span>
               </Content>

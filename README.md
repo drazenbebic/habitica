@@ -96,7 +96,7 @@ Visit http://localhost:3000 to see the app.
 
 ## Contributing
 
-We welcome contributions! Please see our [Roadmap](https://habitica.bebic.dev/roadmap) to see what we are working on.
+We welcome contributions! Please see our [Roadmap](https://octogriffin.com/roadmap) to see what we are working on.
 
 1. Fork the repository.
 2. Create a feature branch (`git checkout -b feat/amazing-feature`).

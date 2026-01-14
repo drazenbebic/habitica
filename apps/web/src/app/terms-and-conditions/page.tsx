@@ -4,6 +4,7 @@ import Link from 'next/link';
 
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
+import { supportEmail } from '@/utils/support-email';
 
 export const metadata: Metadata = {
   title: 'Terms & Conditions | Octogriffin',
@@ -14,6 +15,8 @@ export const metadata: Metadata = {
 const LAST_UPDATED = '12.01.2026';
 
 const TermsAndConditions: NextPage = () => {
+  const email = supportEmail();
+
   return (
     <div className="mx-auto max-w-3xl px-4 py-12 sm:py-20">
       <div className="mb-10 border-b border-slate-200 pb-8">
@@ -169,10 +172,10 @@ const TermsAndConditions: NextPage = () => {
             For any legal inquiries regarding these terms, please contact:
           </Content>
           <Link
-            href="mailto:habitica@bebic.dev"
+            href={`mailto:${email}`}
             className="font-bold text-violet-600 hover:underline"
           >
-            habitica@bebic.dev
+            {email}
           </Link>
         </section>
       </div>

@@ -8,6 +8,7 @@ import { AccordionGroup } from '@/components/ui/AccordionGroup';
 import { Button } from '@/components/ui/Button';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
+import { supportEmail } from '@/utils/support-email';
 
 export const metadata: Metadata = {
   title: 'FAQ | Octogriffin',
@@ -113,7 +114,7 @@ export default function FaqPage() {
           Can&#39;t find the answer you&#39;re looking for? Our support team is
           ready to assist.
         </Content>
-        <Link href="mailto:habitica@bebic.dev">
+        <Link href={`mailto:${supportEmail()}`}>
           <Button size="lg" variant="secondary">
             <Mail01Icon size={20} className="mr-2" />
             Contact Support
