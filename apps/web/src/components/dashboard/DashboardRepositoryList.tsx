@@ -20,6 +20,7 @@ import {
 import { getConnectedRepos } from '@/app/actions/get-connected-repos';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';
+import { githubAppUrl } from '@/utils/github-app-url';
 
 export const DashboardRepositoryList: FC = () => {
   const [repos, action, isPending] = useActionState(getConnectedRepos, []);
@@ -117,7 +118,7 @@ export const DashboardRepositoryList: FC = () => {
       )}
 
       <Link
-        href="https://github.com/apps/habitica-integration"
+        href={githubAppUrl()}
         target="_blank"
         rel="noreferrer"
         className="group mt-2 flex items-center justify-center gap-2 rounded-xl border border-dashed border-slate-300 py-3 text-sm font-medium text-slate-500 transition-colors hover:border-violet-300 hover:bg-violet-50 hover:text-violet-600"
