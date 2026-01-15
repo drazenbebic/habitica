@@ -1,5 +1,3 @@
-import { env } from 'process';
-
 export const supportEmail = () => {
-  return env.NEXT_PUBLIC_SUPPORT_EMAIL!;
+  return process.env.NEXT_PUBLIC_SUPPORT_EMAIL || '';
 };
