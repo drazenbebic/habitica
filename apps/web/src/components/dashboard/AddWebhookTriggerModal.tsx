@@ -11,7 +11,7 @@ import {
 } from '@ariakit/react';
 import { ZapIcon } from 'hugeicons-react';
 
-import { createWebhookTriggerAction } from '@/app/actions/create-webhook-trigger-action';
+import { createWebhookTriggerAction } from '@/app/actions/createWebhookTriggerAction';
 import {
   TriggerSchema,
   triggerSchema,

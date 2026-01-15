@@ -22,8 +22,8 @@ import { CardBody } from '@/components/ui/CardBody';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { Pill } from '@/components/ui/Pill';
-import { githubAppUrl } from '@/utils/github-app-url';
-import { githubRepositoryUrl } from '@/utils/github-repository-url';
+import { githubAppUrl } from '@/utils/githubAppUrl';
+import { githubRepositoryUrl } from '@/utils/githubRepositoryUrl';
 
 export const metadata: Metadata = {
   title: 'Octogriffin - Gamify Your GitHub Workflow',

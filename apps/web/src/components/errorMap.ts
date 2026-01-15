@@ -1,6 +1,6 @@
 import { toast } from 'sonner';
 
-import { githubAppUrl } from '@/utils/github-app-url';
+import { githubAppUrl } from '@/utils/githubAppUrl';
 
 export const errorMap = {
   GithubAppNotInstalled: () => {

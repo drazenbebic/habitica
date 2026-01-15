@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth';
 
 import { getGithubUserUserByLogin } from '@/accessors/githubUser';
 import { authOptions } from '@/lib/auth';
-import HabiticaApi from '@/lib/habitica-api';
+import HabiticaApi from '@/lib/HabiticaApi';
 import logger from '@/lib/logger';
 import { UserStats } from '@/types/habitica';
 

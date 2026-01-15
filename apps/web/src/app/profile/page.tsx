@@ -13,7 +13,7 @@ import {
   Mail01Icon,
 } from 'hugeicons-react';
 
-import { getUserProfileAction } from '@/app/actions/get-user-profile-action';
+import { getUserProfileAction } from '@/app/actions/getUserProfileAction';
 import { AuthGate } from '@/components/AuthGate';
 import { Badge } from '@/components/ui/Badge';
 import { Card } from '@/components/ui/Card';

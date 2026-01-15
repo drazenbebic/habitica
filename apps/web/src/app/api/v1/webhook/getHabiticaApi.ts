@@ -3,7 +3,7 @@
 import { getGithubInstallation } from '@/accessors/githubInstallation';
 import { getGithubUser } from '@/accessors/githubUser';
 import { getHabiticaUser } from '@/accessors/habiticaUser';
-import HabiticaApi from '@/lib/habitica-api';
+import HabiticaApi from '@/lib/HabiticaApi';
 
 const getHabiticaApi = async (
   installationId: number,

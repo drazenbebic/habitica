@@ -2,7 +2,7 @@
 
 import { FC, startTransition, useActionState, useEffect, useMemo } from 'react';
 
-import { getHabiticaStatsAction } from '@/app/actions/get-habitica-stats-action';
+import { getHabiticaStatsAction } from '@/app/actions/getHabiticaStatsAction';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Heading } from '@/components/ui/Heading';

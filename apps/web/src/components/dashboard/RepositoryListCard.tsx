@@ -18,14 +18,14 @@ import {
   SquareLock01Icon,
 } from 'hugeicons-react';
 
-import { getConnectedReposAction } from '@/app/actions/get-connected-repos-action';
+import { getConnectedReposAction } from '@/app/actions/getConnectedReposAction';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { githubAppUrl } from '@/utils/github-app-url';
+import { githubAppUrl } from '@/utils/githubAppUrl';
 
 export const RepositoryListCard: FC = () => {
   const [repos, action, isPending] = useActionState(

@@ -16,7 +16,7 @@ import {
 } from 'hugeicons-react';
 import { toast } from 'sonner';
 
-import { toggleWebhookTriggerAction } from '@/app/actions/toggle-webhook-trigger-action';
+import { toggleWebhookTriggerAction } from '@/app/actions/toggleWebhookTriggerAction';
 import { Badge, BadgeProps } from '@/components/ui/Badge';
 import { Switch } from '@/components/ui/Switch';
 import { WebhookTriggersModel } from '@/generated/prisma/models/WebhookTriggers';

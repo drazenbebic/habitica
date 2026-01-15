@@ -4,7 +4,7 @@ import { FC, startTransition, useActionState, useEffect } from 'react';
 
 import { ZapIcon } from 'hugeicons-react';
 
-import { getWebhookTriggersAction } from '@/app/actions/get-webhook-triggers-action';
+import { getWebhookTriggersAction } from '@/app/actions/getWebhookTriggersAction';
 import { WebhookTriggersListItem } from '@/components/dashboard/WebhookTriggersListItem';
 import { Button } from '@/components/ui/Button';
 import { Skeleton } from '@/components/ui/Skeleton';

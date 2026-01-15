@@ -13,8 +13,8 @@ import { useRouter } from 'next/navigation';
 import { AlertCircleIcon, FloppyDiskIcon, Link01Icon } from 'hugeicons-react';
 import { toast } from 'sonner';
 
-import { getHabiticaCredentialsAction } from '@/app/actions/get-habitica-credentials-action';
-import { updateHabiticaCredentialsAction } from '@/app/actions/update-habitica-credentials-action';
+import { getHabiticaCredentialsAction } from '@/app/actions/getHabiticaCredentialsAction';
+import { updateHabiticaCredentialsAction } from '@/app/actions/updateHabiticaCredentialsAction';
 import { Button } from '@/components/ui/Button';
 import { FormInput } from '@/components/ui/FormInput';
 import { FormLabel } from '@/components/ui/FormLabel';

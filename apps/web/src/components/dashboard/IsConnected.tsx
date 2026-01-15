@@ -2,7 +2,7 @@
 
 import { startTransition, useActionState, useEffect } from 'react';
 
-import { isConnectedAction } from '@/app/actions/is-connected-action';
+import { isConnectedAction } from '@/app/actions/isConnectedAction';
 import { Badge } from '@/components/ui/Badge';
 import { Skeleton } from '@/components/ui/Skeleton';
 

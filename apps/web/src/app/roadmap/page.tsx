@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/Button';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { Pill } from '@/components/ui/Pill';
-import { githubRepositoryUrl } from '@/utils/github-repository-url';
+import { githubRepositoryUrl } from '@/utils/githubRepositoryUrl';
 
 export const metadata: Metadata = {
   title: 'Roadmap',

@@ -8,7 +8,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
 import cn from 'classnames';
 
-import { ErrorListener } from '@/components/erorr-listener';
+import { ErrorListener } from '@/components/ErrorListener';
 import { Footer } from '@/components/Footer';
 import { Header } from '@/components/Header';
 import { Providers } from '@/components/Providers';

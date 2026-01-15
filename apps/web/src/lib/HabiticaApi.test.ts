@@ -1,7 +1,7 @@
 import { TaskDirection, TaskType } from '@/enums/habitica';
 import logger from '@/lib/logger';
 
-import HabiticaApi from './habitica-api';
+import HabiticaApi from './HabiticaApi';
 
 jest.mock('@/lib/logger', () => ({
   __esModule: true,

@@ -1,9 +1,8 @@
 import { renderHook, waitFor } from '@testing-library/react';
 
-import { useFormattedDate } from './use-formatted-date';
+import { useFormattedDate } from './useFormattedDate';
 
 describe('useFormattedDate', () => {
-  // Save the original navigator to restore it later
   const originalNavigator = global.navigator;
 
   afterEach(() => {
@@ -12,7 +11,6 @@ describe('useFormattedDate', () => {
   });
 
   it('should format date correctly using default options (en-US)', async () => {
-    // Mock navigator to be en-US
     Object.defineProperty(global, 'navigator', {
       value: { language: 'en-US' },
       writable: true,
@@ -21,19 +19,15 @@ describe('useFormattedDate', () => {
     const date = new Date('2026-01-13T12:00:00Z');
     const { result } = renderHook(() => useFormattedDate(date));
 
-    // Wait for the useEffect to fire
     await waitFor(() => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    // Note: The actual output depends on the timezone of the test runner environment.
-    // We check that it returns a non-empty string and looks generally correct.
     expect(result.current.formattedDate).not.toBe('');
     expect(result.current.formattedDate).toContain('Jan 13');
   });
 
   it('should format date correctly using a different locale (de-DE)', async () => {
-    // Mock navigator to be German
     Object.defineProperty(global, 'navigator', {
       value: { language: 'de-DE' },
       writable: true,
@@ -46,8 +40,6 @@ describe('useFormattedDate', () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    // In German locale, month often comes second or looks different (e.g. "13. Jan.")
-    // We check for the day "13" and the German short month "Jan"
     expect(result.current.formattedDate).toContain('13');
     expect(result.current.formattedDate).toContain('Jan');
   });
@@ -75,7 +67,6 @@ describe('useFormattedDate', () => {
   });
 
   it('should fallback to en-US if locale throws an error', async () => {
-    // Mock navigator with an invalid language to trigger the catch block
     Object.defineProperty(global, 'navigator', {
       value: { language: 'invalid-LOCALE-123' },
       writable: true,
@@ -88,7 +79,6 @@ describe('useFormattedDate', () => {
       expect(result.current.isLoading).toBe(false);
     });
 
-    // It should have fallen back to en-US format
     expect(result.current.formattedDate).toContain('Jan 13');
   });
 });

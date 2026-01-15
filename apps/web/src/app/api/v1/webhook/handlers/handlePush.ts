@@ -2,7 +2,7 @@ import { EmitterWebhookEvent } from '@octokit/webhooks';
 
 import { getInstallationStatus } from '@/accessors/githubInstallation';
 import { getLinkedGithubUsers } from '@/accessors/githubUser';
-import getHabiticaApi from '@/app/api/v1/webhook/get-habitica-api';
+import getHabiticaApi from '@/app/api/v1/webhook/getHabiticaApi';
 import { TaskDirection, TaskPriority, TaskType } from '@/enums/habitica';
 import logger from '@/lib/logger';
 

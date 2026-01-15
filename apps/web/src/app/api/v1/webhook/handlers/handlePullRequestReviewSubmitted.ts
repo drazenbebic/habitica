@@ -2,15 +2,20 @@ import { EmitterWebhookEvent } from '@octokit/webhooks';
 
 import { getInstallationStatus } from '@/accessors/githubInstallation';
 import { getGithubUserBySenderId } from '@/accessors/githubUser';
-import getHabiticaApi from '@/app/api/v1/webhook/get-habitica-api';
+import getHabiticaApi from '@/app/api/v1/webhook/getHabiticaApi';
 import { TaskDirection, TaskPriority, TaskType } from '@/enums/habitica';
 import logger from '@/lib/logger';
 
-export const handlePackagePublished = async ({
-  payload: { installation, package: githubPackage, sender, repository },
-}: EmitterWebhookEvent<'package.published'>) => {
+export const handlePullRequestReviewSubmitted = async ({
+  payload: { installation, repository, sender, pull_request: pullRequest },
+}: EmitterWebhookEvent<'pull_request_review.submitted'>) => {
   if (!installation?.id || !repository) {
     logger.info('Ignored: Missing installation or repository.');
+    return;
+  }
+
+  if (pullRequest?.user?.id === sender.id) {
+    logger.info('Ignored: User reviewed their own Pull Request.');
     return;
   }
 
@@ -31,7 +36,7 @@ export const handlePackagePublished = async ({
 
   if (!githubInstallation.isRepositorySelected) {
     logger.info(
-      { repositoryId: repository.id },
+      { repoId: repository.id },
       'Ignored: Repository not whitelisted.',
     );
     return;
@@ -53,23 +58,23 @@ export const handlePackagePublished = async ({
     return;
   }
 
-  const taskName = `Published a new version of the "${githubPackage.name}" package`;
+  const taskName = `Reviewed a Pull Request in the "${repository.name}" repository`;
 
   try {
     const tasks = await habiticaApi.getTasks();
+    const existingTask = tasks.find(({ text }) => text === taskName);
 
-    const task =
-      tasks.find(t => t.text === taskName) ||
-      (await habiticaApi.createTask({
-        text: taskName,
-        type: TaskType.HABIT,
-        value: 3,
-        priority: TaskPriority.LOW,
-      }));
+    const task = existingTask
+      ? existingTask
+      : await habiticaApi.createTask({
+          text: taskName,
+          type: TaskType.HABIT,
+          value: 5,
+          priority: TaskPriority.HIGH,
+        });
 
     await habiticaApi.scoreTask(task.id, TaskDirection.UP);
-
-    logger.info('Event processed.');
+    logger.info('Event processed successfully.');
   } catch (error) {
     logger.error({ error }, 'Habitica API Error');
   }

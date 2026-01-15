@@ -6,7 +6,7 @@ import { DialogProvider } from '@ariakit/react';
 import { Delete02Icon } from 'hugeicons-react'; // Swapped Pencil for Delete
 import { toast } from 'sonner';
 
-import { deleteWebhookTriggerAction } from '@/app/actions/delete-webhook-trigger-action';
+import { deleteWebhookTriggerAction } from '@/app/actions/deleteWebhookTriggerAction';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { DialogDismiss } from '@/components/ui/DialogDismiss';

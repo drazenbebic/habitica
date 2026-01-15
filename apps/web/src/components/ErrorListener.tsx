@@ -3,7 +3,7 @@
 import { Suspense, useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { errorMap } from '@/components/error-map';
+import { errorMap } from '@/components/errorMap';
 
 const Listener = () => {
   const searchParams = useSearchParams();

@@ -16,7 +16,7 @@ export default function NotFound() {
   return (
     <div className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
       <div className="relative mb-8 flex h-24 w-24 items-center justify-center rounded-3xl bg-violet-50 text-violet-600 ring-1 ring-violet-100">
-        <div className="absolute inset-0 rounded-3xl bg-violet-600/10 blur-xl"></div>
+        <div className="absolute inset-0 rounded-3xl bg-violet-600/10 blur-xl" />
         <Search01Icon size={48} />
       </div>
 

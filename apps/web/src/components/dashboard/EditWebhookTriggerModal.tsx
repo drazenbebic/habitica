@@ -11,7 +11,7 @@ import {
 } from '@ariakit/react';
 import { PencilEdit02Icon } from 'hugeicons-react';
 
-import { updateWebhookTriggerAction } from '@/app/actions/update-webhook-trigger-action';
+import { updateWebhookTriggerAction } from '@/app/actions/updateWebhookTriggerAction';
 import { triggerSchema } from '@/components/dashboard/triggerSchema';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
