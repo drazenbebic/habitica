@@ -4,13 +4,10 @@ import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 
 import { getGithubUserUserByLogin } from '@/accessors/githubUser';
-import {
-  deleteWebhookTrigger,
-  getWebhookTrigger,
-} from '@/accessors/webhookTrigger';
+import { deleteTrigger, getTrigger } from '@/accessors/trigger';
 import { authOptions } from '@/lib/auth';
 
-export async function deleteWebhookTriggerAction(triggerUuid: string) {
+export async function deleteTriggerAction(triggerUuid: string) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.name) {
@@ -23,13 +20,13 @@ export async function deleteWebhookTriggerAction(triggerUuid: string) {
     throw new Error('User not found');
   }
 
-  const trigger = await getWebhookTrigger(triggerUuid, githubUser.id);
+  const trigger = await getTrigger(triggerUuid, githubUser.id);
 
   if (!trigger) {
     throw new Error('Trigger not found');
   }
 
-  await deleteWebhookTrigger(triggerUuid, githubUser.id);
+  await deleteTrigger(triggerUuid, githubUser.id);
 
   revalidatePath('/dashboard');
 }

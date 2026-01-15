@@ -2,14 +2,14 @@
 
 import { revalidatePath } from 'next/cache';
 
-import { updateWebhookTrigger } from '@/accessors/webhookTrigger';
+import { updateTrigger } from '@/accessors/trigger';
 
-export async function toggleWebhookTriggerAction(
+export async function toggleTriggerAction(
   triggerUuid: string,
   isActive: boolean,
 ) {
   try {
-    await updateWebhookTrigger({ uuid: triggerUuid }, { isActive });
+    await updateTrigger({ uuid: triggerUuid }, { isActive });
 
     revalidatePath('/dashboard');
   } catch (error) {

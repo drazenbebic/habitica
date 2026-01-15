@@ -16,10 +16,10 @@ import {
 } from 'hugeicons-react';
 import { toast } from 'sonner';
 
-import { toggleWebhookTriggerAction } from '@/app/actions/toggleWebhookTriggerAction';
+import { toggleTriggerAction } from '@/actions/triggers/toggleTriggerAction';
 import { Badge, BadgeProps } from '@/components/ui/Badge';
 import { Switch } from '@/components/ui/Switch';
-import { WebhookTriggersModel } from '@/generated/prisma/models/WebhookTriggers';
+import { TriggersModel } from '@/generated/prisma/models/Triggers';
 
 const getDifficultyConfig: (priority: number) => {
   label: string;
@@ -39,13 +39,13 @@ const getEventIcon = (event: string) => {
   return <ZapIcon size={18} />;
 };
 
-export type WebhookTriggersListItemProps = {
-  trigger: WebhookTriggersModel;
-  onOpenDeleteAction?: (trigger: WebhookTriggersModel) => void;
-  onOpenEditAction?: (trigger: WebhookTriggersModel) => void;
+export type TriggersListItemProps = {
+  trigger: TriggersModel;
+  onOpenDeleteAction?: (trigger: TriggersModel) => void;
+  onOpenEditAction?: (trigger: TriggersModel) => void;
 };
 
-export const WebhookTriggersListItem: FC<WebhookTriggersListItemProps> = ({
+export const TriggersListItem: FC<TriggersListItemProps> = ({
   trigger,
   onOpenDeleteAction,
   onOpenEditAction,
@@ -60,7 +60,7 @@ export const WebhookTriggersListItem: FC<WebhookTriggersListItemProps> = ({
 
     startTransition(async () => {
       try {
-        await toggleWebhookTriggerAction(trigger.uuid, checked);
+        await toggleTriggerAction(trigger.uuid, checked);
         toast.success('Trigger updated successfully');
       } catch {
         setIsActive(!checked);

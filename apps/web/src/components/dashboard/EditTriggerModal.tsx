@@ -11,7 +11,7 @@ import {
 } from '@ariakit/react';
 import { PencilEdit02Icon } from 'hugeicons-react';
 
-import { updateWebhookTriggerAction } from '@/app/actions/updateWebhookTriggerAction';
+import { updateTriggerAction } from '@/actions/triggers/updateTriggerAction';
 import { triggerSchema } from '@/components/dashboard/triggerSchema';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
@@ -23,16 +23,16 @@ import { Heading } from '@/components/ui/Heading';
 import { SelectGroup } from '@/components/ui/SelectGroup';
 import { SelectGroupLabel } from '@/components/ui/SelectGroupLabel';
 import { SelectItem } from '@/components/ui/SelectItem';
-import { WebhookTriggersModel } from '@/generated/prisma/models/WebhookTriggers';
+import { TriggersModel } from '@/generated/prisma/models/Triggers';
 
 export type EditWebhookTriggerModalProps = {
   open: boolean;
   setOpenAction: (open: boolean) => void;
-  trigger: WebhookTriggersModel;
+  trigger: TriggersModel;
   onSuccessAction?: () => void;
 };
 
-export const EditWebhookTriggerModal: FC<EditWebhookTriggerModalProps> = ({
+export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
   open,
   setOpenAction,
   trigger,
@@ -66,10 +66,7 @@ export const EditWebhookTriggerModal: FC<EditWebhookTriggerModalProps> = ({
     }
 
     startTransition(async () => {
-      const result = await updateWebhookTriggerAction(
-        trigger.uuid,
-        validation.data,
-      );
+      const result = await updateTriggerAction(trigger.uuid, validation.data);
 
       if (result.success) {
         setOpenAction(false);

@@ -3,10 +3,10 @@
 import { getServerSession } from 'next-auth';
 
 import { getGithubUserUserByLogin } from '@/accessors/githubUser';
-import { getWebhookTriggers } from '@/accessors/webhookTrigger';
+import { getTriggers } from '@/accessors/trigger';
 import { authOptions } from '@/lib/auth';
 
-export async function getWebhookTriggersAction() {
+export async function getTriggersAction() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.name) {
@@ -19,5 +19,5 @@ export async function getWebhookTriggersAction() {
     return [];
   }
 
-  return getWebhookTriggers(githubUser.id);
+  return getTriggers(githubUser.id);
 }

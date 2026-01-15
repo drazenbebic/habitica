@@ -4,14 +4,14 @@ import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 
 import { getGithubUserUserByLogin } from '@/accessors/githubUser';
-import { createWebhookTrigger } from '@/accessors/webhookTrigger';
+import { createTrigger } from '@/accessors/trigger';
 import {
   TriggerSchema,
   triggerSchema,
 } from '@/components/dashboard/triggerSchema';
 import { authOptions } from '@/lib/auth';
 
-export async function createWebhookTriggerAction(data: TriggerSchema) {
+export async function createTriggerAction(data: TriggerSchema) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.name) {
@@ -38,7 +38,7 @@ export async function createWebhookTriggerAction(data: TriggerSchema) {
 
     const taskAlias = `${slug}-${Math.random().toString(36).substring(2, 7)}`;
 
-    await createWebhookTrigger({
+    await createTrigger({
       githubUserId: githubUser.id,
       isActive: true,
       event: parsed.data.event,

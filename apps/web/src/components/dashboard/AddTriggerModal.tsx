@@ -11,7 +11,7 @@ import {
 } from '@ariakit/react';
 import { ZapIcon } from 'hugeicons-react';
 
-import { createWebhookTriggerAction } from '@/app/actions/createWebhookTriggerAction';
+import { createTriggerAction } from '@/actions/triggers/createTriggerAction';
 import {
   TriggerSchema,
   triggerSchema,
@@ -27,13 +27,13 @@ import { SelectGroup } from '@/components/ui/SelectGroup';
 import { SelectGroupLabel } from '@/components/ui/SelectGroupLabel';
 import { SelectItem } from '@/components/ui/SelectItem';
 
-export type AddWebhookTriggerModalProps = {
+export type AddTriggerModalProps = {
   open: boolean;
   setOpenAction: (open: boolean) => void;
   onSuccessAction?: () => void;
 };
 
-export const AddWebhookTriggerModal: FC<AddWebhookTriggerModalProps> = ({
+export const AddTriggerModal: FC<AddTriggerModalProps> = ({
   open,
   setOpenAction,
   onSuccessAction,
@@ -65,7 +65,7 @@ export const AddWebhookTriggerModal: FC<AddWebhookTriggerModalProps> = ({
     }
 
     startTransition(async () => {
-      const result = await createWebhookTriggerAction(validation.data);
+      const result = await createTriggerAction(validation.data);
 
       if (result.success) {
         form.reset();

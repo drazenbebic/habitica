@@ -1,38 +1,50 @@
 'use client';
 
-import { FC, startTransition, useActionState, useEffect } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 
-import { ZapIcon } from 'hugeicons-react';
+import { RefreshIcon, ZapIcon } from 'hugeicons-react';
+import { toast } from 'sonner';
 
-import { getWebhookTriggersAction } from '@/app/actions/getWebhookTriggersAction';
-import { WebhookTriggersListItem } from '@/components/dashboard/WebhookTriggersListItem';
+import { getTriggersAction } from '@/actions/triggers/getTriggersAction';
+import { TriggersListItem } from '@/components/dashboard/TriggersListItem';
 import { Button } from '@/components/ui/Button';
+import { ButtonIcon } from '@/components/ui/ButtonIcon';
 import { Skeleton } from '@/components/ui/Skeleton';
-import { WebhookTriggersModel } from '@/generated/prisma/models/WebhookTriggers';
+import { TriggersModel } from '@/generated/prisma/models/Triggers';
 
-export type WebhookTriggersListProps = {
+export type TriggersListProps = {
   onOpenCreateAction?: () => void;
-  onOpenDeleteAction?: (trigger: WebhookTriggersModel) => void;
-  onOpenEditAction?: (trigger: WebhookTriggersModel) => void;
+  onOpenDeleteAction?: (trigger: TriggersModel) => void;
+  onOpenEditAction?: (trigger: TriggersModel) => void;
 };
 
-export const WebhookTriggersList: FC<WebhookTriggersListProps> = ({
+export const TriggersList: FC<TriggersListProps> = ({
   onOpenCreateAction,
   onOpenDeleteAction,
   onOpenEditAction,
 }) => {
-  const [triggers, action, isPending] = useActionState(
-    getWebhookTriggersAction,
-    [],
-  );
+  const [triggers, setTriggers] = useState<TriggersModel[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchTriggers = useCallback(async () => {
+    setIsLoading(true);
+
+    try {
+      const data = await getTriggersAction();
+      setTriggers(data);
+    } catch (error) {
+      console.error('Failed to fetch triggers:', error);
+      toast.error('Could not load triggers');
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
-    startTransition(() => {
-      action();
-    });
-  }, [action]);
+    fetchTriggers();
+  }, [fetchTriggers]);
 
-  if (isPending) {
+  if (isLoading) {
     return (
       <div className="flex flex-col gap-3 h-full">
         <div className="mb-2 flex justify-end">
@@ -64,13 +76,21 @@ export const WebhookTriggersList: FC<WebhookTriggersListProps> = ({
   if (triggers.length > 0) {
     return (
       <div className="flex flex-col gap-3 h-full">
-        <div className="mb-2 flex justify-end">
+        <div className="mb-2 flex items-center justify-end gap-2">
+          <ButtonIcon
+            size="sm"
+            variant="secondary"
+            onClick={fetchTriggers}
+            aria-label="Refresh triggers list"
+          >
+            <RefreshIcon size={16} />
+          </ButtonIcon>
           <Button size="sm" onClick={onOpenCreateAction}>
             + New Trigger
           </Button>
         </div>
         {triggers.map(trigger => (
-          <WebhookTriggersListItem
+          <TriggersListItem
             key={trigger.uuid}
             trigger={trigger}
             onOpenDeleteAction={onOpenDeleteAction}

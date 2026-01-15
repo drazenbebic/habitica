@@ -8,7 +8,7 @@ CREATE TYPE "Attribute" AS ENUM ('str', 'int', 'con', 'per');
 CREATE TYPE "Direction" AS ENUM ('up', 'down');
 
 -- CreateTable
-CREATE TABLE "webhook_triggers" (
+CREATE TABLE "triggers" (
     "id" BIGSERIAL NOT NULL,
     "uuid" VARCHAR(36) NOT NULL,
     "github_user_id" BIGINT NOT NULL,
@@ -25,11 +25,11 @@ CREATE TABLE "webhook_triggers" (
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "webhook_triggers_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "triggers_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "webhook_triggers_uuid_key" ON "webhook_triggers"("uuid");
+CREATE UNIQUE INDEX "triggers_uuid_key" ON "triggers"("uuid");
 
 -- AddForeignKey
-ALTER TABLE "webhook_triggers" ADD CONSTRAINT "webhook_triggers_github_user_id_fkey" FOREIGN KEY ("github_user_id") REFERENCES "github_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "triggers" ADD CONSTRAINT "triggers_github_user_id_fkey" FOREIGN KEY ("github_user_id") REFERENCES "github_users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

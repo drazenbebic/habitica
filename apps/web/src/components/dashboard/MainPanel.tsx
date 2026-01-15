@@ -1,5 +1,3 @@
-'use client';
-
 import { FC, ReactNode } from 'react';
 
 import { Activity01Icon, FlashIcon, Settings01Icon } from 'hugeicons-react';

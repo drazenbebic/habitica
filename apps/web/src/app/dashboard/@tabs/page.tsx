@@ -4,27 +4,29 @@ import { useState } from 'react';
 
 import { toast } from 'sonner';
 
-import { AddWebhookTriggerModal } from '@/components/dashboard/AddWebhookTriggerModal';
-import { DeleteWebhookTriggerModal } from '@/components/dashboard/DeleteWebhookTriggerModal';
-import { EditWebhookTriggerModal } from '@/components/dashboard/EditWebhookTriggerModal';
-import { WebhookTriggersList } from '@/components/dashboard/WebhookTriggersList';
-import { WebhookTriggersModel } from '@/generated/prisma/models/WebhookTriggers';
+import { AddTriggerModal } from '@/components/dashboard/AddTriggerModal';
+import { DeleteTriggerModal } from '@/components/dashboard/DeleteTriggerModal';
+import { EditTriggerModal } from '@/components/dashboard/EditTriggerModal';
+import { TriggersList } from '@/components/dashboard/TriggersList';
+import { TriggersModel } from '@/generated/prisma/models/Triggers';
 
 export default function Page() {
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-  const [editingTrigger, setEditingTrigger] =
-    useState<WebhookTriggersModel | null>(null);
-  const [deletingTrigger, setDeletingTrigger] =
-    useState<WebhookTriggersModel | null>(null);
+  const [editingTrigger, setEditingTrigger] = useState<TriggersModel | null>(
+    null,
+  );
+  const [deletingTrigger, setDeletingTrigger] = useState<TriggersModel | null>(
+    null,
+  );
 
   return (
     <>
-      <WebhookTriggersList
+      <TriggersList
         onOpenCreateAction={() => setCreateModalOpen(true)}
         onOpenDeleteAction={trigger => setDeletingTrigger(trigger)}
         onOpenEditAction={trigger => setEditingTrigger(trigger)}
       />
-      <AddWebhookTriggerModal
+      <AddTriggerModal
         open={isCreateModalOpen}
         setOpenAction={setCreateModalOpen}
         onSuccessAction={() => {
@@ -34,7 +36,7 @@ export default function Page() {
       />
 
       {editingTrigger && (
-        <EditWebhookTriggerModal
+        <EditTriggerModal
           key={`edit-${editingTrigger.uuid}`}
           trigger={editingTrigger}
           open={!!editingTrigger}
@@ -51,7 +53,7 @@ export default function Page() {
       )}
 
       {deletingTrigger && (
-        <DeleteWebhookTriggerModal
+        <DeleteTriggerModal
           key={`delete-${deletingTrigger.uuid}`}
           trigger={deletingTrigger}
           open={!!deletingTrigger}

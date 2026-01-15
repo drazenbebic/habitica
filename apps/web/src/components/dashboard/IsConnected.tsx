@@ -1,36 +1,44 @@
 'use client';
 
-import { startTransition, useActionState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { isConnectedAction } from '@/app/actions/isConnectedAction';
+import { isConnectedAction } from '@/actions/isConnectedAction';
 import { Badge } from '@/components/ui/Badge';
 import { Skeleton } from '@/components/ui/Skeleton';
 
 export const IsConnected = () => {
-  const [connected, action, isPending] = useActionState(
-    isConnectedAction,
-    null,
-  );
+  const [isConnected, setIsConnected] = useState<boolean | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    startTransition(() => {
-      action();
-    });
-  }, [action]);
+    const fetchIsConnected = async () => {
+      try {
+        const status = await isConnectedAction();
+        setIsConnected(status);
+      } catch (error) {
+        console.error('Failed to check connection status:', error);
+        setIsConnected(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  if (isPending || connected === null) {
+    fetchIsConnected();
+  }, []);
+
+  if (isLoading) {
     return <Skeleton variant="circular" className="h-9 w-32" />;
   }
 
   return (
     <Badge
-      variant={connected ? 'success' : 'neutral'}
+      variant={isConnected ? 'success' : 'neutral'}
       size="md"
       hasDot
-      pulsing={connected}
+      pulsing={!!isConnected}
       className="px-4 py-2"
     >
-      {connected ? 'Connected' : 'Not Connected'}
+      {isConnected ? 'Connected' : 'Not Connected'}
     </Badge>
   );
 };

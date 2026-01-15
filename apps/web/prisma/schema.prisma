@@ -68,7 +68,7 @@ model GithubUsers {
   scope                 String?             @map("scope") @db.VarChar(255)
   tokenType             String?             @map("token_type") @db.VarChar(20)
   habiticaUser          HabiticaUsers?      @relation("HabiticaUsersGithubUsers")
-  webhookTriggers       WebhookTriggers[]   @relation("GithubUsersWebhookTriggers")
+  triggers              Triggers[]          @relation("GithubUsersTriggers")
   webhookLogs           WebhookLogs[]       @relation("GithubUsersWebhookLogs")
   createdAt             DateTime            @default(now()) @map("created_at")
   updatedAt             DateTime            @updatedAt @map("updated_at")
@@ -89,10 +89,10 @@ model HabiticaUsers {
   @@map(name: "habitica_users")
 }
 
-model WebhookTriggers {
+model Triggers {
   id             BigInt      @id @default(autoincrement()) @map("id") @db.BigInt
   uuid           String      @unique @default(uuid()) @map("uuid") @db.VarChar(36)
-  githubUser     GithubUsers @relation("GithubUsersWebhookTriggers", fields: [githubUserId], references: [id], onDelete: Cascade)
+  githubUser     GithubUsers @relation("GithubUsersTriggers", fields: [githubUserId], references: [id], onDelete: Cascade)
   githubUserId   BigInt      @map("github_user_id") @db.BigInt
   isActive       Boolean     @default(true) @map("is_active")
   event          String      @map("event") @db.VarChar(255)
@@ -107,7 +107,7 @@ model WebhookTriggers {
   createdAt      DateTime    @default(now()) @map("created_at")
   updatedAt      DateTime    @updatedAt @map("updated_at")
 
-  @@map(name: "webhook_triggers")
+  @@map(name: "triggers")
 }
 
 model WebhookLogs {

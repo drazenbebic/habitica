@@ -1,38 +1,44 @@
 'use client';
 
-import React, {
-  FC,
-  FormEvent,
-  startTransition,
-  useActionState,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { AlertCircleIcon, FloppyDiskIcon, Link01Icon } from 'hugeicons-react';
 import { toast } from 'sonner';
 
-import { getHabiticaCredentialsAction } from '@/app/actions/getHabiticaCredentialsAction';
-import { updateHabiticaCredentialsAction } from '@/app/actions/updateHabiticaCredentialsAction';
+import { getHabiticaCredentialsAction } from '@/actions/getHabiticaCredentialsAction';
+import { updateHabiticaCredentialsAction } from '@/actions/updateHabiticaCredentialsAction';
 import { Button } from '@/components/ui/Button';
 import { FormInput } from '@/components/ui/FormInput';
 import { FormLabel } from '@/components/ui/FormLabel';
 import { Skeleton } from '@/components/ui/Skeleton';
 
+type Credentials = Awaited<ReturnType<typeof getHabiticaCredentialsAction>>;
+
 export const HabiticaUserForm: FC = () => {
-  const [credentials, trigger, isPending] = useActionState(
-    getHabiticaCredentialsAction,
-    null,
-  );
+  const [credentials, setCredentials] = useState<Credentials | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    startTransition(() => {
-      trigger();
-    });
-  }, [trigger]);
+    const fetchHabiticaCredentials = async () => {
+      try {
+        const data = await getHabiticaCredentialsAction();
+
+        if (data) {
+          setCredentials(data);
+        }
+      } catch (error) {
+        console.error('Failed to load Habitica credentials:', error);
+        toast.error('Could not load existing configuration');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchHabiticaCredentials();
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -42,17 +48,25 @@ export const HabiticaUserForm: FC = () => {
     const userId = formData.get('userId') as string;
     const apiToken = formData.get('apiToken') as string;
 
-    const result = await updateHabiticaCredentialsAction({ userId, apiToken });
+    try {
+      const result = await updateHabiticaCredentialsAction({
+        userId,
+        apiToken,
+      });
 
-    if (result.success) {
-      toast.success('Configuration saved successfully');
-      router.refresh();
-    } else {
-      console.error(result.message);
-      toast.error(result.message || 'Something went wrong');
+      if (result.success) {
+        toast.success('Configuration saved successfully');
+        router.refresh();
+      } else {
+        console.error(result.message);
+        toast.error(result.message || 'Failed to save configuration');
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error('An unexpected error occurred');
+    } finally {
+      setIsSaving(false);
     }
-
-    setIsSaving(false);
   };
 
   return (
@@ -61,14 +75,14 @@ export const HabiticaUserForm: FC = () => {
         <FormLabel as="label" name="userId" htmlFor="userId" isRequired>
           User ID
         </FormLabel>
-        {isPending ? (
+        {isLoading ? (
           <Skeleton className="h-11.5" variant="circular" />
         ) : (
           <FormInput
             as="input"
             id="userId"
             name="userId"
-            defaultValue={credentials?.userId}
+            defaultValue={credentials?.userId || ''}
             placeholder="e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
             leadingIcon={<Link01Icon size={20} />}
             required
@@ -80,7 +94,7 @@ export const HabiticaUserForm: FC = () => {
         <FormLabel as="label" name="apiToken" htmlFor="apiToken" isRequired>
           API Token
         </FormLabel>
-        {isPending ? (
+        {isLoading ? (
           <Skeleton className="h-11.5" variant="circular" />
         ) : (
           <FormInput
@@ -88,7 +102,7 @@ export const HabiticaUserForm: FC = () => {
             id="apiToken"
             name="apiToken"
             type="password"
-            defaultValue={credentials?.apiToken}
+            defaultValue={credentials?.apiToken || ''}
             placeholder="••••••••••••••••••••••••••••••"
             leadingIcon={<AlertCircleIcon size={20} />}
             required
@@ -100,7 +114,7 @@ export const HabiticaUserForm: FC = () => {
         <Button
           type="submit"
           isLoading={isSaving}
-          disabled={isPending || isSaving}
+          disabled={isLoading || isSaving}
         >
           <FloppyDiskIcon size={20} className="mr-2" />
           Save Configuration

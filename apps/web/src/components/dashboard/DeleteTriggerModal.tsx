@@ -3,24 +3,24 @@
 import { FC, useTransition } from 'react';
 
 import { DialogProvider } from '@ariakit/react';
-import { Delete02Icon } from 'hugeicons-react'; // Swapped Pencil for Delete
+import { Delete02Icon } from 'hugeicons-react';
 import { toast } from 'sonner';
 
-import { deleteWebhookTriggerAction } from '@/app/actions/deleteWebhookTriggerAction';
+import { deleteTriggerAction } from '@/actions/triggers/deleteTriggerAction';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { DialogDismiss } from '@/components/ui/DialogDismiss';
 import { Heading } from '@/components/ui/Heading';
-import { WebhookTriggersModel } from '@/generated/prisma/models/WebhookTriggers';
+import { TriggersModel } from '@/generated/prisma/models/Triggers';
 
 export type DeleteWebhookTriggerModalProps = {
   open: boolean;
   setOpenAction: (open: boolean) => void;
-  trigger: WebhookTriggersModel;
+  trigger: TriggersModel;
   onSuccessAction?: () => void;
 };
 
-export const DeleteWebhookTriggerModal: FC<DeleteWebhookTriggerModalProps> = ({
+export const DeleteTriggerModal: FC<DeleteWebhookTriggerModalProps> = ({
   open,
   setOpenAction,
   trigger,
@@ -31,7 +31,7 @@ export const DeleteWebhookTriggerModal: FC<DeleteWebhookTriggerModalProps> = ({
   const handleDelete = () => {
     startTransition(async () => {
       try {
-        await deleteWebhookTriggerAction(trigger.uuid);
+        await deleteTriggerAction(trigger.uuid);
         toast.success('Trigger deleted successfully');
         setOpenAction(false);
         onSuccessAction?.();

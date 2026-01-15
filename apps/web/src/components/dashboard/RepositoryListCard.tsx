@@ -1,12 +1,6 @@
 'use client';
 
-import React, {
-  FC,
-  startTransition,
-  useActionState,
-  useEffect,
-  useState,
-} from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import Link from 'next/link';
 
 import clsx from 'clsx';
@@ -18,7 +12,7 @@ import {
   SquareLock01Icon,
 } from 'hugeicons-react';
 
-import { getConnectedReposAction } from '@/app/actions/getConnectedReposAction';
+import { getConnectedReposAction } from '@/actions/getConnectedReposAction';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
@@ -27,18 +21,27 @@ import { Heading } from '@/components/ui/Heading';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { githubAppUrl } from '@/utils/githubAppUrl';
 
+type RepoItem = Awaited<ReturnType<typeof getConnectedReposAction>>[number];
+
 export const RepositoryListCard: FC = () => {
-  const [repos, action, isPending] = useActionState(
-    getConnectedReposAction,
-    [],
-  );
+  const [repos, setRepos] = useState<RepoItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
-    startTransition(() => {
-      action();
-    });
-  }, [action]);
+    const fetchConnectedRepos = async () => {
+      try {
+        const data = await getConnectedReposAction();
+        setRepos(data);
+      } catch (error) {
+        console.error('Failed to fetch connected repositories:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchConnectedRepos();
+  }, []);
 
   const MAX_VISIBLE = 3;
   const visibleRepos = isExpanded ? repos : repos.slice(0, MAX_VISIBLE);
@@ -55,7 +58,7 @@ export const RepositoryListCard: FC = () => {
         </div>
 
         <div className="flex flex-col gap-3">
-          {isPending ? (
+          {isLoading ? (
             <>
               {[...Array(3)].map((_, i) => (
                 <div

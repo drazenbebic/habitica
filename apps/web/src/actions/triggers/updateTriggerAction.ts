@@ -4,20 +4,14 @@ import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 
 import { getGithubUserUserByLogin } from '@/accessors/githubUser';
-import {
-  getWebhookTrigger,
-  updateWebhookTrigger,
-} from '@/accessors/webhookTrigger';
+import { getTrigger, updateTrigger } from '@/accessors/trigger';
 import {
   TriggerSchema,
   triggerSchema,
 } from '@/components/dashboard/triggerSchema';
 import { authOptions } from '@/lib/auth';
 
-export async function updateWebhookTriggerAction(
-  uuid: string,
-  data: TriggerSchema,
-) {
+export async function updateTriggerAction(uuid: string, data: TriggerSchema) {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.name) {
@@ -36,13 +30,13 @@ export async function updateWebhookTriggerAction(
       return { success: false, error: 'User configuration not found' };
     }
 
-    const existingTrigger = await getWebhookTrigger(uuid, githubUser.id);
+    const existingTrigger = await getTrigger(uuid, githubUser.id);
 
     if (!existingTrigger) {
       return { success: false, error: 'Trigger not found or access denied' };
     }
 
-    await updateWebhookTrigger(
+    await updateTrigger(
       { id: existingTrigger.id },
       {
         event: parsed.data.event,

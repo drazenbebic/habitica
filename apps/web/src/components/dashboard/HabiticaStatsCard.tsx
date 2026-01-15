@@ -1,23 +1,33 @@
 'use client';
 
-import { FC, startTransition, useActionState, useEffect, useMemo } from 'react';
+import { FC, useEffect, useMemo, useState } from 'react';
 
-import { getHabiticaStatsAction } from '@/app/actions/getHabiticaStatsAction';
+import { getHabiticaStatsAction } from '@/actions/getHabiticaStatsAction';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Heading } from '@/components/ui/Heading';
+import { Skeleton } from '@/components/ui/Skeleton';
+
+type HabiticaStats = Awaited<ReturnType<typeof getHabiticaStatsAction>>;
 
 export const HabiticaStatsCard: FC = () => {
-  const [stats, action, isPending] = useActionState(
-    getHabiticaStatsAction,
-    null,
-  );
+  const [stats, setStats] = useState<HabiticaStats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    startTransition(() => {
-      action();
-    });
-  }, [action]);
+    const fetchHabiticaStats = async () => {
+      try {
+        const data = await getHabiticaStatsAction();
+        setStats(data);
+      } catch (error) {
+        console.error('Failed to fetch Habitica stats', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchHabiticaStats();
+  }, []);
 
   const progress = useMemo(() => {
     if (!stats) {
@@ -27,32 +37,54 @@ export const HabiticaStatsCard: FC = () => {
     return Math.min((stats.exp / stats.toNextLevel) * 100, 100);
   }, [stats]);
 
-  if (!stats) {
+  if (isLoading) {
     return (
-      <Card variant="flat" className="bg-slate-100 text-slate-500">
-        <CardBody className="flex flex-col items-center justify-center py-8 text-center">
-          {isPending ? (
-            <div className="animate-pulse">Loading stats...</div>
-          ) : (
-            <>
-              <Heading level={3} size="base" className="mb-2 text-slate-700">
-                No Data Available
-              </Heading>
-              <p className="text-xs">
-                Connect your Habitica account to view your level and progress.
-              </p>
-            </>
-          )}
+      <Card
+        variant="flat"
+        className="bg-violet-600 text-white shadow-lg shadow-violet-900/20"
+      >
+        <CardBody>
+          <div className="flex items-start justify-between">
+            <Skeleton className="h-5 w-24 bg-white/20" />
+            <Skeleton className="h-6 w-20 rounded-full bg-white/20" />
+          </div>
+
+          <div className="mt-4 flex items-end gap-2">
+            <Skeleton className="h-10 w-16 bg-white/20" />
+            <Skeleton className="mb-1.5 h-4 w-6 bg-white/20" />
+          </div>
+
+          <Skeleton className="mt-4 h-2.5 w-full rounded-full bg-white/20" />
+
+          <div className="mt-2 flex justify-between">
+            <Skeleton className="h-4 w-12 bg-white/20" />
+            <Skeleton className="h-4 w-20 bg-white/20" />
+          </div>
         </CardBody>
       </Card>
     );
   }
 
-  const xp = Math.floor(stats?.exp || 0);
-  const toNextLevel = stats?.toNextLevel || 100;
-  const hp = Math.ceil(stats?.hp || 1);
-  const maxHealth = stats?.maxHealth || 100;
-  const lvl = stats?.lvl || 1;
+  if (!stats) {
+    return (
+      <Card variant="flat" className="bg-slate-100 text-slate-500">
+        <CardBody className="flex flex-col items-center justify-center py-8 text-center">
+          <Heading level={3} size="base" className="mb-2 text-slate-700">
+            No Data Available
+          </Heading>
+          <p className="text-xs">
+            Connect your Habitica account to view your level and progress.
+          </p>
+        </CardBody>
+      </Card>
+    );
+  }
+
+  const xp = Math.floor(stats.exp);
+  const toNextLevel = stats.toNextLevel;
+  const hp = Math.ceil(stats.hp);
+  const maxHealth = stats.maxHealth;
+  const lvl = stats.lvl;
 
   return (
     <Card
