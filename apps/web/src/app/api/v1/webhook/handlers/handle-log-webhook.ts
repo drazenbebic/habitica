@@ -1,9 +1,10 @@
-import { EmitterWebhookEvent } from '@octokit/webhooks/types';
+import { EmitterWebhookEvent } from '@octokit/webhooks';
 import { v4 } from 'uuid';
 
+import { getGithubUserBySenderId } from '@/accessors/githubUser';
+import { createWebhookLog } from '@/accessors/webhookLog';
 import { getRequestContext } from '@/lib/context';
 import logger from '@/lib/logger';
-import prisma from '@/lib/prisma';
 
 export const handleLogWebhook = async ({
   id,
@@ -24,9 +25,7 @@ export const handleLogWebhook = async ({
     return;
   }
 
-  const githubUser = await prisma.githubUsers.findFirst({
-    where: { githubId: payload.sender?.id },
-  });
+  const githubUser = await getGithubUserBySenderId(payload.sender.id);
 
   if (!githubUser) {
     logger.error('Sender could not be identified. Cannot log event.');
@@ -36,17 +35,15 @@ export const handleLogWebhook = async ({
   const { signature, hookId } = ctx;
 
   try {
-    await prisma.webhookLogs.create({
-      data: {
-        uuid: v4(),
-        deliveryUuid: id,
-        event: name,
-        signature,
-        hookId,
-        githubUserId: githubUser.id,
-        // @ts-expect-error Just a type mismatch
-        payload,
-      },
+    await createWebhookLog({
+      uuid: v4(),
+      deliveryUuid: id,
+      event: name,
+      signature,
+      hookId,
+      githubUserId: githubUser.id,
+      // @ts-expect-error Just a type mismatch
+      payload,
     });
   } catch (error) {
     logger.error({ error }, 'Webhook logging failed.');

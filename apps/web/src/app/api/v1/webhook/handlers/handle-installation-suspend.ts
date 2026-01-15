@@ -1,7 +1,7 @@
-import { EmitterWebhookEvent } from '@octokit/webhooks/types';
+import { EmitterWebhookEvent } from '@octokit/webhooks';
 
+import { updateGithubInstallation } from '@/accessors/githubInstallation';
 import logger from '@/lib/logger';
-import prisma from '@/lib/prisma';
 
 export const handleInstallationSuspend = async ({
   payload: { installation },
@@ -9,10 +9,10 @@ export const handleInstallationSuspend = async ({
   logger.info('Event triggered.');
 
   try {
-    await prisma.githubInstallations.update({
-      data: { suspended: true },
-      where: { installationId: installation.id },
-    });
+    await updateGithubInstallation(
+      { installationId: installation.id },
+      { suspended: true },
+    );
   } catch (error) {
     logger.error({ error }, 'The installation could not be suspended.');
   }

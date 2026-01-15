@@ -2,23 +2,18 @@
 
 import { getServerSession } from 'next-auth';
 
+import { getGithubUserUserByLogin } from '@/accessors/githubUser';
 import { authOptions } from '@/lib/auth';
-import prisma from '@/lib/prisma';
 
-export async function getHabiticaCredentials() {
+export async function getHabiticaCredentialsAction() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.name) {
     return null;
   }
 
-  const user = await prisma.githubUsers.findUnique({
-    where: {
-      login: session.user.name,
-    },
-    include: {
-      habiticaUser: true,
-    },
+  const user = await getGithubUserUserByLogin(session.user.name, {
+    habiticaUser: true,
   });
 
   if (!user?.habiticaUser) {

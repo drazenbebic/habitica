@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { Home01Icon, Search01Icon } from 'hugeicons-react';
@@ -5,6 +6,11 @@ import { Home01Icon, Search01Icon } from 'hugeicons-react';
 import { Button } from '@/components/ui/Button';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
+
+export const metadata: Metadata = {
+  title: '404 Not Found',
+  description: "The page you're looking for could not be found.",
+};
 
 export default function NotFound() {
   return (

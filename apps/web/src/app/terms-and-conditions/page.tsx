@@ -7,7 +7,7 @@ import { Heading } from '@/components/ui/Heading';
 import { supportEmail } from '@/utils/support-email';
 
 export const metadata: Metadata = {
-  title: 'Terms & Conditions | Octogriffin',
+  title: 'Terms & Conditions',
   description:
     'User agreement, usage guidelines, and liability disclaimers for the Octogriffin GitHub integration.',
 };

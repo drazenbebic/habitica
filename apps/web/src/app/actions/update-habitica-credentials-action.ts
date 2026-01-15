@@ -3,15 +3,16 @@
 import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
 
+import { getGithubUserUserByLogin } from '@/accessors/githubUser';
+import { upsertHabiticaUser } from '@/accessors/habiticaUser';
 import { authOptions } from '@/lib/auth';
-import prisma from '@/lib/prisma';
 
 export type UpdateHabiticaResult = {
   success: boolean;
   message?: string;
 };
 
-export async function updateHabiticaCredentials(formData: {
+export async function updateHabiticaCredentialsAction(formData: {
   userId: string;
   apiToken: string;
 }): Promise<UpdateHabiticaResult> {
@@ -22,28 +23,23 @@ export async function updateHabiticaCredentials(formData: {
   }
 
   try {
-    const githubUser = await prisma.githubUsers.findUnique({
-      where: { login: session.user.name },
-    });
+    const githubUser = await getGithubUserUserByLogin(session.user.name);
 
     if (!githubUser) {
       return { success: false, message: 'GitHub user not found' };
     }
 
-    await prisma.habiticaUsers.upsert({
-      where: {
-        githubUserId: githubUser.id,
-      },
-      create: {
-        userId: formData.userId,
-        apiToken: formData.apiToken,
-        githubUserId: githubUser.id,
-      },
-      update: {
+    await upsertHabiticaUser(
+      githubUser.id,
+      {
         userId: formData.userId,
         apiToken: formData.apiToken,
       },
-    });
+      {
+        userId: formData.userId,
+        apiToken: formData.apiToken,
+      },
+    );
 
     revalidatePath('/dashboard');
     return { success: true };

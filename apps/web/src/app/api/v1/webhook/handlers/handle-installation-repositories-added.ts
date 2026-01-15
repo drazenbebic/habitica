@@ -1,7 +1,10 @@
-import { EmitterWebhookEvent } from '@octokit/webhooks/types';
+import { EmitterWebhookEvent } from '@octokit/webhooks';
 
+import {
+  addSelectedRepositories,
+  getGithubInstallation,
+} from '@/accessors/githubInstallation';
 import logger from '@/lib/logger';
-import prisma from '@/lib/prisma';
 
 export const handleInstallationRepositoriesAdded = async ({
   payload: { installation, repositories_added: repositoriesAdded },
@@ -12,26 +15,18 @@ export const handleInstallationRepositoriesAdded = async ({
     return;
   }
 
-  const existingInstallation = await prisma.githubInstallations.findUnique({
-    where: { installationId: installation.id },
-  });
+  const existingInstallation = await getGithubInstallation(installation.id);
 
   if (!existingInstallation) {
     logger.warn({ installationId: installation.id }, 'Installation not found.');
     return;
   }
 
-  await prisma.githubSelectedRepositories.createMany({
-    data: repositoriesAdded.map(repository => ({
-      installationId: existingInstallation.id,
-      githubRepositoryId: repository.id,
-      nodeId: repository.node_id,
-      name: repository.name,
-      fullName: repository.full_name,
-      private: repository.private,
-    })),
-    skipDuplicates: true,
-  });
+  try {
+    await addSelectedRepositories(existingInstallation.id, repositoriesAdded);
+  } catch (error) {
+    logger.error({ error }, 'Repositories could not be added.');
+  }
 
   logger.info({ count: repositoriesAdded.length }, 'Repositories added.');
 };

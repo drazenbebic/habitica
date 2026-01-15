@@ -1,29 +1,30 @@
+'use server';
+
+import { getGithubInstallation } from '@/accessors/githubInstallation';
+import { getGithubUser } from '@/accessors/githubUser';
+import { getHabiticaUser } from '@/accessors/habiticaUser';
 import HabiticaApi from '@/lib/habitica-api';
-import prisma from '@/lib/prisma';
 
 const getHabiticaApi = async (
   installationId: number,
   login: string,
 ): Promise<HabiticaApi | null> => {
-  const gitHubInstallation = await prisma.githubInstallations.findFirst({
-    where: { installationId: Number(installationId) },
-  });
+  const gitHubInstallation = await getGithubInstallation(installationId);
 
   if (!gitHubInstallation) {
     return null;
   }
 
-  const gitHubUser = await prisma.githubUsers.findFirst({
-    where: { installationId: gitHubInstallation.id, login },
+  const githubUser = await getGithubUser({
+    installationId: gitHubInstallation.id,
+    login,
   });
 
-  if (!gitHubUser) {
+  if (!githubUser) {
     return null;
   }
 
-  const habiticaUser = await prisma.habiticaUsers.findFirst({
-    where: { githubUserId: gitHubUser.id },
-  });
+  const habiticaUser = await getHabiticaUser(githubUser.id);
 
   if (!habiticaUser) {
     return null;

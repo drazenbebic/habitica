@@ -7,7 +7,7 @@ import { Heading } from '@/components/ui/Heading';
 import { supportEmail } from '@/utils/support-email';
 
 export const metadata: Metadata = {
-  title: 'Imprint | Octogriffin',
+  title: 'Imprint',
   description:
     'Legal disclosure and provider identification for Octogriffin. Operated by Drazen Bebic in Vienna, Austria.',
 };

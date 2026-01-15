@@ -2,26 +2,21 @@
 
 import { getServerSession } from 'next-auth';
 
+import { getGithubUserUserByLogin } from '@/accessors/githubUser';
 import { authOptions } from '@/lib/auth';
 import HabiticaApi from '@/lib/habitica-api';
 import logger from '@/lib/logger';
-import prisma from '@/lib/prisma';
 import { UserStats } from '@/types/habitica';
 
-export async function getHabiticaStats(): Promise<UserStats | null> {
+export async function getHabiticaStatsAction(): Promise<UserStats | null> {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.name) {
     return null;
   }
 
-  const user = await prisma.githubUsers.findUnique({
-    where: { login: session.user.name },
-    select: {
-      habiticaUser: {
-        select: { userId: true, apiToken: true },
-      },
-    },
+  const user = await getGithubUserUserByLogin(session.user.name, {
+    habiticaUser: true,
   });
 
   if (!user?.habiticaUser?.userId || !user?.habiticaUser?.apiToken) {
@@ -34,9 +29,7 @@ export async function getHabiticaStats(): Promise<UserStats | null> {
       user.habiticaUser.apiToken,
     );
 
-    const { stats } = await habitica.getUserStats({
-      next: { revalidate: 60 },
-    });
+    const { stats } = await habitica.getUserStats();
 
     return stats;
   } catch (error) {

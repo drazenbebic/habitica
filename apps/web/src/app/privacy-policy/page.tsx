@@ -7,7 +7,7 @@ import { Heading } from '@/components/ui/Heading';
 import { supportEmail } from '@/utils/support-email';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | Octogriffin',
+  title: 'Privacy Policy',
   description:
     'We protect your code and data. Learn about our GDPR compliance, zero-storage policy for source code, and secure infrastructure in Frankfurt.',
 };

@@ -17,7 +17,7 @@ import { Pill } from '@/components/ui/Pill';
 import { githubRepositoryUrl } from '@/utils/github-repository-url';
 
 export const metadata: Metadata = {
-  title: 'Roadmap - Octogriffin',
+  title: 'Roadmap',
   description: 'Our development plan for the future of Octogriffin.',
 };
 

@@ -1,7 +1,10 @@
-import { EmitterWebhookEvent } from '@octokit/webhooks/types';
+import { EmitterWebhookEvent } from '@octokit/webhooks';
 
+import {
+  getGithubInstallation,
+  removeSelectedRepositories,
+} from '@/accessors/githubInstallation';
 import logger from '@/lib/logger';
-import prisma from '@/lib/prisma';
 
 export const handleInstallationRepositoriesRemoved = async ({
   payload: { installation, repositories_removed: repositoriesRemoved },
@@ -10,23 +13,17 @@ export const handleInstallationRepositoriesRemoved = async ({
     return;
   }
 
-  const existingInstallation = await prisma.githubInstallations.findUnique({
-    where: { installationId: installation.id },
-  });
+  const existingInstallation = await getGithubInstallation(installation.id);
 
   if (!existingInstallation) {
     logger.warn({ installationId: installation.id }, 'Installation not found.');
     return;
   }
 
-  await prisma.githubSelectedRepositories.deleteMany({
-    where: {
-      installationId: existingInstallation.id,
-      githubRepositoryId: {
-        in: repositoriesRemoved.map(({ id }) => id),
-      },
-    },
-  });
+  await removeSelectedRepositories(
+    existingInstallation.id,
+    repositoriesRemoved.map(({ id }) => id),
+  );
 
   logger.info({ count: repositoriesRemoved.length }, 'Repositories removed.');
 };

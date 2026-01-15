@@ -2,13 +2,16 @@
 
 import { FC, startTransition, useActionState, useEffect, useMemo } from 'react';
 
-import { getHabiticaStats } from '@/app/actions/get-habitica-stats';
+import { getHabiticaStatsAction } from '@/app/actions/get-habitica-stats-action';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Heading } from '@/components/ui/Heading';
 
-export const DashboardHabiticaStatsCard: FC = () => {
-  const [stats, action, isPending] = useActionState(getHabiticaStats, null);
+export const HabiticaStatsCard: FC = () => {
+  const [stats, action, isPending] = useActionState(
+    getHabiticaStatsAction,
+    null,
+  );
 
   useEffect(() => {
     startTransition(() => {

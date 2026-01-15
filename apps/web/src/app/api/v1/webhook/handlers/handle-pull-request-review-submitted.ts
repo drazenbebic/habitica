@@ -1,9 +1,10 @@
 import { EmitterWebhookEvent } from '@octokit/webhooks';
 
+import { getInstallationStatus } from '@/accessors/githubInstallation';
+import { getGithubUserBySenderId } from '@/accessors/githubUser';
 import getHabiticaApi from '@/app/api/v1/webhook/get-habitica-api';
 import { TaskDirection, TaskPriority, TaskType } from '@/enums/habitica';
 import logger from '@/lib/logger';
-import prisma from '@/lib/prisma';
 
 export const handlePullRequestReviewSubmitted = async ({
   payload: { installation, repository, sender, pull_request: pullRequest },
@@ -18,29 +19,22 @@ export const handlePullRequestReviewSubmitted = async ({
     return;
   }
 
-  const githubInstallation = await prisma.githubInstallations.findUnique({
-    where: { installationId: installation.id },
-    select: {
-      suspended: true,
-      selectedRepositories: {
-        where: { githubRepositoryId: repository.id },
-        select: { id: true },
-        take: 1,
-      },
-    },
-  });
+  const githubInstallation = await getInstallationStatus(
+    installation.id,
+    repository.id,
+  );
 
   if (!githubInstallation) {
     logger.info('Ignored: Installation not found.');
     return;
   }
 
-  if (githubInstallation.suspended) {
+  if (githubInstallation.isSuspended) {
     logger.info('Ignored: Installation is suspended.');
     return;
   }
 
-  if (githubInstallation.selectedRepositories.length === 0) {
+  if (!githubInstallation.isRepositorySelected) {
     logger.info(
       { repoId: repository.id },
       'Ignored: Repository not whitelisted.',
@@ -48,9 +42,8 @@ export const handlePullRequestReviewSubmitted = async ({
     return;
   }
 
-  const githubUser = await prisma.githubUsers.findUnique({
-    where: { githubId: sender.id },
-    select: { habiticaUser: true },
+  const githubUser = await getGithubUserBySenderId(sender.id, {
+    habiticaUser: true,
   });
 
   if (!githubUser?.habiticaUser) {

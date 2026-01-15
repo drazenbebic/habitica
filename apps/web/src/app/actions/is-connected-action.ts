@@ -2,10 +2,10 @@
 
 import { getServerSession } from 'next-auth';
 
+import { getGithubUserUserByLogin } from '@/accessors/githubUser';
 import { authOptions } from '@/lib/auth';
-import prisma from '@/lib/prisma';
 
-export async function isConnected() {
+export async function isConnectedAction() {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.name) {
@@ -13,14 +13,9 @@ export async function isConnected() {
   }
 
   try {
-    const user = await prisma.githubUsers.findUnique({
-      where: {
-        login: session.user.name,
-      },
-      include: {
-        installation: true,
-        habiticaUser: true,
-      },
+    const user = await getGithubUserUserByLogin(session.user.name, {
+      installation: true,
+      habiticaUser: true,
     });
 
     if (

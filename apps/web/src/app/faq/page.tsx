@@ -11,7 +11,7 @@ import { Heading } from '@/components/ui/Heading';
 import { supportEmail } from '@/utils/support-email';
 
 export const metadata: Metadata = {
-  title: 'FAQ | Octogriffin',
+  title: 'FAQs',
   description:
     'Common questions about how Octogriffin processes your GitHub activity and rewards you.',
 };

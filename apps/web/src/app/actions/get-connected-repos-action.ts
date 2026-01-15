@@ -2,8 +2,8 @@
 
 import { getServerSession } from 'next-auth';
 
+import { getGithubUserUserByLogin } from '@/accessors/githubUser';
 import { authOptions } from '@/lib/auth';
-import prisma from '@/lib/prisma';
 
 export type ConnectedRepository = {
   id: number;
@@ -13,22 +13,19 @@ export type ConnectedRepository = {
   htmlUrl: string;
 };
 
-export async function getConnectedRepos(): Promise<ConnectedRepository[]> {
+export async function getConnectedReposAction(): Promise<
+  ConnectedRepository[]
+> {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.name) {
     return [];
   }
 
-  const user = await prisma.githubUsers.findUnique({
-    where: { login: session.user.name },
-    include: {
-      installation: {
-        include: {
-          selectedRepositories: {
-            orderBy: { createdAt: 'desc' },
-          },
-        },
+  const user = await getGithubUserUserByLogin(session.user.name, {
+    installation: {
+      include: {
+        selectedRepositories: { orderBy: { createdAt: 'desc' } },
       },
     },
   });

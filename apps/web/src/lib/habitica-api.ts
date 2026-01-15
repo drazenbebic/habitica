@@ -2,7 +2,6 @@ import { TaskDirection } from '@/enums/habitica';
 import logger from '@/lib/logger';
 import {
   APIResponse,
-  ChecklistItem,
   CreateTaskParameters,
   ScoreTaskResponse,
   Task,
@@ -80,17 +79,9 @@ class HabiticaApi {
     });
   };
 
-  addChecklistItemToTask = (taskId: string, payload: ChecklistItem) => {
-    return this.request<Task>(`/tasks/${taskId}/checklist`, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    });
-  };
-
-  getUserStats = (options?: RequestInit) => {
+  getUserStats = () => {
     return this.request<{ stats: UserStats }>('/user', {
       method: 'GET',
-      ...options,
     });
   };
 }

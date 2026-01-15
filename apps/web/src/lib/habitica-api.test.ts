@@ -125,13 +125,12 @@ describe('@/lib/habitica-api.ts', () => {
     it('should merge custom options into the request', async () => {
       mockSuccessResponse({ stats: { lvl: 10 } });
 
-      await api.getUserStats({ next: { revalidate: 60 } });
+      await api.getUserStats();
 
       expect(mockFetch).toHaveBeenCalledWith(
-        expect.stringContaining('/user'),
+        'https://habitica.com/api/v3/user',
         expect.objectContaining({
           method: 'GET',
-          next: { revalidate: 60 },
         }),
       );
     });

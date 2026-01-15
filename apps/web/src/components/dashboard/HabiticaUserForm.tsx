@@ -13,16 +13,16 @@ import { useRouter } from 'next/navigation';
 import { AlertCircleIcon, FloppyDiskIcon, Link01Icon } from 'hugeicons-react';
 import { toast } from 'sonner';
 
-import { getHabiticaCredentials } from '@/app/actions/get-habitica-credentials';
-import { updateHabiticaCredentials } from '@/app/actions/update-habitica-credentials';
+import { getHabiticaCredentialsAction } from '@/app/actions/get-habitica-credentials-action';
+import { updateHabiticaCredentialsAction } from '@/app/actions/update-habitica-credentials-action';
 import { Button } from '@/components/ui/Button';
 import { FormInput } from '@/components/ui/FormInput';
 import { FormLabel } from '@/components/ui/FormLabel';
 import { Skeleton } from '@/components/ui/Skeleton';
 
-export const DashboardHabiticaUserForm: FC = () => {
+export const HabiticaUserForm: FC = () => {
   const [credentials, trigger, isPending] = useActionState(
-    getHabiticaCredentials,
+    getHabiticaCredentialsAction,
     null,
   );
   const [isSaving, setIsSaving] = useState(false);
@@ -42,7 +42,7 @@ export const DashboardHabiticaUserForm: FC = () => {
     const userId = formData.get('userId') as string;
     const apiToken = formData.get('apiToken') as string;
 
-    const result = await updateHabiticaCredentials({ userId, apiToken });
+    const result = await updateHabiticaCredentialsAction({ userId, apiToken });
 
     if (result.success) {
       toast.success('Configuration saved successfully');

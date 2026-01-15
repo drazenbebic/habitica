@@ -1,7 +1,7 @@
-import { EmitterWebhookEvent } from '@octokit/webhooks/types';
+import { EmitterWebhookEvent } from '@octokit/webhooks';
 
+import { deleteGithubInstallation } from '@/accessors/githubInstallation';
 import logger from '@/lib/logger';
-import prisma from '@/lib/prisma';
 
 export const handleInstallationDeleted = async ({
   payload: { installation },
@@ -9,11 +9,7 @@ export const handleInstallationDeleted = async ({
   logger.info('Event triggered.');
 
   try {
-    await prisma.githubInstallations.delete({
-      where: {
-        installationId: Number(installation.id),
-      },
-    });
+    await deleteGithubInstallation(installation.id);
 
     logger.info('Installation and all related data deleted successfully.');
   } catch (error) {
