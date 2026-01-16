@@ -19,10 +19,9 @@ import { FormInput } from '@/components/ui/FormInput';
 import { FormLabel } from '@/components/ui/FormLabel';
 import { FormSelect } from '@/components/ui/FormSelect';
 import { Heading } from '@/components/ui/Heading';
-import { SelectGroup } from '@/components/ui/SelectGroup';
-import { SelectGroupLabel } from '@/components/ui/SelectGroupLabel';
 import { SelectItem } from '@/components/ui/SelectItem';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
+import { useGithubEventsOptions } from '@/hooks/useGithubEventsOptions';
 import { TriggerSchema, triggerSchema } from '@/schemas/triggerSchema';
 import { useTriggersStore } from '@/store/useTriggersStore';
 
@@ -39,6 +38,7 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
   trigger,
   onSuccessAction,
 }) => {
+  const githubEventOptions = useGithubEventsOptions();
   const updateTrigger = useTriggersStore(state => state.updateTrigger);
   const [isPending, startTransition] = useTransition();
 
@@ -98,23 +98,7 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
             >
               When this happens on GitHub...
             </FormLabel>
-            <FormSelect name="event">
-              <SelectGroup>
-                <SelectGroupLabel>Code</SelectGroupLabel>
-                <SelectItem value="push">Push to Repository</SelectItem>
-              </SelectGroup>
-              <SelectGroup>
-                <SelectGroupLabel>Pull Requests</SelectGroupLabel>
-                <SelectItem value="pr_opened">Pull Request Opened</SelectItem>
-                <SelectItem value="pr_merged">Pull Request Merged</SelectItem>
-                <SelectItem value="pr_review">Review Submitted</SelectItem>
-              </SelectGroup>
-              <SelectGroup>
-                <SelectGroupLabel>Issues</SelectGroupLabel>
-                <SelectItem value="issue_opened">Issue Opened</SelectItem>
-                <SelectItem value="issue_closed">Issue Closed</SelectItem>
-              </SelectGroup>
-            </FormSelect>
+            <FormSelect name="event">{githubEventOptions}</FormSelect>
             <FormError name="event" className="mt-1 text-xs text-red-500" />
           </div>
 

@@ -19,9 +19,8 @@ import { FormInput } from '@/components/ui/FormInput';
 import { FormLabel } from '@/components/ui/FormLabel';
 import { FormSelect } from '@/components/ui/FormSelect';
 import { Heading } from '@/components/ui/Heading';
-import { SelectGroup } from '@/components/ui/SelectGroup';
-import { SelectGroupLabel } from '@/components/ui/SelectGroupLabel';
 import { SelectItem } from '@/components/ui/SelectItem';
+import { useGithubEventsOptions } from '@/hooks/useGithubEventsOptions';
 import { TriggerSchema, triggerSchema } from '@/schemas/triggerSchema';
 import { useTriggersStore } from '@/store/useTriggersStore';
 
@@ -47,6 +46,7 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
     taskFrequency: 'DAILY',
   });
 
+  const githubEventOptions = useGithubEventsOptions();
   const form = useFormStore({ values, setValues });
   const [isPending, startTransition] = useTransition();
   const [serverError, setServerError] = useState<string | null>(null);
@@ -77,14 +77,15 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
     });
   });
 
-  // Reset form when modal closes (optional, but good UX)
-  if (!open /* && is form touched? */) {
-    form.reset();
-  }
+  const handleDialogClose = () => {
+    setTimeout(() => {
+      form.reset();
+    }, 300);
+  };
 
   return (
     <DialogProvider open={open} setOpen={setOpenAction}>
-      <Dialog>
+      <Dialog onClose={handleDialogClose}>
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-violet-100 text-violet-600">
@@ -105,23 +106,7 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
             >
               When this happens on GitHub...
             </FormLabel>
-            <FormSelect name="event">
-              <SelectGroup>
-                <SelectGroupLabel>Code</SelectGroupLabel>
-                <SelectItem value="push">Push to Repository</SelectItem>
-              </SelectGroup>
-              <SelectGroup>
-                <SelectGroupLabel>Pull Requests</SelectGroupLabel>
-                <SelectItem value="pr_opened">Pull Request Opened</SelectItem>
-                <SelectItem value="pr_merged">Pull Request Merged</SelectItem>
-                <SelectItem value="pr_review">Review Submitted</SelectItem>
-              </SelectGroup>
-              <SelectGroup>
-                <SelectGroupLabel>Issues</SelectGroupLabel>
-                <SelectItem value="issue_opened">Issue Opened</SelectItem>
-                <SelectItem value="issue_closed">Issue Closed</SelectItem>
-              </SelectGroup>
-            </FormSelect>
+            <FormSelect name="event">{githubEventOptions}</FormSelect>
             <FormError name="event" className="mt-1 text-xs text-red-500" />
           </div>
 
