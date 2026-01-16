@@ -6,71 +6,103 @@ import { Activity04Icon, RefreshIcon } from 'hugeicons-react';
 
 import { WebhookLogsListItem } from '@/components/dashboard/WebhookLogsListItem';
 import { ButtonIcon } from '@/components/ui/ButtonIcon';
+import { Pagination } from '@/components/ui/Pagination';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { useWebhookLogsStore } from '@/store/useWebhookLogsStore';
 
 export const WebhookLogsList: FC = () => {
   const webhookLogs = useWebhookLogsStore(state => state.webhookLogs);
+  const meta = useWebhookLogsStore(state => state.meta);
   const isLoading = useWebhookLogsStore(state => state.isLoading);
   const fetchWebhookLogs = useWebhookLogsStore(state => state.fetchWebhookLogs);
+  const setPage = useWebhookLogsStore(state => state.setPage);
+  const setLimit = useWebhookLogsStore(state => state.setLimit);
 
   useEffect(() => {
-    fetchWebhookLogs();
+    fetchWebhookLogs({ page: 1 });
   }, [fetchWebhookLogs]);
 
   if (isLoading) {
+    const skeletonCount =
+      webhookLogs.length > 0 && webhookLogs.length < meta.limit
+        ? webhookLogs.length
+        : meta.limit || 5;
+
     return (
-      <div className="flex h-full flex-col gap-3">
+      <div className="flex h-full flex-col gap-4">
         <div className="mb-2 flex justify-end">
-          <Skeleton className="h-8 w-8" variant="circular" />
+          <Skeleton className="h-8 w-8 rounded-md" />
         </div>
-        {[...Array(webhookLogs?.length || 5)].map((_, i) => (
+
+        {[...Array(skeletonCount)].map((_, i) => (
           <div
             key={i}
-            className="flex items-center gap-4 rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-100"
+            className="flex flex-col gap-4 rounded-xl bg-white p-4 shadow-sm ring-1 ring-slate-100 sm:flex-row sm:items-center sm:justify-between"
           >
-            <Skeleton className="h-10 w-10 rounded-lg" />
-            <div className="flex-1 space-y-2">
-              <div className="flex items-center gap-2">
-                <Skeleton className="h-5 w-32" />
-                <Skeleton className="h-4 w-16 rounded-md" />
+            <div className="flex items-center gap-4">
+              <Skeleton className="h-10 w-10 shrink-0 rounded-lg" />
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-5 w-32" />
+                  <Skeleton className="h-5 w-16" />
+                </div>
+                <Skeleton className="h-3 w-48" />
               </div>
-              <Skeleton className="h-3 w-48" />
+            </div>
+
+            <div className="flex shrink-0 sm:justify-end">
+              <Skeleton className="h-4 w-32 sm:w-24" />
             </div>
           </div>
         ))}
+
+        <div className="flex flex-col items-center justify-between gap-4 border-t border-slate-100 py-4 sm:flex-row">
+          <Skeleton className="h-4 w-48" />
+          <div className="flex gap-2">
+            <Skeleton className="h-9 w-24 rounded-lg" />
+            <Skeleton className="h-9 w-24 rounded-lg" />
+          </div>
+        </div>
       </div>
     );
   }
 
   if (webhookLogs.length > 0) {
     return (
-      <div className="flex h-full flex-col gap-3">
-        <div className="mb-2 flex justify-end">
+      <div className="flex h-full flex-col gap-4">
+        <div className="flex justify-end">
           <ButtonIcon
             size="sm"
             variant="secondary"
-            onClick={fetchWebhookLogs}
-            aria-label="Refresh logs"
-            title="Refresh logs"
+            onClick={() => fetchWebhookLogs()}
+            aria-label="Refresh webhook logs"
           >
             <RefreshIcon size={16} />
           </ButtonIcon>
         </div>
-        {webhookLogs.map(log => (
-          <WebhookLogsListItem key={log.uuid} log={log} />
-        ))}
+
+        <div className="flex flex-col gap-4">
+          {webhookLogs.map(log => (
+            <WebhookLogsListItem key={log.uuid} log={log} />
+          ))}
+        </div>
+
+        <Pagination
+          meta={meta}
+          onPageChange={setPage}
+          onLimitChange={setLimit}
+        />
       </div>
     );
   }
 
   return (
-    <div className="flex h-full flex-col gap-3">
+    <div className="flex h-full flex-col gap-4">
       <div className="mb-2 flex justify-end">
         <ButtonIcon
           size="sm"
           variant="ghost"
-          onClick={fetchWebhookLogs}
+          onClick={() => fetchWebhookLogs()}
           aria-label="Refresh logs"
         >
           <RefreshIcon size={16} />

@@ -9,12 +9,16 @@ import { updateTriggerAction } from '@/actions/triggers/updateTriggerAction';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
 import { ToggleTriggerSchema } from '@/schemas/toggleTriggerSchema';
 import { TriggerSchema } from '@/schemas/triggerSchema';
+import { PaginationMeta, PaginationParams } from '@/types/pagination';
 
 type TriggersStoreState = {
   trigger: TriggersModel | null;
   triggers: TriggersModel[];
+  meta: PaginationMeta;
   isLoading: boolean;
-  fetchTriggers: () => Promise<void>;
+  fetchTriggers: (params?: PaginationParams) => Promise<void>;
+  setPage: (page: number) => void;
+  setLimit: (limit: number) => void;
   createTrigger: (data: TriggerSchema) => Promise<TriggersModel | null>;
   deleteTrigger: (uuid: string) => Promise<TriggersModel | null>;
   toggleTrigger: (data: ToggleTriggerSchema) => Promise<TriggersModel | null>;
@@ -28,14 +32,30 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
   trigger: null,
   triggers: [],
   isLoading: false,
-  fetchTriggers: async () => {
+  meta: {
+    page: 1,
+    limit: 5,
+    total: 0,
+    totalPages: 0,
+  },
+  fetchTriggers: async (params = {}) => {
     set({ isLoading: true });
 
+    const currentMeta = get().meta;
+    const requestParams = {
+      page: params.page || currentMeta.page,
+      limit: params.limit || currentMeta.limit,
+      ...params,
+    };
+
     try {
-      const result = await getTriggersAction();
+      const result = await getTriggersAction(requestParams);
 
       if (result.success && result.data) {
-        set({ triggers: result.data });
+        set({
+          triggers: result.data.data,
+          meta: result.data.meta,
+        });
       } else {
         console.error('Failed to fetch triggers:', result.error);
       }
@@ -44,6 +64,12 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
     } finally {
       set({ isLoading: false });
     }
+  },
+  setPage: (page: number) => {
+    get().fetchTriggers({ page });
+  },
+  setLimit: (limit: number) => {
+    get().fetchTriggers({ limit });
   },
   createTrigger: async data => {
     set({ isLoading: true });
@@ -56,7 +82,13 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
         return null;
       }
 
-      set(state => ({ triggers: [result.data!, ...state.triggers] }));
+      set(state => ({
+        triggers: [result.data!, ...state.triggers],
+        meta: {
+          ...state.meta,
+          total: state.meta.total + 1,
+        },
+      }));
 
       return result.data;
     } catch (error) {
@@ -69,9 +101,14 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
   },
   deleteTrigger: async uuid => {
     const previousTriggers = get().triggers;
+    const previousMeta = get().meta;
 
     set(state => ({
       triggers: state.triggers.filter(t => t.uuid !== uuid),
+      meta: {
+        ...state.meta,
+        total: Math.max(0, state.meta.total - 1),
+      },
     }));
 
     try {
@@ -79,7 +116,7 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
 
       if (!result.success || !result.data) {
         toast.error(result.error || 'Failed to delete trigger');
-        set({ triggers: previousTriggers });
+        set({ triggers: previousTriggers, meta: previousMeta });
         return null;
       }
 
@@ -87,7 +124,7 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
     } catch (error) {
       console.error('Zustand deleteTrigger error:', error);
       toast.error('An unexpected error occurred');
-      set({ triggers: previousTriggers });
+      set({ triggers: previousTriggers, meta: previousMeta });
       return null;
     }
   },

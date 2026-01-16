@@ -2,31 +2,59 @@ import { create } from 'zustand';
 
 import { getWebhookLogsAction } from '@/actions/webhookLogs/getWebhookLogsAction';
 import { WebhookLogsModel } from '@/generated/prisma/models/WebhookLogs';
+import { PaginationMeta, PaginationParams } from '@/types/pagination';
 
 type WebhookLogsStoreState = {
   webhookLogs: WebhookLogsModel[];
+  meta: PaginationMeta;
   isLoading: boolean;
-  fetchWebhookLogs: () => Promise<void>;
+  fetchWebhookLogs: (params?: PaginationParams) => Promise<void>;
+  setPage: (page: number) => void;
+  setLimit: (limit: number) => void;
 };
 
-export const useWebhookLogsStore = create<WebhookLogsStoreState>(set => ({
-  webhookLogs: [],
-  isLoading: false,
-  fetchWebhookLogs: async () => {
-    set({ isLoading: true });
+export const useWebhookLogsStore = create<WebhookLogsStoreState>(
+  (set, get) => ({
+    webhookLogs: [],
+    isLoading: false,
+    meta: {
+      page: 1,
+      limit: 5,
+      total: 0,
+      totalPages: 0,
+    },
+    fetchWebhookLogs: async (params = {}) => {
+      set({ isLoading: true });
 
-    try {
-      const result = await getWebhookLogsAction();
+      const currentMeta = get().meta;
+      const requestParams = {
+        page: params.page || currentMeta.page,
+        limit: params.limit || currentMeta.limit,
+        ...params,
+      };
 
-      if (result.success && result.data) {
-        set({ webhookLogs: result.data });
-      } else {
-        console.error('Failed to fetch webhook logs:', result.error);
+      try {
+        const result = await getWebhookLogsAction(requestParams);
+
+        if (result.success && result.data) {
+          set({
+            webhookLogs: result.data.data,
+            meta: result.data.meta,
+          });
+        } else {
+          console.error('Failed to webhookLogs:', result.error);
+        }
+      } catch (error) {
+        console.error('Zustand fetchWebhookLogs error:', error);
+      } finally {
+        set({ isLoading: false });
       }
-    } catch (error) {
-      console.error('Zustand fetchWebhookLogs error:', error);
-    } finally {
-      set({ isLoading: false });
-    }
-  },
-}));
+    },
+    setPage: (page: number) => {
+      get().fetchWebhookLogs({ page });
+    },
+    setLimit: (limit: number) => {
+      get().fetchWebhookLogs({ limit });
+    },
+  }),
+);

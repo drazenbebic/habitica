@@ -6,11 +6,12 @@ import { getGithubUserUserByLogin } from '@/accessors/githubUser';
 import { getTriggers } from '@/accessors/trigger';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
 import { authOptions } from '@/lib/auth';
+import { PaginatedResult, PaginationParams } from '@/types/pagination';
 import { ServerActionResult } from '@/types/serverAction';
 
-export async function getTriggersAction(): Promise<
-  ServerActionResult<TriggersModel[]>
-> {
+export async function getTriggersAction(
+  params?: PaginationParams,
+): Promise<ServerActionResult<PaginatedResult<TriggersModel>>> {
   try {
     const session = await getServerSession(authOptions);
 
@@ -24,7 +25,7 @@ export async function getTriggersAction(): Promise<
       return { success: false, error: 'GitHub user account not found.' };
     }
 
-    const triggers = await getTriggers(githubUser.id);
+    const triggers = await getTriggers(githubUser.id, params);
 
     return { success: true, data: triggers };
   } catch (error) {

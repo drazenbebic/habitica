@@ -6,11 +6,12 @@ import { getGithubUserUserByLogin } from '@/accessors/githubUser';
 import { getWebhookLogs } from '@/accessors/webhookLog';
 import { WebhookLogsModel } from '@/generated/prisma/models/WebhookLogs';
 import { authOptions } from '@/lib/auth';
+import { PaginatedResult, PaginationParams } from '@/types/pagination';
 import { ServerActionResult } from '@/types/serverAction';
 
-export async function getWebhookLogsAction(): Promise<
-  ServerActionResult<WebhookLogsModel[]>
-> {
+export async function getWebhookLogsAction(
+  params?: PaginationParams,
+): Promise<ServerActionResult<PaginatedResult<WebhookLogsModel>>> {
   try {
     const session = await getServerSession(authOptions);
 
@@ -24,7 +25,7 @@ export async function getWebhookLogsAction(): Promise<
       return { success: false, error: 'GitHub user account not found.' };
     }
 
-    const webhookLogs = await getWebhookLogs(githubUser.id);
+    const webhookLogs = await getWebhookLogs(githubUser.id, params);
 
     return { success: true, data: webhookLogs };
   } catch (error) {

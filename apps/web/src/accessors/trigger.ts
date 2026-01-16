@@ -1,7 +1,9 @@
 'use server';
 
 import { Prisma } from '@/generated/prisma/client';
+import { TriggersModel } from '@/generated/prisma/models/Triggers';
 import prisma from '@/lib/prisma';
+import { PaginatedResult, PaginationParams } from '@/types/pagination';
 
 export const getTrigger = async (
   uuid: string,
@@ -12,13 +14,35 @@ export const getTrigger = async (
   });
 };
 
-export const getTriggers = async (githubUserId: number | bigint) => {
-  return prisma.triggers.findMany({
-    where: { githubUserId },
-    orderBy: {
-      id: 'desc',
+export const getTriggers = async (
+  githubUserId: number | bigint,
+  params: PaginationParams = {},
+): Promise<PaginatedResult<TriggersModel>> => {
+  const page = params.page || 1;
+  const limit = params.limit || 10;
+  const skip = (page - 1) * limit;
+
+  const [total, data] = await prisma.$transaction([
+    prisma.triggers.count({
+      where: { githubUserId },
+    }),
+    prisma.triggers.findMany({
+      where: { githubUserId },
+      orderBy: { id: 'desc' },
+      skip,
+      take: limit,
+    }),
+  ]);
+
+  return {
+    data,
+    meta: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
     },
-  });
+  };
 };
 
 export const deleteTrigger = async (
