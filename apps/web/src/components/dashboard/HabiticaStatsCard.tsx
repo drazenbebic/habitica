@@ -1,41 +1,31 @@
 'use client';
 
-import { FC, useEffect, useMemo, useState } from 'react';
+import { FC, useEffect, useMemo } from 'react';
 
-import { getHabiticaStatsAction } from '@/actions/getHabiticaStatsAction';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Heading } from '@/components/ui/Heading';
 import { Skeleton } from '@/components/ui/Skeleton';
-
-type HabiticaStats = Awaited<ReturnType<typeof getHabiticaStatsAction>>;
+import { useHabiticaStore } from '@/store/useHabiticaStore';
 
 export const HabiticaStatsCard: FC = () => {
-  const [stats, setStats] = useState<HabiticaStats | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const isLoading = useHabiticaStore(state => state.isLoading);
+  const habiticaStats = useHabiticaStore(state => state.habiticaStats);
+  const fetchHabiticaStats = useHabiticaStore(
+    state => state.fetchHabiticaStats,
+  );
 
   useEffect(() => {
-    const fetchHabiticaStats = async () => {
-      try {
-        const data = await getHabiticaStatsAction();
-        setStats(data);
-      } catch (error) {
-        console.error('Failed to fetch Habitica stats', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     fetchHabiticaStats();
-  }, []);
+  }, [fetchHabiticaStats]);
 
   const progress = useMemo(() => {
-    if (!stats) {
+    if (!habiticaStats) {
       return 0;
     }
 
-    return Math.min((stats.exp / stats.toNextLevel) * 100, 100);
-  }, [stats]);
+    return Math.min((habiticaStats.exp / habiticaStats.toNextLevel) * 100, 100);
+  }, [habiticaStats]);
 
   if (isLoading) {
     return (
@@ -65,7 +55,7 @@ export const HabiticaStatsCard: FC = () => {
     );
   }
 
-  if (!stats) {
+  if (!habiticaStats) {
     return (
       <Card variant="flat" className="bg-slate-100 text-slate-500">
         <CardBody className="flex flex-col items-center justify-center py-8 text-center">
@@ -80,11 +70,11 @@ export const HabiticaStatsCard: FC = () => {
     );
   }
 
-  const xp = Math.floor(stats.exp);
-  const toNextLevel = stats.toNextLevel;
-  const hp = Math.ceil(stats.hp);
-  const maxHealth = stats.maxHealth;
-  const lvl = stats.lvl;
+  const xp = Math.floor(habiticaStats.exp);
+  const toNextLevel = habiticaStats.toNextLevel;
+  const hp = Math.ceil(habiticaStats.hp);
+  const maxHealth = habiticaStats.maxHealth;
+  const lvl = habiticaStats.lvl;
 
   return (
     <Card

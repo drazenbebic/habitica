@@ -10,12 +10,8 @@ import {
   useFormStore,
 } from '@ariakit/react';
 import { ZapIcon } from 'hugeicons-react';
+import { toast } from 'sonner';
 
-import { createTriggerAction } from '@/actions/triggers/createTriggerAction';
-import {
-  TriggerSchema,
-  triggerSchema,
-} from '@/components/dashboard/triggerSchema';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { DialogDismiss } from '@/components/ui/DialogDismiss';
@@ -26,6 +22,8 @@ import { Heading } from '@/components/ui/Heading';
 import { SelectGroup } from '@/components/ui/SelectGroup';
 import { SelectGroupLabel } from '@/components/ui/SelectGroupLabel';
 import { SelectItem } from '@/components/ui/SelectItem';
+import { TriggerSchema, triggerSchema } from '@/schemas/triggerSchema';
+import { useTriggersStore } from '@/store/useTriggersStore';
 
 export type AddTriggerModalProps = {
   open: boolean;
@@ -38,6 +36,7 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
   setOpenAction,
   onSuccessAction,
 }) => {
+  const createTrigger = useTriggersStore(state => state.createTrigger);
   const [values, setValues] = useState<TriggerSchema>({
     event: 'push',
     taskTitle: '',
@@ -65,14 +64,15 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
     }
 
     startTransition(async () => {
-      const result = await createTriggerAction(validation.data);
+      const createdTrigger = await createTrigger(validation.data);
 
-      if (result.success) {
+      if (createdTrigger) {
+        toast.success('Trigger created successfully.');
         form.reset();
         setOpenAction(false);
         onSuccessAction?.();
       } else {
-        setServerError(result.error || 'Failed to create trigger');
+        setServerError('Failed to create trigger');
       }
     });
   });

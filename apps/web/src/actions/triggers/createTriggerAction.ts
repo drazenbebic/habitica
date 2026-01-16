@@ -1,34 +1,36 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
 import { getServerSession } from 'next-auth';
+
+import { nanoid } from 'nanoid';
 
 import { getGithubUserUserByLogin } from '@/accessors/githubUser';
 import { createTrigger } from '@/accessors/trigger';
-import {
-  TriggerSchema,
-  triggerSchema,
-} from '@/components/dashboard/triggerSchema';
+import { TriggersModel } from '@/generated/prisma/models/Triggers';
 import { authOptions } from '@/lib/auth';
+import { TriggerSchema, triggerSchema } from '@/schemas/triggerSchema';
+import { ServerActionResult } from '@/types/serverAction';
 
-export async function createTriggerAction(data: TriggerSchema) {
-  const session = await getServerSession(authOptions);
-
-  if (!session?.user?.name) {
-    return { success: false, error: 'Unauthorized' };
-  }
-
-  const parsed = triggerSchema.safeParse(data);
-
-  if (!parsed.success) {
-    return { success: false, error: 'Invalid data' };
-  }
-
+export async function createTriggerAction(
+  data: TriggerSchema,
+): Promise<ServerActionResult<TriggersModel>> {
   try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.name) {
+      return { success: false, error: 'Unauthorized' };
+    }
+
+    const parsed = triggerSchema.safeParse(data);
+
+    if (!parsed.success) {
+      return { success: false, error: 'Invalid form data provided.' };
+    }
+
     const githubUser = await getGithubUserUserByLogin(session.user.name);
 
     if (!githubUser) {
-      return { success: false, error: 'User not found' };
+      return { success: false, error: 'GitHub user account not found.' };
     }
 
     const slug = parsed.data.taskTitle
@@ -36,9 +38,9 @@ export async function createTriggerAction(data: TriggerSchema) {
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
 
-    const taskAlias = `${slug}-${Math.random().toString(36).substring(2, 7)}`;
+    const taskAlias = `octogriffin-${slug}-${nanoid(8)}`;
 
-    await createTrigger({
+    const newTrigger = await createTrigger({
       githubUserId: githubUser.id,
       isActive: true,
       event: parsed.data.event,
@@ -51,10 +53,20 @@ export async function createTriggerAction(data: TriggerSchema) {
       taskFrequency: parsed.data.taskFrequency,
     });
 
-    revalidatePath('/dashboard');
-    return { success: true };
+    if (!newTrigger) {
+      return {
+        success: false,
+        error: 'Database error: Failed to create trigger.',
+      };
+    }
+
+    return { success: true, data: newTrigger };
   } catch (error) {
-    console.error(error);
-    return { success: false, error: 'Database error' };
+    console.error('createTriggerAction Error:', error);
+
+    return {
+      success: false,
+      error: 'An unexpected error occurred. Please try again later.',
+    };
   }
 }

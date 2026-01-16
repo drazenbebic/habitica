@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState, useTransition } from 'react';
+import { FC } from 'react';
 
 import { Button } from '@ariakit/react';
 import clsx from 'clsx';
@@ -14,17 +14,18 @@ import {
   GitPullRequestIcon,
   ZapIcon,
 } from 'hugeicons-react';
-import { toast } from 'sonner';
 
-import { toggleTriggerAction } from '@/actions/triggers/toggleTriggerAction';
 import { Badge, BadgeProps } from '@/components/ui/Badge';
 import { Switch } from '@/components/ui/Switch';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
+import { useTriggersStore } from '@/store/useTriggersStore';
 
-const getDifficultyConfig: (priority: number) => {
+const getDifficultyConfig = (
+  priority: number,
+): {
   label: string;
   variant: BadgeProps['variant'];
-} = (priority: number) => {
+} => {
   if (priority <= 0.1) return { label: 'Trivial', variant: 'neutral' };
   if (priority === 1) return { label: 'Easy', variant: 'success' };
   if (priority === 1.5) return { label: 'Medium', variant: 'warning' };
@@ -50,23 +51,12 @@ export const TriggersListItem: FC<TriggersListItemProps> = ({
   onOpenDeleteAction,
   onOpenEditAction,
 }) => {
-  const [isActive, setIsActive] = useState(trigger.isActive);
-  const [isPending, startTransition] = useTransition();
-
+  const toggleTrigger = useTriggersStore(state => state.toggleTrigger);
   const difficulty = getDifficultyConfig(trigger.taskPriority);
+  const isActive = trigger.isActive;
 
   const handleToggle = (checked: boolean) => {
-    setIsActive(checked);
-
-    startTransition(async () => {
-      try {
-        await toggleTriggerAction(trigger.uuid, checked);
-        toast.success('Trigger updated successfully');
-      } catch {
-        setIsActive(!checked);
-        toast.error('Failed to update trigger status');
-      }
-    });
+    toggleTrigger({ uuid: trigger.uuid, isActive: checked });
   };
 
   return (
@@ -130,7 +120,6 @@ export const TriggersListItem: FC<TriggersListItemProps> = ({
         <Switch
           checked={isActive}
           onChange={e => handleToggle(e.target.checked)}
-          disabled={isPending}
           title={isActive ? 'Deactivate Trigger' : 'Activate Trigger'}
         />
 

@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 
-import { toast } from 'sonner';
-
 import { AddTriggerModal } from '@/components/dashboard/AddTriggerModal';
 import { DeleteTriggerModal } from '@/components/dashboard/DeleteTriggerModal';
 import { EditTriggerModal } from '@/components/dashboard/EditTriggerModal';
@@ -31,7 +29,6 @@ export default function Page() {
         setOpenAction={setCreateModalOpen}
         onSuccessAction={() => {
           setCreateModalOpen(false);
-          toast.success('Trigger created successfully.');
         }}
       />
 
@@ -47,7 +44,6 @@ export default function Page() {
           }}
           onSuccessAction={() => {
             setEditingTrigger(null);
-            toast.success('Trigger updated successfully.');
           }}
         />
       )}
@@ -64,7 +60,6 @@ export default function Page() {
           }}
           onSuccessAction={() => {
             setEditingTrigger(null);
-            toast.success('Trigger deleted successfully.');
           }}
         />
       )}

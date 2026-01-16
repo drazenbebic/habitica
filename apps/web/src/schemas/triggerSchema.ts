@@ -8,7 +8,7 @@ export const triggerSchema = z.object({
   scoreDirection: z.enum(['up', 'down']),
   taskPriority: z.coerce.number(),
   taskAttribute: z.enum(['str', 'int', 'con', 'per']),
-  taskFrequency: z.enum(['DAILY', 'WEEKLY', 'MONTHLY']),
+  taskFrequency: z.enum(['DAILY', 'WEEKLY', 'MONTHLY', 'YEARLY']),
 });
 
 export type TriggerSchema = z.infer<typeof triggerSchema>;

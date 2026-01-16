@@ -1,16 +1,15 @@
 'use client';
 
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 
 import { RefreshIcon, ZapIcon } from 'hugeicons-react';
-import { toast } from 'sonner';
 
-import { getTriggersAction } from '@/actions/triggers/getTriggersAction';
 import { TriggersListItem } from '@/components/dashboard/TriggersListItem';
 import { Button } from '@/components/ui/Button';
 import { ButtonIcon } from '@/components/ui/ButtonIcon';
 import { Skeleton } from '@/components/ui/Skeleton';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
+import { useTriggersStore } from '@/store/useTriggersStore';
 
 export type TriggersListProps = {
   onOpenCreateAction?: () => void;
@@ -23,22 +22,9 @@ export const TriggersList: FC<TriggersListProps> = ({
   onOpenDeleteAction,
   onOpenEditAction,
 }) => {
-  const [triggers, setTriggers] = useState<TriggersModel[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const fetchTriggers = useCallback(async () => {
-    setIsLoading(true);
-
-    try {
-      const data = await getTriggersAction();
-      setTriggers(data);
-    } catch (error) {
-      console.error('Failed to fetch triggers:', error);
-      toast.error('Could not load triggers');
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const triggers = useTriggersStore(state => state.triggers);
+  const isLoading = useTriggersStore(state => state.isLoading);
+  const fetchTriggers = useTriggersStore(state => state.fetchTriggers);
 
   useEffect(() => {
     fetchTriggers();
@@ -50,7 +36,7 @@ export const TriggersList: FC<TriggersListProps> = ({
         <div className="mb-2 flex justify-end">
           <Skeleton className="h-8 w-32" variant="circular" />
         </div>
-        {[...Array(4)].map((_, i) => (
+        {[...Array(triggers?.length || 4)].map((_, i) => (
           <div
             key={i}
             className="flex gap-3 items-center justify-between rounded-xl p-4 shadow-sm ring-1 ring-slate-100"

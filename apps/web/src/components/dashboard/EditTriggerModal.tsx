@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState, useTransition } from 'react';
+import { FC, useTransition } from 'react';
 
 import {
   DialogProvider,
@@ -10,9 +10,8 @@ import {
   useFormStore,
 } from '@ariakit/react';
 import { PencilEdit02Icon } from 'hugeicons-react';
+import { toast } from 'sonner';
 
-import { updateTriggerAction } from '@/actions/triggers/updateTriggerAction';
-import { triggerSchema } from '@/components/dashboard/triggerSchema';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { DialogDismiss } from '@/components/ui/DialogDismiss';
@@ -24,6 +23,9 @@ import { SelectGroup } from '@/components/ui/SelectGroup';
 import { SelectGroupLabel } from '@/components/ui/SelectGroupLabel';
 import { SelectItem } from '@/components/ui/SelectItem';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
+import { TriggerSchema, triggerSchema } from '@/schemas/triggerSchema';
+// 1. Import Store
+import { useTriggersStore } from '@/store/useTriggersStore';
 
 export type EditWebhookTriggerModalProps = {
   open: boolean;
@@ -38,24 +40,22 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
   trigger,
   onSuccessAction,
 }) => {
-  const form = useFormStore({
+  const updateTrigger = useTriggersStore(state => state.updateTrigger);
+  const [isPending, startTransition] = useTransition();
+
+  const form = useFormStore<TriggerSchema>({
     defaultValues: {
       event: trigger.event,
       taskTitle: trigger.taskTitle,
       taskNote: trigger.taskNote || '',
-      scoreDirection: trigger.scoreDirection as 'up' | 'down',
-      taskPriority: trigger.taskPriority.toString(),
-      taskAttribute: trigger.taskAttribute as 'str' | 'int' | 'con' | 'per',
-      taskFrequency: trigger.taskFrequency as 'DAILY' | 'WEEKLY' | 'MONTHLY',
+      scoreDirection: trigger.scoreDirection,
+      taskPriority: trigger.taskPriority,
+      taskAttribute: trigger.taskAttribute,
+      taskFrequency: trigger.taskFrequency,
     },
   });
 
-  const [isPending, startTransition] = useTransition();
-  const [serverError, setServerError] = useState<string | null>(null);
-
   form.useSubmit(async state => {
-    setServerError(null);
-
     const validation = triggerSchema.safeParse(state.values);
 
     if (!validation.success) {
@@ -66,13 +66,12 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
     }
 
     startTransition(async () => {
-      const result = await updateTriggerAction(trigger.uuid, validation.data);
+      const updatedTrigger = await updateTrigger(trigger.uuid, validation.data);
 
-      if (result.success) {
+      if (updatedTrigger) {
+        toast.success('Trigger updated successfully');
         setOpenAction(false);
         onSuccessAction?.();
-      } else {
-        setServerError(result.error || 'Failed to update trigger');
       }
     });
   });
@@ -176,17 +175,11 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
                   <SelectItem value="DAILY">Daily</SelectItem>
                   <SelectItem value="WEEKLY">Weekly</SelectItem>
                   <SelectItem value="MONTHLY">Monthly</SelectItem>
+                  <SelectItem value="YEARLY">Yearly</SelectItem>
                 </FormSelect>
               </div>
             </div>
           </div>
-
-          {/* Server Error */}
-          {serverError && (
-            <div className="rounded-lg bg-red-50 p-3 text-sm text-red-600">
-              {serverError}
-            </div>
-          )}
 
           {/* Footer */}
           <div className="flex justify-end gap-3 pt-4">

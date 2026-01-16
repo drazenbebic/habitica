@@ -6,12 +6,12 @@ import { DialogProvider } from '@ariakit/react';
 import { Delete02Icon } from 'hugeicons-react';
 import { toast } from 'sonner';
 
-import { deleteTriggerAction } from '@/actions/triggers/deleteTriggerAction';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { DialogDismiss } from '@/components/ui/DialogDismiss';
 import { Heading } from '@/components/ui/Heading';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
+import { useTriggersStore } from '@/store/useTriggersStore';
 
 export type DeleteWebhookTriggerModalProps = {
   open: boolean;
@@ -26,20 +26,21 @@ export const DeleteTriggerModal: FC<DeleteWebhookTriggerModalProps> = ({
   trigger,
   onSuccessAction,
 }) => {
+  const deleteTrigger = useTriggersStore(state => state.deleteTrigger);
   const [isPending, startTransition] = useTransition();
 
   const handleDelete = () => {
     startTransition(async () => {
-      try {
-        await deleteTriggerAction(trigger.uuid);
+      const deletedTrigger = await deleteTrigger(trigger.uuid);
+
+      if (deletedTrigger) {
         toast.success('Trigger deleted successfully');
         setOpenAction(false);
         onSuccessAction?.();
-      } catch (error) {
+      } else {
         toast.error('Failed to delete trigger', {
           description: 'Please try again later.',
         });
-        console.error(error);
       }
     });
   };
