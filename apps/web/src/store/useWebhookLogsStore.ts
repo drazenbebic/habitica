@@ -27,14 +27,29 @@ export const useWebhookLogsStore = create<WebhookLogsStoreState>(
       set({ isLoading: true });
 
       const currentMeta = get().meta;
-      const requestParams = {
-        page: params.page || currentMeta.page,
-        limit: params.limit || currentMeta.limit,
-        ...params,
-      };
+      let targetPage = params.page || currentMeta.page;
+      const targetLimit = params.limit || currentMeta.limit;
 
       try {
-        const result = await getWebhookLogsAction(requestParams);
+        let result = await getWebhookLogsAction({
+          page: targetPage,
+          limit: targetLimit,
+          ...params,
+        });
+
+        if (
+          result.success &&
+          result.data &&
+          result.data.data.length === 0 &&
+          targetPage > 1
+        ) {
+          targetPage = targetPage - 1;
+          result = await getWebhookLogsAction({
+            page: targetPage,
+            limit: targetLimit,
+            ...params,
+          });
+        }
 
         if (result.success && result.data) {
           set({
@@ -42,7 +57,7 @@ export const useWebhookLogsStore = create<WebhookLogsStoreState>(
             meta: result.data.meta,
           });
         } else {
-          console.error('Failed to webhookLogs:', result.error);
+          console.error('Failed to fetch webhookLogs:', result.error);
         }
       } catch (error) {
         console.error('Zustand fetchWebhookLogs error:', error);
@@ -54,7 +69,7 @@ export const useWebhookLogsStore = create<WebhookLogsStoreState>(
       get().fetchWebhookLogs({ page });
     },
     setLimit: (limit: number) => {
-      get().fetchWebhookLogs({ limit });
+      get().fetchWebhookLogs({ limit, page: 1 });
     },
   }),
 );

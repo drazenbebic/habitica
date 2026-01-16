@@ -42,14 +42,29 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
     set({ isLoading: true });
 
     const currentMeta = get().meta;
-    const requestParams = {
-      page: params.page || currentMeta.page,
-      limit: params.limit || currentMeta.limit,
-      ...params,
-    };
+    let targetPage = params.page || currentMeta.page;
+    const targetLimit = params.limit || currentMeta.limit;
 
     try {
-      const result = await getTriggersAction(requestParams);
+      let result = await getTriggersAction({
+        page: targetPage,
+        limit: targetLimit,
+        ...params,
+      });
+
+      if (
+        result.success &&
+        result.data &&
+        result.data.data.length === 0 &&
+        targetPage > 1
+      ) {
+        targetPage = targetPage - 1;
+        result = await getTriggersAction({
+          page: targetPage,
+          limit: targetLimit,
+          ...params,
+        });
+      }
 
       if (result.success && result.data) {
         set({
@@ -69,7 +84,7 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
     get().fetchTriggers({ page });
   },
   setLimit: (limit: number) => {
-    get().fetchTriggers({ limit });
+    get().fetchTriggers({ page: 1, limit });
   },
   createTrigger: async data => {
     set({ isLoading: true });
@@ -79,58 +94,48 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
 
       if (!result.success || !result.data) {
         toast.error(result.error || 'Failed to create trigger');
+        set({ isLoading: false });
+
         return null;
       }
 
-      set(state => ({
-        triggers: [result.data!, ...state.triggers],
-        meta: {
-          ...state.meta,
-          total: state.meta.total + 1,
-        },
-      }));
+      await get().fetchTriggers({ page: 1 });
 
       return result.data;
     } catch (error) {
       console.error('Zustand createTrigger error:', error);
       toast.error('An unexpected error occurred');
-      return null;
-    } finally {
       set({ isLoading: false });
+
+      return null;
     }
   },
   deleteTrigger: async uuid => {
-    const previousTriggers = get().triggers;
-    const previousMeta = get().meta;
-
-    set(state => ({
-      triggers: state.triggers.filter(t => t.uuid !== uuid),
-      meta: {
-        ...state.meta,
-        total: Math.max(0, state.meta.total - 1),
-      },
-    }));
+    set({ isLoading: true });
 
     try {
       const result = await deleteTriggerAction(uuid);
 
       if (!result.success || !result.data) {
         toast.error(result.error || 'Failed to delete trigger');
-        set({ triggers: previousTriggers, meta: previousMeta });
+        set({ isLoading: false });
+
         return null;
       }
+
+      await get().fetchTriggers();
 
       return result.data;
     } catch (error) {
       console.error('Zustand deleteTrigger error:', error);
       toast.error('An unexpected error occurred');
-      set({ triggers: previousTriggers, meta: previousMeta });
+      set({ isLoading: false });
+
       return null;
     }
   },
   toggleTrigger: async data => {
     const previousTriggers = get().triggers;
-
     set(state => ({
       triggers: state.triggers.map(t =>
         t.uuid === data.uuid ? { ...t, isActive: data.isActive } : t,
@@ -143,6 +148,7 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
       if (!result.success || !result.data) {
         toast.error(result.error || 'Failed to update status');
         set({ triggers: previousTriggers });
+
         return null;
       }
 
@@ -151,6 +157,7 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
       console.error('Zustand toggleTrigger error:', error);
       toast.error('An unexpected error occurred');
       set({ triggers: previousTriggers });
+
       return null;
     }
   },
@@ -168,8 +175,8 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
 
       if (!result.success || !result.data) {
         toast.error(result.error || 'Failed to update trigger');
-
         set({ triggers: previousTriggers });
+
         return null;
       }
 
@@ -181,8 +188,8 @@ export const useTriggersStore = create<TriggersStoreState>((set, get) => ({
     } catch (error) {
       console.error('Zustand updateTrigger error:', error);
       toast.error('An unexpected error occurred');
-
       set({ triggers: previousTriggers });
+
       return null;
     }
   },
