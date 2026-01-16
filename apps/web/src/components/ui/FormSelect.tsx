@@ -17,16 +17,26 @@ export const FormSelect: FC<FormSelectProps> = forwardRef(
     const form = useFormContext();
     const value = form?.useValue(name);
 
-    const select = (
-      <Select
-        ref={ref}
-        value={value}
-        setValue={(value: string | number) => form?.setValue(name, value)}
-        render={props.render}
+    return (
+      <Role.button
+        {...props}
+        render={
+          <FormControl
+            name={name}
+            render={
+              <Select
+                ref={ref}
+                value={value}
+                setValue={(value: string | number) =>
+                  form?.setValue(name, value)
+                }
+                render={props.render}
+              />
+            }
+          />
+        }
       />
     );
-    const field = <FormControl name={name} render={select} />;
-    return <Role.button {...props} render={field} />;
   },
 );
 
