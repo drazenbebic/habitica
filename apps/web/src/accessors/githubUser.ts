@@ -1,8 +1,7 @@
 'use server';
 
+import { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
-
-import { Prisma } from '../generated/prisma/client';
 
 export const getGithubUser = async <T extends Prisma.GithubUsersInclude>(
   where: Prisma.GithubUsersWhereUniqueInput,

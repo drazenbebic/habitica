@@ -24,7 +24,6 @@ import { SelectGroupLabel } from '@/components/ui/SelectGroupLabel';
 import { SelectItem } from '@/components/ui/SelectItem';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
 import { TriggerSchema, triggerSchema } from '@/schemas/triggerSchema';
-// 1. Import Store
 import { useTriggersStore } from '@/store/useTriggersStore';
 
 export type EditWebhookTriggerModalProps = {

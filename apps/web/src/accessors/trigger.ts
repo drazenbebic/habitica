@@ -1,8 +1,7 @@
 'use server';
 
+import { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
-
-import { Prisma } from '../generated/prisma/client';
 
 export const getTrigger = async (
   uuid: string,

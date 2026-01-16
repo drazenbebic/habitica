@@ -8,3 +8,12 @@ export const createWebhookLog = async (
 ) => {
   return prisma.webhookLogs.create({ data });
 };
+
+export const getWebhookLogs = async (githubUserId: number | bigint) => {
+  return prisma.webhookLogs.findMany({
+    where: { githubUserId },
+    orderBy: {
+      id: 'desc',
+    },
+  });
+};
