@@ -69,10 +69,6 @@ export const getGroupedGithubEvents = () => {
           label: 'Discussion Transferred',
         },
         {
-          value: 'discussion.unanswered',
-          label: 'Discussion Unanswered',
-        },
-        {
           value: 'discussion.unlabeled',
           label: 'Discussion Unlabeled',
         },
@@ -287,24 +283,12 @@ export const getGroupedGithubEvents = () => {
           label: 'Pull Request Assigned',
         },
         {
-          value: 'pull_request.auto_merge_disabled',
-          label: 'Pull Request Auto Merge Disabled',
-        },
-        {
-          value: 'pull_request.auto_merge_enabled',
-          label: 'Pull Request Auto Merge Enabled',
-        },
-        {
           value: 'pull_request.closed',
           label: 'Pull Request Closed',
         },
         {
           value: 'pull_request.converted_to_draft',
           label: 'Pull Request Converted to Draft',
-        },
-        {
-          value: 'pull_request.demilestoned',
-          label: 'Pull Request Demilestoned',
         },
         {
           value: 'pull_request.dequeued',
@@ -325,10 +309,6 @@ export const getGroupedGithubEvents = () => {
         {
           value: 'pull_request.locked',
           label: 'Pull Request Locked',
-        },
-        {
-          value: 'pull_request.milestoned',
-          label: 'Pull Request Milestoned',
         },
         {
           value: 'pull_request.opened',
@@ -519,12 +499,12 @@ export const getGroupedGithubEvents = () => {
       ],
     },
     {
-      name: 'workflow__parent',
-      label: 'Workflow',
+      name: 'workflow_dispatch__parent',
+      label: 'Workflow Dispatch',
       items: [
         {
-          value: 'workflow',
-          label: 'Workflow',
+          value: 'workflow_dispatch',
+          label: 'Workflow Dispatch',
         },
       ],
     },
@@ -538,7 +518,7 @@ export const getGroupedGithubEvents = () => {
         },
         {
           value: 'workflow_job.in_progress',
-          label: 'Workflow Job In_progress',
+          label: 'Workflow Job In Progress',
         },
         {
           value: 'workflow_job.queued',
@@ -560,7 +540,7 @@ export const getGroupedGithubEvents = () => {
         },
         {
           value: 'workflow_run.in_progress',
-          label: 'Workflow Run In_progress',
+          label: 'Workflow Run In Progress',
         },
         {
           value: 'workflow_run.requested',

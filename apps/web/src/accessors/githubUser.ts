@@ -1,5 +1,7 @@
 'use server';
 
+import { EmitterWebhookEventName } from '@octokit/webhooks';
+
 import { Prisma } from '@/generated/prisma/client';
 import prisma from '@/lib/prisma';
 
@@ -37,9 +39,36 @@ export const getGithubUserBySenderId = async <
   return user as Prisma.GithubUsersGetPayload<{ include: T }> | null;
 };
 
+export const getLinkedGithubUser = async (
+  senderId: number,
+  event: EmitterWebhookEventName,
+) => {
+  return prisma.githubUsers.findUnique({
+    where: {
+      githubId: senderId,
+      habiticaUser: { isNot: null },
+      triggers: {
+        some: {
+          isActive: true,
+          event: event,
+        },
+      },
+    },
+    include: {
+      habiticaUser: true,
+      triggers: {
+        where: {
+          isActive: true,
+          event,
+        },
+      },
+    },
+  });
+};
+
 export const getLinkedGithubUsers = async (
   usernames: string[],
-  event: string,
+  event: EmitterWebhookEventName,
 ) => {
   return prisma.githubUsers.findMany({
     where: {
