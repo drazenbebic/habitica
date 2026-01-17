@@ -11,8 +11,8 @@ import {
 
 import { FooterLink } from '@/components/FooterLink';
 import { Heading } from '@/components/ui/Heading';
-import { githubAppUrl } from '@/utils/github-app-url';
-import { githubRepositoryUrl } from '@/utils/github-repository-url';
+import { githubAppUrl } from '@/utils/githubAppUrl';
+import { githubRepositoryUrl } from '@/utils/githubRepositoryUrl';
 
 export const Footer: FC = () => {
   const currentYear = new Date().getFullYear();

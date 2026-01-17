@@ -7,21 +7,21 @@ import {
   Webhooks,
 } from '@octokit/webhooks';
 
-import { handleInstallationRepositoriesAdded } from '@/app/api/v1/webhook/handlers/handle-installation-repositories-added';
-import { handleInstallationRepositoriesRemoved } from '@/app/api/v1/webhook/handlers/handle-installation-repositories-removed';
 import { requestContext } from '@/lib/context';
 import logger from '@/lib/logger';
-import { withRetry } from '@/utils/with-retry';
+import { withRetry } from '@/utils/withRetry';
 
-import { handleInstallationCreated } from './handlers/handle-installation-created';
-import { handleInstallationDeleted } from './handlers/handle-installation-deleted';
-import { handleInstallationSuspend } from './handlers/handle-installation-suspend';
-import { handleInstallationUnsuspend } from './handlers/handle-installation-unsuspend';
-import { handleLogWebhook } from './handlers/handle-log-webhook';
-import { handlePackagePublished } from './handlers/handle-package-published';
-import { handlePullRequestClosed } from './handlers/handle-pull-request-closed';
-import { handlePullRequestReviewSubmitted } from './handlers/handle-pull-request-review-submitted';
-import { handlePush } from './handlers/handle-push';
+import { handleInstallationCreated } from './handlers/handleInstallationCreated';
+import { handleInstallationDeleted } from './handlers/handleInstallationDeleted';
+import { handleInstallationRepositoriesAdded } from './handlers/handleInstallationRepositoriesAdded';
+import { handleInstallationRepositoriesRemoved } from './handlers/handleInstallationRepositoriesRemoved';
+import { handleInstallationSuspend } from './handlers/handleInstallationSuspend';
+import { handleInstallationUnsuspend } from './handlers/handleInstallationUnsuspend';
+import { handleLogWebhook } from './handlers/handleLogWebhook';
+import { handlePackagePublished } from './handlers/handlePackagePublished';
+import { handlePullRequestClosed } from './handlers/handlePullRequestClosed';
+import { handlePullRequestReviewSubmitted } from './handlers/handlePullRequestReviewSubmitted';
+import { handlePush } from './handlers/handlePush';
 
 const webhooks = new Webhooks({
   secret: process.env.GITHUB_WEBHOOK_SECRET!,
