@@ -13,6 +13,8 @@ export type FormSelectProps = Omit<SelectProps, 'value' | 'setValue'> & {
   name: string;
   description?: string;
   className?: string;
+  placeholder?: string;
+  multiple?: boolean;
 };
 
 const errorStyles =
@@ -20,11 +22,25 @@ const errorStyles =
 
 export const FormSelect: FC<FormSelectProps> = forwardRef(
   (
-    { name, label, description, className, required, disabled, ...props },
+    {
+      name,
+      label,
+      description,
+      className,
+      required,
+      disabled,
+      placeholder,
+      multiple,
+      ...props
+    },
     ref,
   ) => {
+    const defaultValue = multiple ? [] : '';
     const form = useFormContext();
-    const value = useStoreState(form, state => state?.values[name] ?? '');
+    const value = useStoreState(
+      form,
+      state => state?.values[name] ?? defaultValue,
+    );
 
     return (
       <div className={clsx('w-full', className)}>
@@ -43,6 +59,8 @@ export const FormSelect: FC<FormSelectProps> = forwardRef(
               setValue={val => form?.setValue(name, val)}
               disabled={disabled}
               required={required}
+              multiple={multiple}
+              placeholder={placeholder}
               className={clsx(errorStyles, className)}
               {...props}
             />

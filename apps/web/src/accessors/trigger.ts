@@ -11,6 +11,7 @@ export const getTrigger = async (
 ) => {
   return prisma.triggers.findUnique({
     where: { uuid, githubUserId },
+    include: { repositories: true },
   });
 };
 
@@ -31,6 +32,9 @@ export const getTriggers = async (
       orderBy: { id: 'desc' },
       skip,
       take: limit,
+      include: {
+        repositories: true,
+      },
     }),
   ]);
 
@@ -57,7 +61,7 @@ export const deleteTrigger = async (
 export const createTrigger = async (
   data: Prisma.TriggersUncheckedCreateInput,
 ) => {
-  return prisma.triggers.create({ data });
+  return prisma.triggers.create({ data, include: { repositories: true } });
 };
 
 export const updateTrigger = async (
@@ -67,5 +71,8 @@ export const updateTrigger = async (
   return prisma.triggers.update({
     where,
     data,
+    include: {
+      repositories: true,
+    },
   });
 };

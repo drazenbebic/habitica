@@ -25,10 +25,12 @@ import { ArrowDown01Icon } from 'hugeicons-react';
 import { SelectItemProps } from '@/components/ui/SelectItem';
 
 export type SelectProps = BaseSelectProps & {
-  value?: string;
-  setValue?: (value: string) => void;
-  defaultValue?: string;
+  value?: string | string[];
+  setValue?: (value: string | string[]) => void;
+  defaultValue?: string | string[];
   onBlur?: FocusEventHandler<HTMLElement>;
+  multiple?: boolean;
+  placeholder?: string;
 };
 
 const triggerStyles =
@@ -39,29 +41,33 @@ const popoverStyles =
 
 const getSelectedLabel = (
   children: ReactNode,
-  value: string | undefined,
+  value: string | string[] | undefined,
+  multiple: boolean,
 ): ReactNode | undefined => {
-  if (value === undefined) {
-    return;
+  if (value === undefined || (Array.isArray(value) && value.length === 0)) {
+    return undefined;
   }
 
+  if (multiple) {
+    const count = Array.isArray(value) ? value.length : 1;
+
+    return `${count} item${count === 1 ? '' : 's'} selected`;
+  }
+
+  const singleValue = Array.isArray(value) ? value[0] : value;
   let label: ReactNode | undefined;
 
   Children.forEach(children, child => {
-    if (label || !isValidElement(child)) {
-      return;
-    }
+    if (label || !isValidElement(child)) return;
 
     const element = child as ReactElement<SelectItemProps>;
     const props = element.props;
 
-    if ('value' in props && String(props.value) === String(value)) {
+    if ('value' in props && String(props.value) === String(singleValue)) {
       label = props.children;
     } else if (props.children) {
-      const nestedLabel = getSelectedLabel(props.children, value);
-      if (nestedLabel) {
-        label = nestedLabel;
-      }
+      const nestedLabel = getSelectedLabel(props.children, singleValue, false);
+      if (nestedLabel) label = nestedLabel;
     }
   });
 
@@ -69,14 +75,27 @@ const getSelectedLabel = (
 };
 
 export const Select = forwardRef<HTMLButtonElement, SelectProps>(
-  ({ children, className, value, setValue, defaultValue, ...props }, ref) => {
+  (
+    {
+      children,
+      className,
+      value,
+      setValue,
+      defaultValue,
+      multiple = false,
+      placeholder,
+      ...props
+    },
+    ref,
+  ) => {
     const select = useSelectStore({ value, setValue, defaultValue });
     const portalRef = useRef<HTMLDivElement>(null);
     const selectValue = useStoreState(select, 'value');
 
     const selectedLabel = useMemo(
-      () => getSelectedLabel(children, selectValue as string),
-      [children, selectValue],
+      () =>
+        getSelectedLabel(children, selectValue as string | string[], multiple),
+      [children, selectValue, multiple],
     );
 
     const onBlur = (event: FocusEvent<HTMLElement>) => {
@@ -94,6 +113,22 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
       props.onBlur?.(event);
     };
 
+    const hasValue = useMemo(() => {
+      if (
+        selectValue === undefined ||
+        selectValue === null ||
+        selectValue === ''
+      ) {
+        return false;
+      }
+
+      if (Array.isArray(selectValue) && selectValue.length === 0) {
+        return false;
+      }
+
+      return true;
+    }, [selectValue]);
+
     return (
       <SelectProvider store={select}>
         <BaseSelect
@@ -104,8 +139,12 @@ export const Select = forwardRef<HTMLButtonElement, SelectProps>(
           className={clsx(triggerStyles, className)}
         >
           <span className="truncate">
-            {selectedLabel || selectValue || (
-              <span className="text-slate-400">Select an item</span>
+            {hasValue ? (
+              selectedLabel || selectValue
+            ) : (
+              <span className="text-slate-400">
+                {placeholder || 'Select an item'}
+              </span>
             )}
           </span>
 

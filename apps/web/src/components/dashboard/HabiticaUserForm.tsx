@@ -23,8 +23,8 @@ export const HabiticaUserForm: FC = () => {
   } = useHabiticaStore();
 
   const [values, setValues] = useState<UserCredentials>({
-    userId: habiticaCredentials?.userId || '',
-    apiToken: habiticaCredentials?.apiToken || '',
+    userId: '',
+    apiToken: '',
   });
   const form = useFormStore({ values, setValues });
 
@@ -55,6 +55,14 @@ export const HabiticaUserForm: FC = () => {
       setIsLoading(false);
     })();
   }, [fetchHabiticaCredentials, fetchHabiticaConnection, setIsLoading]);
+
+  useEffect(() => {
+    if (!habiticaCredentials) {
+      return;
+    }
+
+    setValues(habiticaCredentials);
+  }, [habiticaCredentials]);
 
   return (
     <Form resetOnSubmit={false} store={form} className="flex flex-col gap-6">

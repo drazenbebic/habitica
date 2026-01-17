@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState, useTransition } from 'react';
+import { FC, useEffect, useState, useTransition } from 'react';
 
 import {
   DialogProvider,
@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import { ArrowDown01Icon, PencilEdit02Icon } from 'hugeicons-react';
 import { toast } from 'sonner';
 
+import { getRepositoriesAction } from '@/actions/repositories/getRepositoriesAction';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { DialogDismiss } from '@/components/ui/DialogDismiss';
@@ -23,15 +24,20 @@ import { FormSelect } from '@/components/ui/FormSelect';
 import { FormTextarea } from '@/components/ui/FormTextarea';
 import { Heading } from '@/components/ui/Heading';
 import { SelectItem } from '@/components/ui/SelectItem';
-import { TriggersModel } from '@/generated/prisma/models/Triggers';
+import { Prisma } from '@/generated/prisma/client';
+import { GithubSelectedRepositoriesModel } from '@/generated/prisma/models/GithubSelectedRepositories';
 import { useGithubEventsOptions } from '@/hooks/useGithubEventsOptions';
 import { TriggerSchema, triggerSchema } from '@/schemas/triggerSchema';
 import { useTriggersStore } from '@/store/useTriggersStore';
 
+type TriggerWithRepos = Prisma.TriggersGetPayload<{
+  include: { repositories: true };
+}>;
+
 export type EditWebhookTriggerModalProps = {
   open: boolean;
   setOpenAction: (open: boolean) => void;
-  trigger: TriggersModel;
+  trigger: TriggerWithRepos;
   onSuccessAction?: () => void;
 };
 
@@ -43,9 +49,13 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
 }) => {
   const githubEventOptions = useGithubEventsOptions();
   const updateTrigger = useTriggersStore(state => state.updateTrigger);
+  const [repositories, setRepositories] = useState<
+    GithubSelectedRepositoriesModel[]
+  >([]);
   const [isPending, startTransition] = useTransition();
   const [values, setValues] = useState<TriggerSchema>({
     event: trigger.event,
+    repositories: trigger.repositories.map(({ uuid }) => uuid),
     taskTitle: trigger.taskTitle,
     taskNote: trigger.taskNote || '',
     scoreDirection: trigger.scoreDirection,
@@ -55,6 +65,13 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
     taskAlias: trigger.taskAlias || '',
     taskTags: (trigger.taskTags || '') as string,
   });
+
+  useEffect(() => {
+    startTransition(async () => {
+      const { data: newRepositories } = await getRepositoriesAction();
+      setRepositories(newRepositories || []);
+    });
+  }, []);
 
   const form = useFormStore<TriggerSchema>({
     values,
@@ -98,9 +115,29 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
         </div>
 
         <Form store={form} className="space-y-6">
-          <FormSelect name="event" label="When this happens on GitHub...">
-            {githubEventOptions}
-          </FormSelect>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <FormSelect
+              name="event"
+              label="When this happens on GitHub..."
+              required
+            >
+              {githubEventOptions}
+            </FormSelect>
+
+            <FormSelect
+              name="repositories"
+              label="...on one of these repositories..."
+              placeholder="Please select at least one repository"
+              required
+              multiple
+            >
+              {repositories.map(repository => (
+                <SelectItem key={repository.uuid} value={repository.uuid}>
+                  {repository.fullName}
+                </SelectItem>
+              ))}
+            </FormSelect>
+          </div>
 
           <div className="border-t border-slate-100" />
 
@@ -119,7 +156,7 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
               <div className="sm:col-span-2">
                 <FormTextarea
                   name="taskNote"
-                  label="Notes (Optional)"
+                  label="Notes"
                   placeholder="Add extra details... (optional)"
                   maxLength={255}
                 />
@@ -149,10 +186,9 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
 
               {/* Frequency */}
               <FormSelect name="taskFrequency" label="Reset Counter">
-                <SelectItem value="DAILY">Daily</SelectItem>
-                <SelectItem value="WEEKLY">Weekly</SelectItem>
-                <SelectItem value="MONTHLY">Monthly</SelectItem>
-                <SelectItem value="YEARLY">Yearly</SelectItem>
+                <SelectItem value="daily">Daily</SelectItem>
+                <SelectItem value="weekly">Weekly</SelectItem>
+                <SelectItem value="monthly">Monthly</SelectItem>
               </FormSelect>
             </div>
           </div>

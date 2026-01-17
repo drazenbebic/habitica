@@ -45,6 +45,9 @@ export async function updateTriggerAction(
       { id: existingTrigger.id },
       {
         event: parsed.data.event,
+        repositories: {
+          set: parsed.data.repositories.map(uuid => ({ uuid })),
+        },
         taskTitle: parsed.data.taskTitle,
         taskAlias: parsed.data.taskAlias,
         taskNote: parsed.data.taskNote,

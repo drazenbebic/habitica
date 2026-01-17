@@ -35,6 +35,9 @@ export async function createTriggerAction(
       githubUserId: githubUser.id,
       isActive: true,
       event: parsed.data.event,
+      repositories: {
+        connect: parsed.data.repositories.map(uuid => ({ uuid })),
+      },
       taskTitle: parsed.data.taskTitle,
       taskAlias: parsed.data.taskAlias,
       taskNote: parsed.data.taskNote,

@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useState, useTransition } from 'react';
+import { FC, useEffect, useState, useTransition } from 'react';
 
 import {
   DialogProvider,
@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import { ArrowDown01Icon, ZapIcon } from 'hugeicons-react';
 import { toast } from 'sonner';
 
+import { getRepositoriesAction } from '@/actions/repositories/getRepositoriesAction';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { DialogDismiss } from '@/components/ui/DialogDismiss';
@@ -23,6 +24,7 @@ import { FormSelect } from '@/components/ui/FormSelect';
 import { FormTextarea } from '@/components/ui/FormTextarea';
 import { Heading } from '@/components/ui/Heading';
 import { SelectItem } from '@/components/ui/SelectItem';
+import { GithubSelectedRepositoriesModel } from '@/generated/prisma/models';
 import { useGithubEventsOptions } from '@/hooks/useGithubEventsOptions';
 import { TriggerSchema, triggerSchema } from '@/schemas/triggerSchema';
 import { useTriggersStore } from '@/store/useTriggersStore';
@@ -39,14 +41,18 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
   onSuccessAction,
 }) => {
   const createTrigger = useTriggersStore(state => state.createTrigger);
+  const [repositories, setRepositories] = useState<
+    GithubSelectedRepositoriesModel[]
+  >([]);
   const [values, setValues] = useState<TriggerSchema>({
     event: 'push',
+    repositories: [],
     taskTitle: '',
     taskNote: '',
     scoreDirection: 'up',
     taskPriority: 1,
     taskAttribute: 'str',
-    taskFrequency: 'DAILY',
+    taskFrequency: 'daily',
     taskAlias: '',
     taskTags: '',
   });
@@ -77,6 +83,13 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
     });
   });
 
+  useEffect(() => {
+    startTransition(async () => {
+      const { data: newRepositories } = await getRepositoriesAction();
+      setRepositories(newRepositories || []);
+    });
+  }, []);
+
   const handleDialogClose = () => {
     setTimeout(() => {
       form.reset();
@@ -99,13 +112,29 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
         </div>
 
         <Form resetOnSubmit={false} store={form} className="space-y-6">
-          <FormSelect
-            name="event"
-            label="When this happens on GitHub..."
-            required
-          >
-            {githubEventOptions}
-          </FormSelect>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <FormSelect
+              name="event"
+              label="When this happens on GitHub..."
+              required
+            >
+              {githubEventOptions}
+            </FormSelect>
+
+            <FormSelect
+              name="repositories"
+              label="...on these repositories..."
+              placeholder="Select repositories..."
+              required
+              multiple
+            >
+              {repositories.map(repository => (
+                <SelectItem key={repository.uuid} value={repository.uuid}>
+                  {repository.fullName}
+                </SelectItem>
+              ))}
+            </FormSelect>
+          </div>
 
           <div className="border-t border-slate-100" />
 
@@ -126,7 +155,7 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
               <div className="sm:col-span-2">
                 <FormTextarea
                   name="taskNote"
-                  label="Notes (Optional)"
+                  label="Notes"
                   placeholder="Add extra details... (optional)"
                   maxLength={255}
                 />
@@ -156,9 +185,9 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
 
               {/* Frequency */}
               <FormSelect name="taskFrequency" label="Reset Counter">
-                <SelectItem value="DAILY">Daily</SelectItem>
-                <SelectItem value="WEEKLY">Weekly</SelectItem>
-                <SelectItem value="MONTHLY">Monthly</SelectItem>
+                <SelectItem value="daily">Daily</SelectItem>
+                <SelectItem value="weekly">Weekly</SelectItem>
+                <SelectItem value="monthly">Monthly</SelectItem>
               </FormSelect>
             </div>
           </div>

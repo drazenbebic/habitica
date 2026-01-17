@@ -84,7 +84,7 @@ export const handleUniversal = async (
         notes: trigger.taskNote || undefined,
         priority: trigger.taskPriority,
         attribute: trigger.taskAttribute as TaskAttribute,
-        frequency: trigger.taskFrequency.toLowerCase() as TaskFrequency,
+        frequency: trigger.taskFrequency as TaskFrequency,
       });
 
       const scoreDirection =
