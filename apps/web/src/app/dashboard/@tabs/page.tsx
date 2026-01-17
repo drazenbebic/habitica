@@ -7,10 +7,11 @@ import { DeleteTriggerModal } from '@/components/dashboard/DeleteTriggerModal';
 import { EditTriggerModal } from '@/components/dashboard/EditTriggerModal';
 import { TriggersList } from '@/components/dashboard/TriggersList';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
+import { TriggerWithRepos } from '@/types/triggers';
 
 export default function Page() {
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
-  const [editingTrigger, setEditingTrigger] = useState<TriggersModel | null>(
+  const [editingTrigger, setEditingTrigger] = useState<TriggerWithRepos | null>(
     null,
   );
   const [deletingTrigger, setDeletingTrigger] = useState<TriggersModel | null>(
@@ -22,7 +23,9 @@ export default function Page() {
       <TriggersList
         onOpenCreateAction={() => setCreateModalOpen(true)}
         onOpenDeleteAction={trigger => setDeletingTrigger(trigger)}
-        onOpenEditAction={trigger => setEditingTrigger(trigger)}
+        onOpenEditAction={trigger =>
+          setEditingTrigger(trigger as TriggerWithRepos)
+        }
       />
       <AddTriggerModal
         open={isCreateModalOpen}

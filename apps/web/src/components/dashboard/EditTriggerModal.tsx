@@ -24,15 +24,11 @@ import { FormSelect } from '@/components/ui/FormSelect';
 import { FormTextarea } from '@/components/ui/FormTextarea';
 import { Heading } from '@/components/ui/Heading';
 import { SelectItem } from '@/components/ui/SelectItem';
-import { Prisma } from '@/generated/prisma/client';
 import { GithubSelectedRepositoriesModel } from '@/generated/prisma/models/GithubSelectedRepositories';
 import { useGithubEventsOptions } from '@/hooks/useGithubEventsOptions';
 import { TriggerSchema, triggerSchema } from '@/schemas/triggerSchema';
 import { useTriggersStore } from '@/store/useTriggersStore';
-
-type TriggerWithRepos = Prisma.TriggersGetPayload<{
-  include: { repositories: true };
-}>;
+import { TriggerWithRepos } from '@/types/triggers';
 
 export type EditWebhookTriggerModalProps = {
   open: boolean;
