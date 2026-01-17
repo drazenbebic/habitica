@@ -1,5 +1,4 @@
 import { EmitterWebhookEvent } from '@octokit/webhooks';
-import { v4 } from 'uuid';
 
 import { getGithubUserBySenderId } from '@/accessors/githubUser';
 import { createWebhookLog } from '@/accessors/webhookLog';
@@ -36,7 +35,6 @@ export const handleLogWebhook = async ({
 
   try {
     await createWebhookLog({
-      uuid: v4(),
       deliveryUuid: id,
       event: name,
       signature,
