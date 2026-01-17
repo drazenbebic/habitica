@@ -185,6 +185,8 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
                     name="taskTags"
                     label="Tags"
                     placeholder="comma, separated, tags"
+                    description="Coming soon..."
+                    disabled
                   />
                 </div>
               </DisclosureContent>

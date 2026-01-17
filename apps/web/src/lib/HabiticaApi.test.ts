@@ -3,6 +3,7 @@ import logger from '@/lib/logger';
 
 import HabiticaApi from './HabiticaApi';
 
+// 1. Mock the Logger
 jest.mock('@/lib/logger', () => ({
   __esModule: true,
   default: {
@@ -14,17 +15,34 @@ jest.mock('@/lib/logger', () => ({
 }));
 
 const mockFetch = jest.fn();
-
 global.fetch = mockFetch;
 
 describe('@/lib/habitica-api.ts', () => {
   const userId = 'user-123';
   const apiToken = 'token-abc';
+
+  const TEST_DEV_ID = 'dev-uuid-999';
+  const TEST_APP_NAME = 'TestApp';
+
   let api: HabiticaApi;
+
+  const originalEnv = process.env;
 
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.resetModules();
+
+    process.env = {
+      ...originalEnv,
+      HABITICA_USER_ID: TEST_DEV_ID,
+      HABITICA_APP_NAME: TEST_APP_NAME,
+    };
+
     api = new HabiticaApi(userId, apiToken);
+  });
+
+  afterAll(() => {
+    process.env = originalEnv;
   });
 
   const mockSuccessResponse = (data: unknown) => {
@@ -48,23 +66,27 @@ describe('@/lib/habitica-api.ts', () => {
   };
 
   describe('Constructor & Headers', () => {
-    it('should include authentication headers in requests', async () => {
+    it('should include authentication headers in requests with correct x-client', async () => {
       mockSuccessResponse({});
 
       await api.getUserStats();
 
       const fetchOptions = mockFetch.mock.calls[0][1];
 
+      // 5. Update expectation to match the new format: DEV_ID - APP_NAME
       expect(fetchOptions.headers).toEqual(
         expect.objectContaining({
           'x-api-user': userId,
           'x-api-key': apiToken,
-          'x-client': `${userId}-Octogriffin`,
+          // ✅ Correct: Expects developer ID, not user ID
+          'x-client': `${TEST_DEV_ID}-${TEST_APP_NAME}`,
           'Content-Type': 'application/json',
         }),
       );
     });
   });
+
+  // ... (The rest of your tests remain exactly the same) ...
 
   describe('Error Handling', () => {
     it('should throw and log error when API returns non-200 status', async () => {

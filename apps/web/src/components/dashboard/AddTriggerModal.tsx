@@ -191,6 +191,8 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
                     name="taskTags"
                     label="Tags"
                     placeholder="comma, separated, tags"
+                    description="Coming soon..."
+                    disabled
                   />
                 </div>
               </DisclosureContent>

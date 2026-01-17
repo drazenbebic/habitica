@@ -39,7 +39,6 @@ export async function createTriggerAction(
       taskAlias: parsed.data.taskAlias,
       taskNote: parsed.data.taskNote,
       taskPriority: parsed.data.taskPriority,
-      taskTags: parsed.data.taskTags,
       taskAttribute: parsed.data.taskAttribute,
       taskFrequency: parsed.data.taskFrequency,
       scoreDirection: parsed.data.scoreDirection,

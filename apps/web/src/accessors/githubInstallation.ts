@@ -35,7 +35,7 @@ export const getInstallationStatus = async (
   installationId: number,
   repositoryId: number,
 ) => {
-  const record = await prisma.githubInstallations.findUnique({
+  const githubInstallation = await prisma.githubInstallations.findUnique({
     where: { installationId },
     select: {
       suspended: true,
@@ -47,11 +47,13 @@ export const getInstallationStatus = async (
     },
   });
 
-  if (!record) return null;
+  if (!githubInstallation) {
+    return null;
+  }
 
   return {
-    isSuspended: !!record.suspended,
-    isRepositorySelected: record.selectedRepositories.length > 0,
+    isSuspended: !!githubInstallation.suspended,
+    isRepositorySelected: githubInstallation.selectedRepositories.length > 0,
   };
 };
 

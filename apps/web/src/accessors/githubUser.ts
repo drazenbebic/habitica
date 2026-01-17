@@ -37,14 +37,29 @@ export const getGithubUserBySenderId = async <
   return user as Prisma.GithubUsersGetPayload<{ include: T }> | null;
 };
 
-export const getLinkedGithubUsers = async (usernames: string[]) => {
-  return await prisma.githubUsers.findMany({
+export const getLinkedGithubUsers = async (
+  usernames: string[],
+  event: string,
+) => {
+  return prisma.githubUsers.findMany({
     where: {
       login: { in: usernames },
       habiticaUser: { isNot: null },
+      triggers: {
+        some: {
+          isActive: true,
+          event: event,
+        },
+      },
     },
     include: {
       habiticaUser: true,
+      triggers: {
+        where: {
+          isActive: true,
+          event,
+        },
+      },
     },
   });
 };

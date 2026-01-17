@@ -1,16 +1,32 @@
 import { EmitterWebhookEvent } from '@octokit/webhooks';
+import PQueue from 'p-queue';
 
 import { getInstallationStatus } from '@/accessors/githubInstallation';
 import { getLinkedGithubUsers } from '@/accessors/githubUser';
 import getHabiticaApi from '@/app/api/v1/webhook/getHabiticaApi';
-import { TaskDirection, TaskPriority, TaskType } from '@/enums/habitica';
+import {
+  TaskAttribute,
+  TaskDirection,
+  TaskFrequency,
+  TaskType,
+} from '@/enums/habitica';
 import logger from '@/lib/logger';
 
 export const handlePush = async ({
-  payload: { commits, repository, installation },
+  payload: { commits, repository, installation, sender },
 }: EmitterWebhookEvent<'push'>) => {
-  if (!installation?.id || !repository) {
-    logger.info('Ignored: Missing installation or repository.');
+  if (!installation?.id || !repository || !sender?.id) {
+    logger.info('Ignored: Missing installation, repository, or sender.');
+    return;
+  }
+
+  const validCommits = commits.filter(
+    commit =>
+      commit.author.username && !commit.author.username.includes('[bot]'),
+  );
+
+  if (validCommits.length === 0) {
+    logger.info('Ignored: No valid commits found.');
     return;
   }
 
@@ -37,64 +53,86 @@ export const handlePush = async ({
     return;
   }
 
-  const validCommits = commits.filter(
-    commit =>
-      commit.author.username && !commit.author.username.includes('[bot]'),
-  );
-
-  if (validCommits.length === 0) {
-    logger.info('Ignored: No valid commits found.');
-    return;
-  }
-
   // Extract unique usernames to minimize DB queries
   const authorUsernames = [
     ...new Set(validCommits.map(c => c.author.username!)),
   ];
 
-  const githubUsers = await getLinkedGithubUsers(authorUsernames);
+  const githubUsers = await getLinkedGithubUsers(authorUsernames, 'push');
 
   if (githubUsers.length === 0) {
+    logger.warn(
+      'Ignored: There are no users with valid Habitica users or configured triggers.',
+    );
     return;
   }
 
   await Promise.all(
+    // Iterate through all GitHub users
     githubUsers.map(async user => {
       // Count how many commits this specific user owns in this push
       const userCommitCount = validCommits.filter(
-        commit => commit.author.username === user.login,
+        c => c.author.username === user.login,
       ).length;
+
+      if (userCommitCount === 0) {
+        return;
+      }
 
       const habiticaApi = await getHabiticaApi(installation.id, user.login);
 
       if (!habiticaApi) {
-        logger.error('Habitica API initialization failed.');
+        logger.error(
+          { login: user.login },
+          'Habitica API initialization failed.',
+        );
         return;
       }
 
-      const taskName = `Pushed a commit to the "${repository.name}" repository`;
+      // Setup Queue
+      const queue = new PQueue({ concurrency: 4 });
 
-      try {
-        const tasks = await habiticaApi.getTasks();
-
-        const task =
-          tasks.find(t => t.text === taskName) ||
-          (await habiticaApi.createTask({
-            text: taskName,
+      // Add tasks to queue
+      const queueTasks = user.triggers.map(trigger => async () => {
+        try {
+          const task = await habiticaApi.findOrCreateTask({
             type: TaskType.HABIT,
-            value: 1,
-            priority: TaskPriority.LOW,
-          }));
+            text: trigger.taskTitle,
+            alias: trigger.taskAlias || undefined,
+            notes: trigger.taskNote || undefined,
+            priority: trigger.taskPriority,
+            attribute: trigger.taskAttribute as TaskAttribute,
+            frequency: trigger.taskFrequency.toLowerCase() as TaskFrequency,
+          });
 
-        // Score the task X times (sequentially to ensure reliability)
-        for (let i = 0; i < userCommitCount; i++) {
-          await habiticaApi.scoreTask(task.id, TaskDirection.UP);
+          const scoreDirection =
+            trigger.scoreDirection === 'up'
+              ? TaskDirection.UP
+              : TaskDirection.DOWN;
+
+          // Score the task X times (sequentially to ensure reliability)
+          for (let i = 0; i < userCommitCount; i++) {
+            await habiticaApi.scoreTask(task.id, scoreDirection);
+          }
+
+          logger.info(
+            {
+              user: user.login,
+              task: trigger.taskTitle,
+              count: userCommitCount,
+            },
+            'Event processed successfully.',
+          );
+        } catch (error) {
+          logger.error(
+            { error, user: user.login, trigger: trigger.uuid },
+            'Failed to process trigger',
+          );
         }
+      });
 
-        logger.info('Event processed successfully.');
-      } catch (error) {
-        logger.error({ error }, 'Habitica API Error');
-      }
+      // Execute queue
+      await queue.addAll(queueTasks);
     }),
   );
 };

@@ -14,11 +14,14 @@ class HabiticaApi {
   private readonly headers: HeadersInit;
 
   constructor(userId: string, apiToken: string) {
+    const devId = process.env.HABITICA_USER_ID!;
+    const appName = process.env.HABITICA_APP_NAME!;
+
     this.headers = {
       'Content-Type': 'application/json',
       'x-api-user': userId,
       'x-api-key': apiToken,
-      'x-client': `${userId}-Octogriffin`,
+      'x-client': `${devId}-${appName}`,
     };
   }
 
@@ -62,6 +65,36 @@ class HabiticaApi {
     return this.request<Task[]>('/tasks/user', {
       method: 'GET',
     });
+  };
+
+  findTaskByAlias = async (alias: string) => {
+    return await this.request<Task>(`/tasks/${alias}`, {
+      method: 'GET',
+    });
+  };
+
+  findTaskByTitle = async (title: string) => {
+    const tasks = await this.getTasks();
+
+    return tasks.find(t => t.text === title);
+  };
+
+  findOrCreateTask = async (payload: CreateTaskParameters) => {
+    if (payload.alias) {
+      const taskByAlias = await this.findTaskByAlias(payload.alias);
+
+      if (taskByAlias) {
+        return taskByAlias;
+      }
+    }
+
+    const taskByTitle = await this.findTaskByTitle(payload.text);
+
+    if (taskByTitle) {
+      return taskByTitle;
+    }
+
+    return this.createTask(payload);
   };
 
   scoreTask = (taskId: string, direction: TaskDirection) => {
