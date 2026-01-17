@@ -46,11 +46,13 @@ export async function updateTriggerAction(
       {
         event: parsed.data.event,
         taskTitle: parsed.data.taskTitle,
+        taskAlias: parsed.data.taskAlias,
         taskNote: parsed.data.taskNote,
-        scoreDirection: parsed.data.scoreDirection,
         taskPriority: parsed.data.taskPriority,
+        taskTags: parsed.data.taskTags,
         taskAttribute: parsed.data.taskAttribute,
         taskFrequency: parsed.data.taskFrequency,
+        scoreDirection: parsed.data.scoreDirection,
       },
     );
 

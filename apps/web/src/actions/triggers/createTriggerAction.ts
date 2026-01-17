@@ -2,8 +2,6 @@
 
 import { getServerSession } from 'next-auth';
 
-import { nanoid } from 'nanoid';
-
 import { getGithubUserUserByLogin } from '@/accessors/githubUser';
 import { createTrigger } from '@/accessors/trigger';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
@@ -33,24 +31,18 @@ export async function createTriggerAction(
       return { success: false, error: 'GitHub user account not found.' };
     }
 
-    const slug = parsed.data.taskTitle
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-
-    const taskAlias = `octogriffin-${slug}-${nanoid(8)}`;
-
     const newTrigger = await createTrigger({
       githubUserId: githubUser.id,
       isActive: true,
       event: parsed.data.event,
-      taskAlias: taskAlias,
       taskTitle: parsed.data.taskTitle,
+      taskAlias: parsed.data.taskAlias,
       taskNote: parsed.data.taskNote,
-      scoreDirection: parsed.data.scoreDirection,
       taskPriority: parsed.data.taskPriority,
+      taskTags: parsed.data.taskTags,
       taskAttribute: parsed.data.taskAttribute,
       taskFrequency: parsed.data.taskFrequency,
+      scoreDirection: parsed.data.scoreDirection,
     });
 
     if (!newTrigger) {

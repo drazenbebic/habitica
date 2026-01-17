@@ -1,14 +1,15 @@
 'use client';
 
-import React, { FC, FormEvent, useEffect } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 
+import { Form, useFormStore } from '@ariakit/react';
 import { AlertCircleIcon, FloppyDiskIcon, Link01Icon } from 'hugeicons-react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/Button';
 import { FormInput } from '@/components/ui/FormInput';
-import { FormLabel } from '@/components/ui/FormLabel';
 import { useHabiticaStore } from '@/store/useHabiticaStore';
+import { UserCredentials } from '@/types/habitica';
 
 export const HabiticaUserForm: FC = () => {
   const {
@@ -21,26 +22,18 @@ export const HabiticaUserForm: FC = () => {
     setIsLoading,
   } = useHabiticaStore();
 
-  useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      await fetchHabiticaCredentials();
-      await fetchHabiticaConnection();
-      setIsLoading(false);
-    })();
-  }, [fetchHabiticaCredentials, fetchHabiticaConnection, setIsLoading]);
+  const [values, setValues] = useState<UserCredentials>({
+    userId: habiticaCredentials?.userId || '',
+    apiToken: habiticaCredentials?.apiToken || '',
+  });
+  const form = useFormStore({ values, setValues });
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  form.useSubmit(async state => {
     setIsLoading(true);
 
-    const formData = new FormData(e.currentTarget);
-    const userId = formData.get('userId') as string;
-    const apiToken = formData.get('apiToken') as string;
-
     const success = await upsertHabiticaUser({
-      userId,
-      apiToken,
+      userId: state.values.userId,
+      apiToken: state.values.apiToken,
     });
 
     if (!success) {
@@ -52,42 +45,37 @@ export const HabiticaUserForm: FC = () => {
 
     setIsLoading(false);
     toast.success('Configuration saved successfully');
-  };
+  });
+
+  useEffect(() => {
+    (async () => {
+      setIsLoading(true);
+      await fetchHabiticaCredentials();
+      await fetchHabiticaConnection();
+      setIsLoading(false);
+    })();
+  }, [fetchHabiticaCredentials, fetchHabiticaConnection, setIsLoading]);
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-      <div>
-        <FormLabel as="label" name="userId" htmlFor="userId" isRequired>
-          User ID
-        </FormLabel>
-        <FormInput
-          as="input"
-          id="userId"
-          name="userId"
-          disabled={isLoading}
-          defaultValue={habiticaCredentials?.userId || ''}
-          placeholder="e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-          leadingIcon={<Link01Icon size={20} />}
-          required
-        />
-      </div>
+    <Form resetOnSubmit={false} store={form} className="flex flex-col gap-6">
+      <FormInput
+        name="userId"
+        label="User ID"
+        disabled={isLoading}
+        placeholder="e.g. xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+        leadingIcon={<Link01Icon size={20} />}
+        required
+      />
 
-      <div>
-        <FormLabel as="label" name="apiToken" htmlFor="apiToken" isRequired>
-          API Token
-        </FormLabel>
-        <FormInput
-          as="input"
-          id="apiToken"
-          name="apiToken"
-          type="password"
-          disabled={isLoading}
-          defaultValue={habiticaCredentials?.apiToken || ''}
-          placeholder="••••••••••••••••••••••••••••••"
-          leadingIcon={<AlertCircleIcon size={20} />}
-          required
-        />
-      </div>
+      <FormInput
+        name="apiToken"
+        label="API Token"
+        type="password"
+        disabled={isLoading}
+        placeholder="••••••••••••••••••••••••••••••"
+        leadingIcon={<AlertCircleIcon size={20} />}
+        required
+      />
 
       <div className="pt-2">
         <Button type="submit" isLoading={isLoading} disabled={isLoading}>
@@ -95,6 +83,6 @@ export const HabiticaUserForm: FC = () => {
           Save Configuration
         </Button>
       </div>
-    </form>
+    </Form>
   );
 };

@@ -10,14 +10,12 @@ import {
   Cancel01Icon,
   Delete02Icon,
   Edit02Icon,
-  GitCommitIcon,
-  GitPullRequestIcon,
-  ZapIcon,
 } from 'hugeicons-react';
 
 import { Badge, BadgeProps } from '@/components/ui/Badge';
 import { Switch } from '@/components/ui/Switch';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
+import { useEventIcon } from '@/hooks/useEventIcon';
 import { useTriggersStore } from '@/store/useTriggersStore';
 
 const getDifficultyConfig = (
@@ -34,12 +32,6 @@ const getDifficultyConfig = (
   return { label: 'Unknown', variant: 'primary' };
 };
 
-const getEventIcon = (event: string) => {
-  if (event.includes('push')) return <GitCommitIcon size={18} />;
-  if (event.includes('pull_request')) return <GitPullRequestIcon size={18} />;
-  return <ZapIcon size={18} />;
-};
-
 export type TriggersListItemProps = {
   trigger: TriggersModel;
   onOpenDeleteAction?: (trigger: TriggersModel) => void;
@@ -51,6 +43,7 @@ export const TriggersListItem: FC<TriggersListItemProps> = ({
   onOpenDeleteAction,
   onOpenEditAction,
 }) => {
+  const icon = useEventIcon(trigger.event, { size: 18 });
   const toggleTrigger = useTriggersStore(state => state.toggleTrigger);
   const difficulty = getDifficultyConfig(trigger.taskPriority);
   const isActive = trigger.isActive;
@@ -78,7 +71,7 @@ export const TriggersListItem: FC<TriggersListItemProps> = ({
               : 'bg-violet-50 text-violet-600',
           )}
         >
-          {!isActive ? <Cancel01Icon size={18} /> : getEventIcon(trigger.event)}
+          {!isActive ? <Cancel01Icon size={18} /> : icon}
         </div>
 
         <div>
