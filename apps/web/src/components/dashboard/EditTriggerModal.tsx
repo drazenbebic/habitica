@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, useEffect, useState, useTransition } from 'react';
+import { FC, useState, useTransition } from 'react';
 
 import {
   DialogProvider,
@@ -15,20 +15,22 @@ import clsx from 'clsx';
 import { ArrowDown01Icon, PencilEdit02Icon } from 'hugeicons-react';
 import { toast } from 'sonner';
 
-import { getRepositoriesAction } from '@/actions/repositories/getRepositoriesAction';
 import { Button } from '@/components/ui/Button';
 import { Dialog } from '@/components/ui/Dialog';
 import { DialogDismiss } from '@/components/ui/DialogDismiss';
+import { FormCombobox } from '@/components/ui/FormCombobox';
 import { FormInput } from '@/components/ui/FormInput';
+import { FormMultiCombobox } from '@/components/ui/FormMultiCombobox';
 import { FormSelect } from '@/components/ui/FormSelect';
 import { FormTextarea } from '@/components/ui/FormTextarea';
 import { Heading } from '@/components/ui/Heading';
 import { SelectItem } from '@/components/ui/SelectItem';
-import { GithubSelectedRepositoriesModel } from '@/generated/prisma/models/GithubSelectedRepositories';
-import { useGithubEventsOptions } from '@/hooks/useGithubEventsOptions';
+import { useRepositories } from '@/hooks/useRepositories';
+import { useRepositoryOptions } from '@/hooks/useRepositoryOptions';
 import { TriggerSchema, triggerSchema } from '@/schemas/triggerSchema';
 import { useTriggersStore } from '@/store/useTriggersStore';
 import { TriggerWithRepos } from '@/types/triggers';
+import { getGroupedGithubEvents } from '@/utils/githubEvents';
 
 export type EditWebhookTriggerModalProps = {
   open: boolean;
@@ -43,12 +45,6 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
   trigger,
   onSuccessAction,
 }) => {
-  const githubEventOptions = useGithubEventsOptions();
-  const updateTrigger = useTriggersStore(state => state.updateTrigger);
-  const [repositories, setRepositories] = useState<
-    GithubSelectedRepositoriesModel[]
-  >([]);
-  const [isPending, startTransition] = useTransition();
   const [values, setValues] = useState<TriggerSchema>({
     event: trigger.event,
     repositories: trigger.repositories.map(({ uuid }) => uuid),
@@ -62,17 +58,12 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
     taskTags: (trigger.taskTags || '') as string,
   });
 
-  useEffect(() => {
-    startTransition(async () => {
-      const { data: newRepositories } = await getRepositoriesAction();
-      setRepositories(newRepositories || []);
-    });
-  }, []);
-
-  const form = useFormStore<TriggerSchema>({
-    values,
-    setValues,
-  });
+  const updateTrigger = useTriggersStore(state => state.updateTrigger);
+  const repositories = useRepositories();
+  const githubEventOptions = getGroupedGithubEvents();
+  const form = useFormStore<TriggerSchema>({ values, setValues });
+  const [isPending, startTransition] = useTransition();
+  const repositoryOptions = useRepositoryOptions(repositories);
 
   form.useSubmit(async state => {
     const validation = triggerSchema.safeParse(state.values);
@@ -107,32 +98,25 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
               Edit Trigger
             </Heading>
           </div>
-          <DialogDismiss label="Close the edit webhook trigger modal" />
+          <DialogDismiss label="Close the edit trigger modal" />
         </div>
 
         <Form store={form} className="space-y-6">
           <div className="grid gap-4 sm:grid-cols-2">
-            <FormSelect
+            <FormCombobox
               name="event"
               label="When this happens on GitHub..."
               required
-            >
-              {githubEventOptions}
-            </FormSelect>
+              items={githubEventOptions}
+            />
 
-            <FormSelect
+            <FormMultiCombobox
               name="repositories"
               label="...on one of these repositories..."
-              placeholder="Please select at least one repository"
+              placeholder="Select repositories..."
               required
-              multiple
-            >
-              {repositories.map(repository => (
-                <SelectItem key={repository.uuid} value={repository.uuid}>
-                  {repository.fullName}
-                </SelectItem>
-              ))}
-            </FormSelect>
+              items={repositoryOptions}
+            />
           </div>
 
           <div className="border-t border-slate-100" />

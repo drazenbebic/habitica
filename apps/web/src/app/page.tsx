@@ -42,7 +42,7 @@ const Home: NextPage = () => {
   return (
     <div className="flex flex-col gap-20 pb-20">
       <section className="relative px-4 pt-20 sm:pt-32 text-center">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-[radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+        <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-[radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
 
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-6">
           <Pill
