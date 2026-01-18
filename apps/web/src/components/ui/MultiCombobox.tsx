@@ -34,6 +34,9 @@ export type MultiComboboxProps = {
   selectedValues?: string[];
 };
 
+const errorStyles =
+  'aria-invalid:border-red-500 aria-invalid:focus:border-red-500 aria-invalid:focus:ring-red-500/10 aria-invalid:bg-red-50/50';
+
 export const MultiCombobox: FC<MultiComboboxProps> = ({
   className,
   defaultValue,
@@ -42,6 +45,7 @@ export const MultiCombobox: FC<MultiComboboxProps> = ({
   label,
   onChangeAction,
   placeholder,
+  ...props
 }) => {
   const [isPending, startTransition] = useTransition();
   const [searchValue, setSearchValue] = useState('');
@@ -104,7 +108,9 @@ export const MultiCombobox: FC<MultiComboboxProps> = ({
             placeholder={placeholderValue}
             className={clsx(
               'relative flex w-full items-center justify-between rounded-lg border border-slate-300 bg-white px-5 py-2.5 text-left text-slate-900 transition-all duration-200 ease-in-out placeholder:text-slate-400 focus:border-violet-500 focus:outline-none focus:ring-4 focus:ring-violet-600/10 hover:bg-slate-100 disabled:opacity-50 disabled:pointer-events-none',
+              errorStyles,
             )}
+            {...props}
           />
           <div className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-slate-400">
             <ArrowDown01Icon size={16} />

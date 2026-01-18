@@ -119,7 +119,6 @@ export const AddTriggerModal: FC<AddTriggerModalProps> = ({
               name="repositories"
               label="...on one of these repositories..."
               placeholder="Select repositories..."
-              required
               items={repositoryOptions}
             />
           </div>

@@ -58,6 +58,7 @@ export const FormCombobox: FC<FormComboboxProps> = forwardRef(
               defaultValue={value}
               onChangeAction={val => form?.setValue(name, val)}
               placeholder={placeholder}
+              required={required}
               className={clsx(errorStyles, className)}
               disableLabel
               {...props}

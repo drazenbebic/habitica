@@ -115,7 +115,6 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
               name="repositories"
               label="...on one of these repositories..."
               placeholder="Select repositories..."
-              required
               items={repositoryOptions}
             />
           </div>

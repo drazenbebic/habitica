@@ -61,6 +61,7 @@ export const FormMultiCombobox: FC<FormMultiComboboxProps> = forwardRef(
               defaultValue={value}
               onChangeAction={val => form?.setValue(name, val)}
               placeholder={placeholder}
+              required={required}
               className={clsx(errorStyles, className)}
               disableLabel
               {...props}
