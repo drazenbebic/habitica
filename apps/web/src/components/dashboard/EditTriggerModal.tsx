@@ -106,6 +106,7 @@ export const EditTriggerModal: FC<EditWebhookTriggerModalProps> = ({
             <FormCombobox
               name="event"
               label="When this happens on GitHub..."
+              placeholder="Select a GitHub event..."
               required
               items={githubEventOptions}
             />
