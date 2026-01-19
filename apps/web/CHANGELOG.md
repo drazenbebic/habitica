@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.7.2](https://github.com/drazenbebic/octogriffin/compare/web-v0.7.1...web-v0.7.2) (2026-01-19)
+
+
+### Bug Fixes
+
+* add open graph meta data to pages ([ab94d4e](https://github.com/drazenbebic/octogriffin/commit/ab94d4e4ebf63d4c5f884efb22b9e5c0ffb6389c))
+* drop payload column from webhook logs ([69fcbed](https://github.com/drazenbebic/octogriffin/commit/69fcbed6d06a56d035a46673727040b17fbb1466))
+
 ## [0.7.1](https://github.com/drazenbebic/octogriffin/compare/web-v0.7.0...web-v0.7.1) (2026-01-19)
 
 
