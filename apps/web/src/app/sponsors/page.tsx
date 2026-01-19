@@ -9,6 +9,7 @@ import {
   ZapIcon,
 } from 'hugeicons-react';
 
+import { TextAccent } from '@/components/TextAccent';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
@@ -35,9 +36,9 @@ const SponsorsPage: NextPage = () => {
 
         <Heading level={1} size="4xl" className="mb-4 tracking-tight">
           Fuel the{' '}
-          <span className="bg-linear-to-r from-violet-600 to-rose-500 bg-clip-text text-transparent">
+          <TextAccent variant="brand" breathing>
             Octogriffin!
-          </span>
+          </TextAccent>
         </Heading>
 
         <Content size="lg" className="max-w-xl">
@@ -116,11 +117,11 @@ const SponsorsPage: NextPage = () => {
             </Content>
             <ul className="space-y-3 text-sm text-slate-600">
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-stone-400"></span>
+                <span className="h-1.5 w-1.5 rounded-full bg-stone-400" />
                 Sponsor badge on profile
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-stone-400"></span>
+                <span className="h-1.5 w-1.5 rounded-full bg-stone-400" />
                 My gratitude! 🫶
               </li>
             </ul>
@@ -147,15 +148,15 @@ const SponsorsPage: NextPage = () => {
             </Content>
             <ul className="space-y-3 text-sm text-slate-600">
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
                 <strong>Listed in README</strong>
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
                 Sponsor badge on profile
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-amber-500"></span>
+                <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
                 My gratitude! 🫶
               </li>
             </ul>
@@ -184,19 +185,19 @@ const SponsorsPage: NextPage = () => {
             </Content>
             <ul className="space-y-3 text-sm text-slate-600">
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-violet-500"></span>
+                <span className="h-1.5 w-1.5 rounded-full bg-violet-500" />
                 <strong>Listed on Website</strong>
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-violet-500"></span>
+                <span className="h-1.5 w-1.5 rounded-full bg-violet-500" />
                 Priority feature requests
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-violet-500"></span>
+                <span className="h-1.5 w-1.5 rounded-full bg-violet-500" />
                 Listed in README
               </li>
               <li className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-violet-500"></span>
+                <span className="h-1.5 w-1.5 rounded-full bg-violet-500" />
                 Sponsor badge + Gratitude 🫶
               </li>
             </ul>

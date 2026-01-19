@@ -16,6 +16,7 @@ import {
 } from 'hugeicons-react';
 
 import { RewardRow } from '@/components/RewardRow';
+import { TextAccent } from '@/components/TextAccent';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
@@ -51,15 +52,15 @@ const Home: NextPage = () => {
             target="_blank"
           >
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-500"></span>
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-500" />
             </span>
 
             <span className="font-medium text-slate-600 group-hover:text-violet-700 transition-colors">
               v{version} is now live
             </span>
 
-            <span className="h-3 w-px bg-slate-200 group-hover:bg-violet-200 transition-colors"></span>
+            <span className="h-3 w-px bg-slate-200 group-hover:bg-violet-200 transition-colors" />
 
             <span className="flex items-center gap-1 text-slate-400 group-hover:text-violet-600 transition-colors">
               <span className="text-xs font-medium">Changelog</span>
@@ -72,7 +73,9 @@ const Home: NextPage = () => {
 
           <Heading level={1} size="4xl">
             Turn your Commits into <br />
-            <span className="text-violet-600">Gold and XP</span>
+            <TextAccent glowing breathing>
+              Gold and XP
+            </TextAccent>
           </Heading>
 
           <Content size="lg" className="max-w-2xl text-center">
@@ -182,7 +185,7 @@ const Home: NextPage = () => {
           variant="outlined"
           className="relative overflow-hidden border-violet-200 bg-linear-to-b from-white via-violet-50/30 to-violet-100/30 shadow-xs"
         >
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#8b5cf6_1px,transparent_1px)] bg-size-[20px_20px] opacity-[0.04]"></div>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#8b5cf6_1px,transparent_1px)] bg-size-[20px_20px] opacity-[0.04]" />
 
           <div className="pointer-events-none absolute -left-8 -top-8 text-violet-200/60 opacity-50">
             <StarIcon size={80} className="-rotate-12" />

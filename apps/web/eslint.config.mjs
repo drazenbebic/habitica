@@ -15,19 +15,7 @@ const eslintConfig = defineConfig([
       'simple-import-sort': simpleImportSort,
     },
     rules: {
-      'prettier/prettier': [
-        'error',
-        {
-          printWidth: 80,
-          endOfLine: 'auto',
-          arrowParens: 'avoid',
-          trailingComma: 'all',
-          semi: true,
-          singleQuote: true,
-          useTabs: false,
-          bracketSpacing: true,
-        },
-      ],
+      'prettier/prettier': ['error', {}, { usePrettierrc: true }],
       'unused-imports/no-unused-imports': 'warn',
       'unused-imports/no-unused-vars': 'warn',
       'no-console': ['warn', { allow: ['warn', 'error'] }],

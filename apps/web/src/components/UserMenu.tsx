@@ -52,7 +52,7 @@ export const UserMenu: FC = () => {
         </div>
       </Link>
 
-      <div className="h-5 w-px bg-slate-200"></div>
+      <div className="h-5 w-px bg-slate-200" />
 
       <AriakitButton
         onClick={() => signOut()}

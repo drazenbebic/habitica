@@ -69,7 +69,7 @@ export const RoadmapPhase: FC<RoadmapPhaseProps> = ({
             </div>
 
             <div className="space-y-8 relative">
-              <div className="absolute left-1.75 top-2 bottom-2 w-px bg-slate-100"></div>
+              <div className="absolute left-1.75 top-2 bottom-2 w-px bg-slate-100" />
               {children}
             </div>
           </CardBody>

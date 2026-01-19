@@ -88,7 +88,7 @@ export const HabiticaStatsCard: FC = () => {
           </Heading>
 
           <div className="flex items-center gap-1.5 rounded-full bg-white/10 px-2 py-1 text-[10px] font-medium backdrop-blur-sm">
-            <span className="h-1.5 w-1.5 rounded-full bg-red-400"></span>
+            <span className="h-1.5 w-1.5 rounded-full bg-red-400" />
             {hp} / {maxHealth} HP
           </div>
         </div>

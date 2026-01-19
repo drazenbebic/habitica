@@ -46,7 +46,7 @@ const RoadmapPage: NextPage = () => {
       </div>
 
       <div className="relative mx-auto max-w-3xl">
-        <div className="hidden absolute left-8 top-4 bottom-4 w-px bg-linear-to-b from-emerald-500 via-violet-200 to-transparent md:block"></div>
+        <div className="hidden absolute left-8 top-4 bottom-4 w-px bg-linear-to-b from-emerald-500 via-violet-200 to-transparent md:block" />
 
         <div className="space-y-12">
           <RoadmapPhase
