@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/drazenbebic/octogriffin/compare/web-v0.6.2...web-v0.7.0) (2026-01-19)
+
+
+### Features
+
+* implement control-freak update ([#198](https://github.com/drazenbebic/octogriffin/issues/198)) ([1859906](https://github.com/drazenbebic/octogriffin/commit/1859906dcebe1c1e3cee4e22958b57f4818d27f7))
+
 ## [0.6.2](https://github.com/drazenbebic/octogriffin/compare/web-v0.6.1...web-v0.6.2) (2026-01-14)
 
 
