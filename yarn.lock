@@ -8164,7 +8164,7 @@ __metadata:
     "@commitlint/cli": "npm:^20.3.1"
     "@commitlint/config-conventional": "npm:^20.3.1"
     husky: "npm:^9.1.7"
-    turbo: "npm:^2.7.3"
+    turbo: "npm:^2.7.5"
   languageName: unknown
   linkType: soft
 
@@ -10164,58 +10164,58 @@ __metadata:
   languageName: node
   linkType: hard
 
-"turbo-darwin-64@npm:2.7.3":
-  version: 2.7.3
-  resolution: "turbo-darwin-64@npm:2.7.3"
+"turbo-darwin-64@npm:2.7.5":
+  version: 2.7.5
+  resolution: "turbo-darwin-64@npm:2.7.5"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-darwin-arm64@npm:2.7.3":
-  version: 2.7.3
-  resolution: "turbo-darwin-arm64@npm:2.7.3"
+"turbo-darwin-arm64@npm:2.7.5":
+  version: 2.7.5
+  resolution: "turbo-darwin-arm64@npm:2.7.5"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-linux-64@npm:2.7.3":
-  version: 2.7.3
-  resolution: "turbo-linux-64@npm:2.7.3"
+"turbo-linux-64@npm:2.7.5":
+  version: 2.7.5
+  resolution: "turbo-linux-64@npm:2.7.5"
   conditions: os=linux & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-linux-arm64@npm:2.7.3":
-  version: 2.7.3
-  resolution: "turbo-linux-arm64@npm:2.7.3"
+"turbo-linux-arm64@npm:2.7.5":
+  version: 2.7.5
+  resolution: "turbo-linux-arm64@npm:2.7.5"
   conditions: os=linux & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo-windows-64@npm:2.7.3":
-  version: 2.7.3
-  resolution: "turbo-windows-64@npm:2.7.3"
+"turbo-windows-64@npm:2.7.5":
+  version: 2.7.5
+  resolution: "turbo-windows-64@npm:2.7.5"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"turbo-windows-arm64@npm:2.7.3":
-  version: 2.7.3
-  resolution: "turbo-windows-arm64@npm:2.7.3"
+"turbo-windows-arm64@npm:2.7.5":
+  version: 2.7.5
+  resolution: "turbo-windows-arm64@npm:2.7.5"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"turbo@npm:^2.7.3":
-  version: 2.7.3
-  resolution: "turbo@npm:2.7.3"
+"turbo@npm:^2.7.5":
+  version: 2.7.5
+  resolution: "turbo@npm:2.7.5"
   dependencies:
-    turbo-darwin-64: "npm:2.7.3"
-    turbo-darwin-arm64: "npm:2.7.3"
-    turbo-linux-64: "npm:2.7.3"
-    turbo-linux-arm64: "npm:2.7.3"
-    turbo-windows-64: "npm:2.7.3"
-    turbo-windows-arm64: "npm:2.7.3"
+    turbo-darwin-64: "npm:2.7.5"
+    turbo-darwin-arm64: "npm:2.7.5"
+    turbo-linux-64: "npm:2.7.5"
+    turbo-linux-arm64: "npm:2.7.5"
+    turbo-windows-64: "npm:2.7.5"
+    turbo-windows-arm64: "npm:2.7.5"
   dependenciesMeta:
     turbo-darwin-64:
       optional: true
@@ -10231,7 +10231,7 @@ __metadata:
       optional: true
   bin:
     turbo: bin/turbo
-  checksum: 10c0/a13016829b6088f404f938b6cc809d52956d129ba4607af965562c1f8ae06db642c804fdd86a576ae81589300d980513866320cac2ff91aa0397943028996d05
+  checksum: 10c0/fdaec7f15c04685fd2a61fd6899b08adbcc8fa0fb1001b54626c585c1159c3f410a3ad20067ebe8093da2d3796c4dbb930136d68d09dbb59c7ff51a39516f2a8
   languageName: node
   linkType: hard
 
