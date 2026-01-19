@@ -19,6 +19,30 @@ import { githubRepositoryUrl } from '@/utils/githubRepositoryUrl';
 export const metadata: Metadata = {
   title: 'Roadmap',
   description: 'Our development plan for the future of Octogriffin.',
+  openGraph: {
+    title: 'Roadmap - Octogriffin',
+    description:
+      'Explore the Octogriffin master plan. See upcoming features like Anti-Cheese protection, Coding Streaks, and the Activity Ledger.',
+    url: 'https://octogriffin.com/roadmap',
+    siteName: 'Octogriffin',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://octogriffin.com/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Octogriffin Roadmap',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Roadmap - Octogriffin',
+    description:
+      'Explore the Octogriffin master plan. See upcoming features like Anti-Cheese protection, Coding Streaks, and the Activity Ledger.',
+    images: ['https://octogriffin.com/og-image.png'],
+  },
 };
 
 const RoadmapPage: NextPage = () => {

@@ -21,6 +21,30 @@ export const metadata: Metadata = {
   title: 'Sponsors',
   description:
     'Support the development of Octogriffin and keep the servers running.',
+  openGraph: {
+    title: 'Sponsors - Octogriffin',
+    description:
+      'Support the development of Octogriffin and keep the servers running.',
+    url: 'https://octogriffin.com/sponsors',
+    siteName: 'Octogriffin',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://octogriffin.com/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Support Octogriffin',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Sponsors - Octogriffin',
+    description:
+      'Support the development of Octogriffin and keep the servers running.',
+    images: ['https://octogriffin.com/og-image.png'],
+  },
 };
 
 const SponsorsPage: NextPage = () => {

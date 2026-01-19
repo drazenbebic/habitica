@@ -10,6 +10,30 @@ export const metadata: Metadata = {
   title: 'Privacy Policy',
   description:
     'We protect your code and data. Learn about our GDPR compliance, zero-storage policy for source code, and secure infrastructure in Frankfurt.',
+  openGraph: {
+    title: 'Privacy Policy',
+    description:
+      'We protect your code and data. Learn about our GDPR compliance, zero-storage policy for source code, and secure infrastructure in Frankfurt.',
+    url: 'https://octogriffin.com/privacy',
+    siteName: 'Octogriffin',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: 'https://octogriffin.com/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Octogriffin Privacy Policy',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Privacy Policy',
+    description:
+      'We protect your code and data. Learn about our GDPR compliance, zero-storage policy for source code, and secure infrastructure in Frankfurt.',
+    images: ['https://octogriffin.com/og-image.png'],
+  },
 };
 
 const LAST_UPDATED = '12.01.2026';
