@@ -5,25 +5,26 @@ import {
   ArrowRight01Icon,
   Calendar03Icon,
   CheckmarkCircle01Icon,
+  GitBranchIcon,
   GitCommitIcon,
   GithubIcon,
   GitMergeIcon,
-  GitPullRequestIcon,
-  PackageIcon,
   Rocket01Icon,
+  Settings01Icon,
   StarIcon,
   Target02Icon,
 } from 'hugeicons-react';
 
 import { RewardRow } from '@/components/RewardRow';
+import { TextAccent } from '@/components/TextAccent';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { Pill } from '@/components/ui/Pill';
-import { githubAppUrl } from '@/utils/github-app-url';
-import { githubRepositoryUrl } from '@/utils/github-repository-url';
+import { githubAppUrl } from '@/utils/githubAppUrl';
+import { githubRepositoryUrl } from '@/utils/githubRepositoryUrl';
 
 export const metadata: Metadata = {
   title: 'Octogriffin - Gamify Your GitHub Workflow',
@@ -42,7 +43,7 @@ const Home: NextPage = () => {
   return (
     <div className="flex flex-col gap-20 pb-20">
       <section className="relative px-4 pt-20 sm:pt-32 text-center">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-[radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]"></div>
+        <div className="absolute inset-0 -z-10 h-full w-full bg-white bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] bg-size-[16px_16px] mask-[radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
 
         <div className="mx-auto flex max-w-3xl flex-col items-center gap-6">
           <Pill
@@ -51,15 +52,15 @@ const Home: NextPage = () => {
             target="_blank"
           >
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75"></span>
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-500"></span>
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-violet-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-violet-500" />
             </span>
 
             <span className="font-medium text-slate-600 group-hover:text-violet-700 transition-colors">
               v{version} is now live
             </span>
 
-            <span className="h-3 w-px bg-slate-200 group-hover:bg-violet-200 transition-colors"></span>
+            <span className="h-3 w-px bg-slate-200 group-hover:bg-violet-200 transition-colors" />
 
             <span className="flex items-center gap-1 text-slate-400 group-hover:text-violet-600 transition-colors">
               <span className="text-xs font-medium">Changelog</span>
@@ -72,7 +73,9 @@ const Home: NextPage = () => {
 
           <Heading level={1} size="4xl">
             Turn your Commits into <br />
-            <span className="text-violet-600">Gold and XP</span>
+            <TextAccent glowing breathing>
+              Gold and XP
+            </TextAccent>
           </Heading>
 
           <Content size="lg" className="max-w-2xl text-center">
@@ -182,7 +185,7 @@ const Home: NextPage = () => {
           variant="outlined"
           className="relative overflow-hidden border-violet-200 bg-linear-to-b from-white via-violet-50/30 to-violet-100/30 shadow-xs"
         >
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#8b5cf6_1px,transparent_1px)] bg-size-[20px_20px] opacity-[0.04]"></div>
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#8b5cf6_1px,transparent_1px)] bg-size-[20px_20px] opacity-[0.04]" />
 
           <div className="pointer-events-none absolute -left-8 -top-8 text-violet-200/60 opacity-50">
             <StarIcon size={80} className="-rotate-12" />
@@ -213,8 +216,8 @@ const Home: NextPage = () => {
             </Heading>
 
             <Content size="lg" className="mx-auto mb-8 max-w-lg">
-              From difficulty multipliers to coding streaks, check out what we
-              have planned for the next release.
+              We have ambitious plans to make your workflow even more immersive.
+              See what features are currently in the forge.
             </Content>
 
             <Link href="/roadmap">
@@ -233,44 +236,44 @@ const Home: NextPage = () => {
             <div className="mb-6 flex items-center justify-between border-b border-slate-100 pb-6">
               <div>
                 <Heading level={2} size="xl">
-                  Reward Rates
+                  You are the Game Master
                 </Heading>
-                <Content size="sm">Default configuration</Content>
+                <Content size="sm">
+                  Forget hardcoded values. With the new{' '}
+                  <span className="font-semibold text-violet-600">
+                    Control Freak
+                  </span>{' '}
+                  update, you define the rules.
+                </Content>
+              </div>
+              <div className="hidden h-10 w-10 items-center justify-center rounded-full bg-violet-50 text-violet-600 sm:flex">
+                <Settings01Icon size={20} />
               </div>
             </div>
 
             <div className="flex flex-col gap-4">
               <RewardRow
-                icon={<GitCommitIcon size={20} className="text-slate-500" />}
-                action="Push Commit"
-                reward="+1 XP"
+                icon={<GitCommitIcon size={20} className="text-emerald-500" />}
+                action="Triggers"
+                reward="Commits, PRs, Merges & Reviews, and muuuuuch more!"
+                badgeVariant="success"
               />
               <RewardRow
-                icon={
-                  <GitPullRequestIcon size={20} className="text-blue-500" />
-                }
-                action="Open Pull Request"
-                reward="+2 XP"
+                icon={<Target02Icon size={20} className="text-blue-500" />}
+                action="Difficulty"
+                reward="Trivial, Easy, Medium or Hard"
+                badgeVariant="info"
               />
               <RewardRow
-                icon={
-                  <CheckmarkCircle01Icon
-                    size={20}
-                    className="text-emerald-500"
-                  />
-                }
-                action="Review Code"
-                reward="+3 XP"
+                icon={<StarIcon size={20} className="text-amber-500" />}
+                action="Rewards"
+                reward="Reward with XP/Gold, or lose Health!"
+                badgeVariant="warning"
               />
               <RewardRow
-                icon={<PackageIcon size={20} className="text-orange-500" />}
-                action="Publish a Package"
-                reward="+3 XP"
-              />
-              <RewardRow
-                icon={<GitMergeIcon size={20} className="text-violet-500" />}
-                action="Merge Pull Request"
-                reward="+5 XP"
+                icon={<GitBranchIcon size={20} className="text-violet-500" />}
+                action="Scope"
+                reward="Global or Repository specific"
               />
             </div>
           </CardBody>

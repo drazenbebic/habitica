@@ -14,7 +14,7 @@ export type RoadmapPhaseProps = {
   colorClass: string;
   dotClass: string;
   children: ReactNode;
-  isFirst?: boolean;
+  isActive?: boolean;
 };
 
 export const RoadmapPhase: FC<RoadmapPhaseProps> = ({
@@ -24,7 +24,7 @@ export const RoadmapPhase: FC<RoadmapPhaseProps> = ({
   colorClass,
   dotClass,
   children,
-  isFirst = false,
+  isActive = false,
 }) => {
   return (
     <div className="relative flex gap-8 md:gap-12">
@@ -35,7 +35,7 @@ export const RoadmapPhase: FC<RoadmapPhaseProps> = ({
             dotClass,
           )}
         >
-          {isFirst && (
+          {isActive && (
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75 bg-inherit" />
           )}
         </div>
@@ -69,7 +69,7 @@ export const RoadmapPhase: FC<RoadmapPhaseProps> = ({
             </div>
 
             <div className="space-y-8 relative">
-              <div className="absolute left-1.75 top-2 bottom-2 w-px bg-slate-100"></div>
+              <div className="absolute left-1.75 top-2 bottom-2 w-px bg-slate-100" />
               {children}
             </div>
           </CardBody>

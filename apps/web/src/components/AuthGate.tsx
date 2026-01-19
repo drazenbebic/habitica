@@ -12,10 +12,10 @@ export const AuthGate = () => {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center px-4 text-center">
       <div className="relative mb-8 flex h-24 w-24 items-center justify-center rounded-3xl bg-slate-50 text-slate-400 ring-1 ring-slate-100">
-        <div className="absolute inset-0 rounded-3xl bg-slate-100/50 blur-xl"></div>
+        <div className="absolute inset-0 rounded-3xl bg-slate-100/50 blur-xl" />
         <SquareLock02Icon size={48} />
 
-        <div className="absolute -right-1 -top-1 h-6 w-6 rounded-full border-4 border-white bg-amber-500"></div>
+        <div className="absolute -right-1 -top-1 h-6 w-6 rounded-full border-4 border-white bg-amber-500" />
       </div>
 
       <Heading level={1} size="3xl" className="mb-4">
@@ -29,7 +29,7 @@ export const AuthGate = () => {
 
       <Button
         size="lg"
-        onClick={() => signIn('github', { callbackUrl: '/dashboard' })}
+        onClick={() => signIn('github', { callbackUrl: window.location.href })}
         className="shadow-xl shadow-violet-600/20 transition-transform active:scale-95"
       >
         <GithubIcon size={20} className="mr-2" />
