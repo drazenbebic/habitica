@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/drazenbebic/octogriffin/compare/web-v0.7.0...web-v0.7.1) (2026-01-19)
+
+
+### Bug Fixes
+
+* fix dashboard page error ([5258067](https://github.com/drazenbebic/octogriffin/commit/52580672686b176b4742cbe939f22c351ecfb28f))
+
 ## [0.7.0](https://github.com/drazenbebic/octogriffin/compare/web-v0.6.2...web-v0.7.0) (2026-01-19)
 
 
