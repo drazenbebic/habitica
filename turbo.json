@@ -12,7 +12,8 @@
     "ENCRYPTION_KEY",
     "NEXT_PUBLIC_GITHUB_APP_URL",
     "HABITICA_USER_ID",
-    "HABITICA_APP_NAME"
+    "HABITICA_APP_NAME",
+    "HEALTH_CHECK_SECRET"
   ],
   "tasks": {
     "build": {
