@@ -4,6 +4,7 @@ import {
   Webhooks,
 } from '@octokit/webhooks';
 
+import { getGithubUserBySenderId } from '@/accessors/githubUser';
 import logger from '@/lib/logger';
 
 import { handleInstallationCreated } from './handlers/handleInstallationCreated';
@@ -84,14 +85,37 @@ export const initWebhookHandlers = (webhooks: Webhooks) => {
     );
 
     if (!isSupported) {
-      logger.info(
-        { eventName: event.name },
-        'Unsupported Webhook. Not logged.',
-      );
+      logger.info({ eventName: event.name }, 'Ignored: Unsupported Webhook');
       return;
     }
 
-    await handleLogWebhook(event);
+    const senderId = event.payload.sender?.id;
+
+    if (!senderId) {
+      logger.info({ eventName: event.name }, 'Ignored: No sender ID.');
+      return;
+    }
+
+    const githubUser = await getGithubUserBySenderId(senderId, {
+      triggers: {
+        where: {
+          isActive: true,
+          event: event.name,
+        },
+      },
+    });
+
+    if (!githubUser) {
+      logger.info({ eventName: event.name }, 'Ignored: GitHub User not found.');
+      return;
+    }
+
+    if (githubUser.triggers.length === 0) {
+      logger.info({ eventName: event.name }, 'Ignored: No triggers found.');
+      return;
+    }
+
+    await handleLogWebhook(event, githubUser);
   });
 
   // Error handling.
