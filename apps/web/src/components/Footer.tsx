@@ -66,6 +66,7 @@ export const Footer: FC = () => {
                 Resources
               </Heading>
               <FooterLink href="/faq">FAQ</FooterLink>
+              <FooterLink href="/roadmap">Roadmap</FooterLink>
               <FooterLink href={githubRepositoryUrl()} target="_blank">
                 GitHub Repo
               </FooterLink>
