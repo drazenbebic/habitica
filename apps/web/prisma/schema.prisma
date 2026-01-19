@@ -115,13 +115,12 @@ model Triggers {
 model WebhookLogs {
   id           BigInt      @id @default(autoincrement()) @map("id") @db.BigInt
   uuid         String      @unique @default(uuid()) @map("uuid") @db.VarChar(36)
-  deliveryUuid String      @unique @map("delivery_uuid") @db.VarChar(36)
+  deliveryUuid String      @map("delivery_uuid") @db.VarChar(36)
   event        String      @map("event") @db.VarChar(255)
   signature    String      @map("signature") @db.VarChar(255)
   hookId       String      @map("hook_id") @db.VarChar(255)
   githubUser   GithubUsers @relation("GithubUsersWebhookLogs", fields: [githubUserId], references: [id], onDelete: Cascade)
   githubUserId BigInt      @map("github_user_id") @db.BigInt
-  payload      Json?       @map("payload") @db.JsonB
   createdAt    DateTime    @default(now()) @map("created_at")
   updatedAt    DateTime    @updatedAt @map("updated_at")
 

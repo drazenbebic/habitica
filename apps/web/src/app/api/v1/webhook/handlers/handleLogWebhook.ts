@@ -6,7 +6,7 @@ import { getRequestContext } from '@/lib/context';
 import logger from '@/lib/logger';
 
 export const handleLogWebhook = async (
-  { id, name, payload }: EmitterWebhookEvent,
+  { id, name }: EmitterWebhookEvent,
   githubUser: GithubUsersModel,
 ) => {
   logger.info('Logging webhook.');
@@ -27,8 +27,6 @@ export const handleLogWebhook = async (
       signature,
       hookId,
       githubUserId: githubUser.id,
-      // @ts-expect-error Just a type mismatch
-      payload,
     });
   } catch (error) {
     logger.error({ error }, 'Webhook logging failed.');
