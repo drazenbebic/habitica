@@ -60,8 +60,8 @@ It is built with **Next.js**, **Prisma**, and **PostgreSQL**.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/drazenbebic/habitica.git
-cd habitica
+git clone https://github.com/drazenbebic/octogriffin.git
+cd octogriffin
 ```
 
 ### 2. Configure environment

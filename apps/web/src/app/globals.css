@@ -10,3 +10,7 @@
         50% { opacity: 0.85; }
     }
 }
+
+.top-docs-sidebar {
+    top: 129px;
+}

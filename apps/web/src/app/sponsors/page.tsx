@@ -9,13 +9,13 @@ import {
   ZapIcon,
 } from 'hugeicons-react';
 
-import { TextAccent } from '@/components/TextAccent';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { Pill } from '@/components/ui/Pill';
+import { TextAccent } from '@/components/ui/TextAccent';
 
 export const metadata: Metadata = {
   title: 'Sponsors',

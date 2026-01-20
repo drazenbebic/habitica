@@ -7,7 +7,7 @@ import {
 import clsx from 'clsx';
 import { Loading03Icon } from 'hugeicons-react';
 
-type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'black';
 type ButtonSize = 'sm' | 'md' | 'lg';
 
 export type ButtonProps = BaseButtonProps & {
@@ -19,27 +19,29 @@ export type ButtonProps = BaseButtonProps & {
 };
 
 const baseStyles =
-  'relative inline-flex gap-1 items-center justify-center rounded-full font-medium transition-all duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none active:scale-95';
+  'relative inline-flex gap-2 items-center justify-center rounded-lg font-semibold transition-all duration-200 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none hover:-translate-y-0.5 active:translate-y-0';
 
 const variants: Record<ButtonVariant, string> = {
   primary:
     'bg-violet-600 text-white shadow-md shadow-violet-600/20 hover:bg-violet-700 hover:shadow-lg hover:shadow-violet-600/30 focus-visible:ring-violet-600',
   secondary:
-    'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 focus-visible:ring-slate-400',
+    'bg-white text-slate-700 border border-slate-200 shadow-sm hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 hover:shadow-md focus-visible:ring-slate-400',
   ghost:
-    'bg-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-slate-400',
+    'bg-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-slate-400 hover:-translate-y-0', // Ghost usually doesn't lift
+  black:
+    'bg-slate-900 text-white shadow-md shadow-slate-900/10 hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20 focus-visible:ring-slate-900',
 };
 
 const sizes: Record<ButtonSize, string> = {
-  sm: 'px-4 py-1.5 text-sm',
-  md: 'px-6 py-2.5 text-base',
-  lg: 'px-8 py-3.5 text-lg',
+  sm: 'px-4 py-2 text-xs',
+  md: 'px-6 py-2.5 text-sm',
+  lg: 'px-8 py-3.5 text-base',
 };
 
 const iconSizes: Record<ButtonSize, number> = {
-  sm: 16,
-  md: 20,
-  lg: 24,
+  sm: 14,
+  md: 18,
+  lg: 20,
 };
 
 export const Button: FC<ButtonProps> = ({
@@ -65,10 +67,10 @@ export const Button: FC<ButtonProps> = ({
       disabled={isLoading || props.disabled}
       {...props}
     >
-      {children}
       {isLoading && (
-        <Loading03Icon size={iconSizes[size]} className="mr-2 animate-spin" />
+        <Loading03Icon size={iconSizes[size]} className="animate-spin" />
       )}
+      {children}
     </BaseButton>
   );
 };
