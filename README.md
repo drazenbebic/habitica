@@ -10,12 +10,18 @@
     <a href="https://github.com/drazenbebic/habitica/actions/workflows/release-deploy.yaml">
       <img src="https://img.shields.io/github/actions/workflow/status/drazenbebic/habitica/release-deploy.yaml?branch=main" alt="Build Status">
     </a>
-    <a href="LICENSE.md">
+    <a href="LICENSE">
       <img src="https://img.shields.io/badge/License-AGPL%20v3-blue.svg" alt="License: AGPL v3">
     </a>
     <a href="https://twitter.com/drazenbebic">
       <img src="https://img.shields.io/twitter/follow/drazenbebic?style=social" alt="Follow on Twitter">
     </a>
+  </p>
+
+  <p>
+    <a href="https://octogriffin.com/installation"><strong>Installation Guide</strong></a> •
+    <a href="https://octogriffin.com/docs"><strong>Documentation</strong></a> •
+    <a href="https://octogriffin.com/roadmap"><strong>Roadmap</strong></a>
   </p>
 </div>
 
@@ -45,66 +51,32 @@ It is built with **Next.js**, **Prisma**, and **PostgreSQL**.
 - **Database**: PostgreSQL (via Neon or Docker)
 - **ORM**: [Prisma](https://www.prisma.io/)
 - **Encryption**: AES-256-GCM
-- **Styling**: Tailwind CSS 
+- **Styling**: Tailwind CSS
 - **Authentication**: NextAuth.js / GitHub OAuth
 - **Deployment**: Vercel
 
 ## Getting Started
 
-### Prerequisites
+### For Users
 
-- Node.js 22+
-- PostgreSQL Database (Local or Cloud)
-- A GitHub App (for Webhooks)
+If you simply want to connect your repositories to Habitica, you do not need to clone this repo.
+Follow our **[Installation Guide](https://octogriffin.com/installation)** to get started in minutes.
 
-### 1. Clone the repository
+### For Developers
+We have moved our technical setup instructions to our documentation portal.
 
-```bash
-git clone https://github.com/drazenbebic/octogriffin.git
-cd octogriffin
-```
-
-### 2. Configure environment
-
-```bash
-cp .env.example .env
-```
-
-> Tip: Generate secrets with `openssl rand -base64 32`
-
-### 3. Database Setup
-
-You can run a local PostgreSQL database using docker and the available `docker-compose.yml`
-
-```bash
-docker compose up -d
-```
-
-### 4. Install dependencies
-
-```bash
-yarn install
-```
-
-### 5. Run the Server
-
-```bash
-yarn run dev
-```
-
-Visit http://localhost:3000 to see the app.
+To run the project locally (including Docker, Ngrok, and GitHub App configuration), please see the **[Developer Setup Guide](https://octogriffin.com/docs/dev-setup)**.
 
 ## Contributing
 
-We welcome contributions! Please see our [Roadmap](https://octogriffin.com/roadmap) to see what we are working on.
+We welcome contributions! Please read our **[Contribution Guide](https://octogriffin.com/docs/how-to-contribute)** for details on our:
 
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feat/amazing-feature`).
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`).
-4. Push to the branch (`git push origin feat/amazing-feature`).
-5. Open a Pull Request.
+* Branching strategy
+* Commit conventions (Conventional Commits)
+* Pull Request process
+* Design system standards
 
-Please ensure you use the provided Pull Request Template.
+Please ensure you check the [Roadmap](https://octogriffin.com/roadmap) before starting large features.
 
 ## Sponsors
 
