@@ -1,4 +1,4 @@
-import { Metadata, NextPage } from 'next';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import {
@@ -16,21 +16,19 @@ import {
 } from 'hugeicons-react';
 
 import { RewardRow } from '@/components/RewardRow';
-import { TextAccent } from '@/components/TextAccent';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { Pill } from '@/components/ui/Pill';
-import { githubAppUrl } from '@/utils/githubAppUrl';
+import { TextAccent } from '@/components/ui/TextAccent';
 import { githubRepositoryUrl } from '@/utils/githubRepositoryUrl';
 
 export const metadata: Metadata = {
   title: 'Octogriffin - Gamify Your GitHub Workflow',
   description:
     'Level up your RPG character automatically while you code. Connect GitHub to Habitica and turn commits, PRs, and reviews into XP, Gold, and Loot.',
-
   openGraph: {
     title: 'Octogriffin - Gamify Your GitHub Workflow',
     description:
@@ -59,7 +57,7 @@ export const metadata: Metadata = {
 
 const version = process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0';
 
-const Home: NextPage = () => {
+export default function HomePage() {
   return (
     <div className="flex flex-col gap-20 pb-20">
       <section className="relative px-4 pt-20 sm:pt-32 text-center">
@@ -104,19 +102,31 @@ const Home: NextPage = () => {
             code.
           </Content>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-            <Link href={githubAppUrl()} target="_blank">
-              <Button size="lg">
-                Get Started
-                <ArrowRight01Icon size={20} className="ml-2" />
-              </Button>
-            </Link>
-            <Link href={githubRepositoryUrl()} target="_blank">
-              <Button variant="secondary" size="lg">
-                <GithubIcon size={20} className="mr-2" />
-                Open Source
-              </Button>
-            </Link>
+          <div className="flex flex-col items-center gap-6 pt-4">
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Link href="/installation">
+                <Button size="lg">
+                  <Rocket01Icon size={20} />
+                  Get Started
+                </Button>
+              </Link>
+              <Link href={githubRepositoryUrl()} target="_blank">
+                <Button variant="black" size="lg">
+                  <GithubIcon size={20} />
+                  Open Source
+                </Button>
+              </Link>
+            </div>
+
+            <Content size="sm" color="note">
+              Want to see how it works first?{' '}
+              <Link
+                href="/docs"
+                className="font-semibold text-violet-600 hover:underline"
+              >
+                Read the Docs &rarr;
+              </Link>
+            </Content>
           </div>
         </div>
       </section>
@@ -242,7 +252,7 @@ const Home: NextPage = () => {
 
             <Link href="/roadmap">
               <Button size="lg" className="shadow-lg shadow-violet-200/50">
-                <Calendar03Icon size={20} className="mr-2" />
+                <Calendar03Icon size={20} />
                 View Roadmap
               </Button>
             </Link>
@@ -301,6 +311,4 @@ const Home: NextPage = () => {
       </section>
     </div>
   );
-};
-
-export default Home;
+}

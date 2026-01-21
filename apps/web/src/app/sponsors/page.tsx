@@ -1,4 +1,4 @@
-import { Metadata, NextPage } from 'next';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import {
@@ -9,45 +9,25 @@ import {
   ZapIcon,
 } from 'hugeicons-react';
 
-import { TextAccent } from '@/components/TextAccent';
 import { Button } from '@/components/ui/Button';
 import { Card } from '@/components/ui/Card';
 import { CardBody } from '@/components/ui/CardBody';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { Pill } from '@/components/ui/Pill';
+import { TextAccent } from '@/components/ui/TextAccent';
+import { generatePageMetadata } from '@/utils/seo';
 
-export const metadata: Metadata = {
-  title: 'Sponsors',
-  description:
-    'Support the development of Octogriffin and keep the servers running.',
-  openGraph: {
-    title: 'Sponsors - Octogriffin',
+export const generateMetadata = async (): Promise<Metadata> => {
+  return generatePageMetadata({
+    title: 'Sponsors',
     description:
       'Support the development of Octogriffin and keep the servers running.',
-    url: 'https://octogriffin.com/sponsors',
-    siteName: 'Octogriffin',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://octogriffin.com/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Support Octogriffin',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Sponsors - Octogriffin',
-    description:
-      'Support the development of Octogriffin and keep the servers running.',
-    images: ['https://octogriffin.com/og-image.png'],
-  },
+    path: 'sponsors',
+  });
 };
 
-const SponsorsPage: NextPage = () => {
+export default function SponsorsPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 py-20">
       <div className="mb-16 flex flex-col items-center text-center">
@@ -105,13 +85,13 @@ const SponsorsPage: NextPage = () => {
                   size="lg"
                   className="border-[#D63E9A] bg-[#EA4AAA] shadow-lg shadow-rose-200/50 hover:bg-[#D63E9A]!"
                 >
-                  <FavouriteIcon size={20} className="mr-2 fill-white/20" />
+                  <FavouriteIcon size={20} className="fill-white/20" />
                   Sponsor on GitHub
                 </Button>
               </Link>
               <Link href="https://ko-fi.com/drazen" target="_blank">
                 <Button variant="secondary" size="lg">
-                  <Coffee02Icon size={20} className="mr-2" />
+                  <Coffee02Icon size={20} />
                   Buy me a Coffee
                 </Button>
               </Link>
@@ -230,6 +210,4 @@ const SponsorsPage: NextPage = () => {
       </div>
     </div>
   );
-};
-
-export default SponsorsPage;
+}

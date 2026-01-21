@@ -1,44 +1,23 @@
-import { NextPage } from 'next';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
+import { generatePageMetadata } from '@/utils/seo';
 import { supportEmail } from '@/utils/supportEmail';
 
-export const metadata: Metadata = {
-  title: 'Terms & Conditions',
-  description:
-    'User agreement, usage guidelines, and liability disclaimers for the Octogriffin GitHub integration.',
-  openGraph: {
-    title: 'Terms & Conditions - Octogriffin',
+export const generateMetadata = async (): Promise<Metadata> => {
+  return generatePageMetadata({
+    title: 'Terms & Conditions',
     description:
       'User agreement, usage guidelines, and liability disclaimers for the Octogriffin GitHub integration.',
-    url: 'https://octogriffin.com/terms',
-    siteName: 'Octogriffin',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://octogriffin.com/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Octogriffin Terms & Conditions',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Terms & Conditions - Octogriffin',
-    description:
-      'User agreement, usage guidelines, and liability disclaimers for the Octogriffin GitHub integration.',
-    images: ['https://octogriffin.com/og-image.png'],
-  },
+    path: 'terms-and-conditions',
+  });
 };
 
 const LAST_UPDATED = '12.01.2026';
 
-const TermsAndConditions: NextPage = () => {
+export default function TermsAndConditionsPage() {
   const email = supportEmail();
 
   return (
@@ -205,6 +184,4 @@ const TermsAndConditions: NextPage = () => {
       </div>
     </div>
   );
-};
-
-export default TermsAndConditions;
+}

@@ -9,7 +9,7 @@ import { TriggersList } from '@/components/dashboard/TriggersList';
 import { TriggersModel } from '@/generated/prisma/models/Triggers';
 import { TriggerWithRepos } from '@/types/triggers';
 
-export default function Page() {
+export default function DashboardPage() {
   const [isCreateModalOpen, setCreateModalOpen] = useState(false);
   const [editingTrigger, setEditingTrigger] = useState<TriggerWithRepos | null>(
     null,
