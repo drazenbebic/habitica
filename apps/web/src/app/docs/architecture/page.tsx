@@ -139,10 +139,11 @@ export default function ArchitecturePage() {
               <ZapIcon size={24} />
             </div>
             <div className="pt-2">
-              <h4 className="font-bold text-slate-900">XP Calculation</h4>
+              <h4 className="font-bold text-slate-900">Trigger Matching</h4>
               <p className="text-sm text-slate-500">
-                The system parses the commit size, file types, and action type
-                to calculate the appropriate Experience (XP) and Gold reward.
+                The system queries the database for active triggers that match
+                the incoming event (e.g., &quot;Push to Main&quot;). If a match
+                is found, the configured XP/Gold reward is retrieved.
               </p>
             </div>
           </div>
@@ -174,9 +175,11 @@ export default function ArchitecturePage() {
               GitHub Actor
             </Heading>
             <Content size="sm">
-              Octogriffin operates as a GitHub App. It does not use a user&#39;s
-              personal access token. Instead, it acts on its own behalf with
-              specific, granular permissions installed on repositories.
+              Octogriffin operates as a{' '}
+              <strong className="text-slate-900">GitHub App</strong>. It does
+              not use a user&#39;s personal access token. Instead, it acts on
+              its own behalf with specific, granular permissions installed on
+              repositories.
             </Content>
           </div>
           <div>
@@ -184,19 +187,22 @@ export default function ArchitecturePage() {
               Habitica Agent
             </Heading>
             <Content size="sm">
-              For Habitica, the app acts as a User Agent. We encrypt and store
-              the user&#39;s API User ID and Token to make API calls that
-              simulate the user completing a task.
+              For Habitica, the app acts as a{' '}
+              <strong className="text-slate-900">User Agent</strong>. We encrypt
+              and store the user&#39;s API User ID and Token to make API calls
+              that simulate the user completing a task.
             </Content>
           </div>
         </div>
       </section>
 
-      <Alert variant="info" title="Scalability Note">
-        In production, Vercel Functions have a timeout limit (usually 10-60s).
-        For heavy processing loads, we leverage Next.js{' '}
-        <code className="font-bold">after()</code> to handle non-critical DB
-        logging asynchronously.
+      <Alert variant="info" title="Asynchronous Processing">
+        To maintain strict performance limits and prevent timeouts,{' '}
+        <strong className="text-slate-900">every webhook</strong> is processed
+        using Next.js <code className="font-bold">after()</code>. This allows us
+        to immediately return a{' '}
+        <code className="text-xs font-bold">202 Accepted</code> to GitHub while
+        the trigger matching and API sync happen in the background.
       </Alert>
 
       <DocsFeedback />

@@ -4,10 +4,11 @@ import Image from 'next/image';
 import clsx from 'clsx';
 
 export type AvatarProps = {
-  src?: string;
+  src?: string | null;
   alt?: string;
   fallback?: string;
   size?: 'sm' | 'md' | 'lg';
+  shape?: 'circle' | 'rounded' | 'square';
   status?: 'success' | 'warning' | 'error' | 'neutral';
   className?: string;
 };
@@ -16,6 +17,12 @@ const sizeStyles: Record<string, string> = {
   sm: 'h-8 w-8 text-xs',
   md: 'h-10 w-10 text-sm',
   lg: 'h-12 w-12 text-base',
+};
+
+const shapeStyles: Record<string, string> = {
+  circle: 'rounded-full',
+  rounded: 'rounded-lg',
+  square: 'rounded-none',
 };
 
 const statusColors: Record<string, string> = {
@@ -30,6 +37,7 @@ export const Avatar: FC<AvatarProps> = ({
   alt = 'User avatar',
   fallback,
   size = 'md',
+  shape = 'circle',
   status,
   className,
 }) => {
@@ -37,8 +45,9 @@ export const Avatar: FC<AvatarProps> = ({
     <div className={clsx('relative inline-flex shrink-0', className)}>
       <div
         className={clsx(
-          'flex items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-slate-50 transition-all duration-300 ease-in-out',
+          'flex items-center justify-center overflow-hidden border border-slate-200 bg-slate-50 transition-all duration-300 ease-in-out',
           sizeStyles[size],
+          shapeStyles[shape],
         )}
       >
         {!!src ? (
@@ -59,7 +68,7 @@ export const Avatar: FC<AvatarProps> = ({
       {status && (
         <span
           className={clsx(
-            'absolute bottom-0 right-0 block rounded-full border-2 border-white',
+            'absolute -bottom-0.5 -right-0.5 block rounded-full border-2 border-white',
             statusColors[status],
             size === 'sm' ? 'h-2.5 w-2.5' : 'h-3.5 w-3.5',
           )}

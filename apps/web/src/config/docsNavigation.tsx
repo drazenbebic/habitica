@@ -44,8 +44,8 @@ export const docsNavigation: DocsNavSection[] = [
     title: 'Contribution',
     items: [
       {
-        title: 'Contributing Guide',
-        href: '/docs/contributing',
+        title: 'How to Contribute',
+        href: '/docs/how-to-contribute',
         icon: <GitPullRequestIcon size={18} />,
       },
       {

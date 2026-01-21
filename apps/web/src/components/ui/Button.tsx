@@ -27,7 +27,7 @@ const variants: Record<ButtonVariant, string> = {
   secondary:
     'bg-white text-slate-700 border border-slate-200 shadow-sm hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300 hover:shadow-md focus-visible:ring-slate-400',
   ghost:
-    'bg-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-slate-400 hover:-translate-y-0', // Ghost usually doesn't lift
+    'bg-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-900 focus-visible:ring-slate-400 hover:-translate-y-0',
   black:
     'bg-slate-900 text-white shadow-md shadow-slate-900/10 hover:bg-slate-800 hover:shadow-lg hover:shadow-slate-900/20 focus-visible:ring-slate-900',
 };
@@ -35,7 +35,7 @@ const variants: Record<ButtonVariant, string> = {
 const sizes: Record<ButtonSize, string> = {
   sm: 'px-4 py-2 text-xs',
   md: 'px-6 py-2.5 text-sm',
-  lg: 'px-8 py-3.5 text-base',
+  lg: 'px-8 py-3 text-base',
 };
 
 const iconSizes: Record<ButtonSize, number> = {

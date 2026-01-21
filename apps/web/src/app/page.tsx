@@ -23,7 +23,6 @@ import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { Pill } from '@/components/ui/Pill';
 import { TextAccent } from '@/components/ui/TextAccent';
-import { githubAppUrl } from '@/utils/githubAppUrl';
 import { githubRepositoryUrl } from '@/utils/githubRepositoryUrl';
 
 export const metadata: Metadata = {
@@ -104,19 +103,31 @@ const Home: NextPage = () => {
             code.
           </Content>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 pt-4">
-            <Link href={githubAppUrl()} target="_blank">
-              <Button size="lg">
-                <Rocket01Icon size={20} />
-                Get Started
-              </Button>
-            </Link>
-            <Link href={githubRepositoryUrl()} target="_blank">
-              <Button variant="black" size="lg">
-                <GithubIcon size={20} />
-                Open Source
-              </Button>
-            </Link>
+          <div className="flex flex-col items-center gap-6 pt-4">
+            <div className="flex flex-wrap items-center justify-center gap-4">
+              <Link href="/installation">
+                <Button size="lg">
+                  <Rocket01Icon size={20} />
+                  Get Started
+                </Button>
+              </Link>
+              <Link href={githubRepositoryUrl()} target="_blank">
+                <Button variant="black" size="lg">
+                  <GithubIcon size={20} />
+                  Open Source
+                </Button>
+              </Link>
+            </div>
+
+            <Content size="sm" color="note">
+              Want to see how it works first?{' '}
+              <Link
+                href="/docs"
+                className="font-semibold text-violet-600 hover:underline"
+              >
+                Read the Docs &rarr;
+              </Link>
+            </Content>
           </div>
         </div>
       </section>

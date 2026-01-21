@@ -2,11 +2,15 @@ import { FC } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { FavouriteIcon, GithubIcon, NewTwitterIcon } from 'hugeicons-react';
+import {
+  FavouriteIcon,
+  GithubIcon,
+  Globe02Icon,
+  NewTwitterIcon,
+} from 'hugeicons-react';
 
 import { FooterLink } from '@/components/FooterLink';
 import { Heading } from '@/components/ui/Heading';
-import { githubAppUrl } from '@/utils/githubAppUrl';
 import { githubRepositoryUrl } from '@/utils/githubRepositoryUrl';
 
 export const Footer: FC = () => {
@@ -53,31 +57,24 @@ export const Footer: FC = () => {
                 Product
               </Heading>
               <FooterLink href="/">Home</FooterLink>
+              <FooterLink href="/installation">Install App</FooterLink>
               <FooterLink href="/dashboard">Dashboard</FooterLink>
               <FooterLink href="/profile">Profile</FooterLink>
               <FooterLink href="/sponsors">Sponsors</FooterLink>
-              <FooterLink href={githubAppUrl()} target="_blank">
-                Install App
-              </FooterLink>
             </div>
 
             <div className="flex flex-col gap-3">
               <Heading level={3} className="font-semibold text-base">
                 Resources
               </Heading>
-              <FooterLink href="/faq">FAQ</FooterLink>
+              <FooterLink href="/docs">Documentation</FooterLink>
+              <FooterLink href="/docs/how-to-contribute">
+                Contributing
+              </FooterLink>
               <FooterLink href="/roadmap">Roadmap</FooterLink>
+              <FooterLink href="/faq">FAQ</FooterLink>
               <FooterLink href={githubRepositoryUrl()} target="_blank">
                 GitHub Repo
-              </FooterLink>
-              <FooterLink href="https://habitica.com" target="_blank">
-                Habitica
-              </FooterLink>
-              <FooterLink
-                href="https://habitica.fandom.com/wiki/Habitica_Wiki"
-                target="_blank"
-              >
-                Wiki
               </FooterLink>
             </div>
 
@@ -101,14 +98,7 @@ export const Footer: FC = () => {
 
           <div>
             {!!version && (
-              <span className="hidden text-xs text-slate-500 sm:inline-block">
-                v{version}
-              </span>
-            )}
-            {!!version && (
-              <p className="text-center text-xs text-slate-500 sm:hidden">
-                v{version}
-              </p>
+              <span className="text-xs text-slate-500">v{version}</span>
             )}
           </div>
 
@@ -134,18 +124,27 @@ export const Footer: FC = () => {
                 target="_blank"
                 rel="noreferrer"
                 className="text-slate-400 transition-colors hover:text-slate-900"
+                aria-label="GitHub Profile"
               >
                 <GithubIcon size={20} />
-                <span className="sr-only">GitHub</span>
               </Link>
               <Link
                 href="https://twitter.com/drazenbebic"
                 target="_blank"
                 rel="noreferrer"
                 className="text-slate-400 transition-colors hover:text-slate-900"
+                aria-label="X Profile"
               >
                 <NewTwitterIcon size={20} />
-                <span className="sr-only">Twitter</span>
+              </Link>
+              <Link
+                href="https://www.bebic.dev"
+                target="_blank"
+                rel="noreferrer"
+                className="text-slate-400 transition-colors hover:text-violet-600"
+                aria-label="Personal Website"
+              >
+                <Globe02Icon size={20} />
               </Link>
             </div>
           </div>

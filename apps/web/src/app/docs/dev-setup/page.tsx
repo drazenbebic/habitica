@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import NextLink from 'next/link';
 
 import clsx from 'clsx';
 import {
@@ -12,6 +11,7 @@ import {
 } from 'hugeicons-react';
 
 import { DocsFeedback } from '@/components/docs/DocsFeedback';
+import { DocsResourceLink } from '@/components/docs/DocsResourceLink';
 import { DocsStep } from '@/components/docs/DocsStep';
 import { EnvGenerator } from '@/components/docs/EnvGenerator';
 import { Link } from '@/components/Link';
@@ -108,24 +108,12 @@ export default function DevSetupPage() {
           localhost is not accessible from the internet, we use a tunnel.
         </Content>
 
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between rounded-xl bg-slate-50 p-5 border border-slate-200">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2 font-bold text-slate-900">
-              <Globe02Icon size={18} className="text-violet-600" />
-              <span>Set up Ngrok Tunnel</span>
-            </div>
-            <p className="text-sm text-slate-500">
-              Required to receive webhook events locally.
-            </p>
-          </div>
-
-          <NextLink
-            href="/docs/setting-up-ngrok"
-            className="shrink-0 inline-flex items-center justify-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm ring-1 ring-slate-200 hover:bg-slate-50 hover:text-violet-600 transition-colors"
-          >
-            View Guide &rarr;
-          </NextLink>
-        </div>
+        <DocsResourceLink
+          href="/docs/setting-up-ngrok"
+          title="Set up Ngrok Tunnel"
+          description="Required to receive webhook events locally."
+          icon={<Globe02Icon size={18} />}
+        />
 
         <Alert variant="info" title="Alternatives">
           While we recommend Ngrok for stability, you are free to use
