@@ -1,3 +1,5 @@
+'use client';
+
 import { ComponentProps, forwardRef } from 'react';
 
 import { Button } from '@ariakit/react';
