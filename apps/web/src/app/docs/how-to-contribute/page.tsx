@@ -18,14 +18,19 @@ import { Code } from '@/components/ui/Code';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { githubRepositoryUrl } from '@/utils/githubRepositoryUrl';
+import { generatePageMetadata } from '@/utils/seo';
 
-export const metadata: Metadata = {
-  title: 'How to Contribute',
-  description:
-    'Guidelines for contributing to Octogriffin. Learn about our branching strategy, commit conventions, and pull request process.',
+export const generateMetadata = async (): Promise<Metadata> => {
+  return generatePageMetadata({
+    title: 'How to Contribute',
+    description:
+      'Guidelines for contributing to Octogriffin. Learn about our branching strategy, commit conventions, and pull request process.',
+    suffix: 'Octogriffin Docs',
+    path: 'docs/how-to-contribute',
+  });
 };
 
-export default function ContributingPage() {
+export default function DocsHowToContributePage() {
   return (
     <div className="max-w-3xl space-y-12 pb-20">
       {/* Header */}

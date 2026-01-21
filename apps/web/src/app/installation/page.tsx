@@ -14,10 +14,15 @@ import { Button } from '@/components/ui/Button';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { githubAppUrl } from '@/utils/githubAppUrl';
+import { generatePageMetadata } from '@/utils/seo';
 
-export const metadata: Metadata = {
-  title: 'Installation Guide - Octogriffin',
-  description: 'Install Octogriffin and start earning XP for your code.',
+export const generateMetadata = async (): Promise<Metadata> => {
+  return generatePageMetadata({
+    title: 'Installation',
+    description:
+      'Get up and running in minutes. Follow our step-by-step guide to install the GitHub App, configure permissions, and link your Habitica account.',
+    path: 'installation',
+  });
 };
 
 export default function InstallationPage() {

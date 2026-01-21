@@ -12,7 +12,10 @@ import { Heading } from '@/components/ui/Heading';
 import { authOptions } from '@/lib/auth';
 
 export const metadata: Metadata = {
-  title: 'Dashboard',
+  title: {
+    template: '%s | Octogriffin Dashboard',
+    default: 'Octogriffin Dashboard',
+  },
   description:
     'Manage your Habitica API connections, configure repository webhooks, and track your gamification progress.',
   robots: {

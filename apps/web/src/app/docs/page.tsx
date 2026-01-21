@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { Metadata } from 'next';
 import NextLink from 'next/link';
 
 import {
@@ -12,8 +12,19 @@ import { DocsCard } from '@/components/docs/DocsCard';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { githubRepositoryUrl } from '@/utils/githubRepositoryUrl';
+import { generatePageMetadata } from '@/utils/seo';
 
-const DocsPage: FC = () => {
+export const generateMetadata = async (): Promise<Metadata> => {
+  return generatePageMetadata({
+    title: 'Introduction',
+    description:
+      'The complete guide to Octogriffin. Explore documentation for installation, configuration, architecture, and contributing to the open-source codebase.',
+    suffix: 'Octogriffin Docs',
+    path: 'docs',
+  });
+};
+
+export default function DocsPage() {
   return (
     <div className="space-y-12">
       {/* Hero Section */}
@@ -73,6 +84,4 @@ const DocsPage: FC = () => {
       </div>
     </div>
   );
-};
-
-export default DocsPage;
+}

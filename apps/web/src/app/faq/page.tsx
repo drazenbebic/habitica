@@ -9,6 +9,7 @@ import { AccordionGroup } from '@/components/ui/AccordionGroup';
 import { Button } from '@/components/ui/Button';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
+import { generatePageMetadata } from '@/utils/seo';
 import { supportEmail } from '@/utils/supportEmail';
 
 type FAQ = {
@@ -16,34 +17,13 @@ type FAQ = {
   answer: ReactNode;
 };
 
-export const metadata: Metadata = {
-  title: 'FAQs',
-  description:
-    'Common questions about how Octogriffin processes your GitHub activity and rewards you.',
-  openGraph: {
-    title: 'FAQs - Octogriffin',
+export const generateMetadata = async (): Promise<Metadata> => {
+  return generatePageMetadata({
+    title: 'FAQs',
     description:
       'Common questions about how Octogriffin processes your GitHub activity and rewards you.',
-    url: 'https://octogriffin.com/faq',
-    siteName: 'Octogriffin',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://octogriffin.com/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Octogriffin FAQs',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'FAQs - Octogriffin',
-    description:
-      'Common questions about how Octogriffin processes your GitHub activity and rewards you.',
-    images: ['https://octogriffin.com/og-image.png'],
-  },
+    path: 'faq',
+  });
 };
 
 const setup: FAQ[] = [

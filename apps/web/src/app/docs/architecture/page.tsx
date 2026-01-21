@@ -15,14 +15,19 @@ import { DocsFeedback } from '@/components/docs/DocsFeedback';
 import { Alert } from '@/components/ui/Alert';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
+import { generatePageMetadata } from '@/utils/seo';
 
-export const metadata: Metadata = {
-  title: 'Architecture',
-  description:
-    'High-level overview of the Octogriffin technology stack, data flow, and security model.',
+export const generateMetadata = async (): Promise<Metadata> => {
+  return generatePageMetadata({
+    title: 'Architecture',
+    description:
+      'High-level overview of the Octogriffin technology stack, data flow, and security model.',
+    suffix: 'Octogriffin Docs',
+    path: 'docs/architecture',
+  });
 };
 
-export default function ArchitecturePage() {
+export default function DocsArchitecturePage() {
   return (
     <div className="max-w-3xl space-y-12 pb-20">
       {/* Header */}

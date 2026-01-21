@@ -1,4 +1,4 @@
-import { Metadata, NextPage } from 'next';
+import { Metadata } from 'next';
 import Link from 'next/link';
 
 import {
@@ -29,7 +29,6 @@ export const metadata: Metadata = {
   title: 'Octogriffin - Gamify Your GitHub Workflow',
   description:
     'Level up your RPG character automatically while you code. Connect GitHub to Habitica and turn commits, PRs, and reviews into XP, Gold, and Loot.',
-
   openGraph: {
     title: 'Octogriffin - Gamify Your GitHub Workflow',
     description:
@@ -58,7 +57,7 @@ export const metadata: Metadata = {
 
 const version = process.env.NEXT_PUBLIC_APP_VERSION || '1.0.0';
 
-const Home: NextPage = () => {
+export default function HomePage() {
   return (
     <div className="flex flex-col gap-20 pb-20">
       <section className="relative px-4 pt-20 sm:pt-32 text-center">
@@ -312,6 +311,4 @@ const Home: NextPage = () => {
       </section>
     </div>
   );
-};
-
-export default Home;
+}

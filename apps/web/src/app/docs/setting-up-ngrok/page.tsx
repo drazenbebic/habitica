@@ -11,14 +11,19 @@ import { Button } from '@/components/ui/Button';
 import { Code } from '@/components/ui/Code';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
+import { generatePageMetadata } from '@/utils/seo';
 
-export const metadata: Metadata = {
-  title: 'Setting up Ngrok',
-  description:
-    'How to expose your local development environment to GitHub webhooks using Ngrok.',
+export const generateMetadata = async (): Promise<Metadata> => {
+  return generatePageMetadata({
+    title: 'Setting up Ngrok',
+    description:
+      'How to expose your local development environment to GitHub webhooks using Ngrok.',
+    suffix: 'Octogriffin Docs',
+    path: 'docs/setting-up-ngrok',
+  });
 };
 
-export default function SettingUpNgrokPage() {
+export default function DocsSettingUpNgrokPage() {
   return (
     <div className="max-w-3xl space-y-12 pb-20">
       <div>

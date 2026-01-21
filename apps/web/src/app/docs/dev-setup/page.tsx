@@ -20,6 +20,7 @@ import { Code } from '@/components/ui/Code';
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
 import { githubRepositoryUrl } from '@/utils/githubRepositoryUrl';
+import { generatePageMetadata } from '@/utils/seo';
 
 const GITHUB_PERMISSIONS = [
   { category: 'Actions' },
@@ -59,13 +60,17 @@ const GITHUB_EVENTS = [
   'Sub Issues',
 ];
 
-export const metadata: Metadata = {
-  title: 'Development Setup',
-  description:
-    'Complete guide to setting up Octogriffin locally. Learn how to configure Docker, create a GitHub App, and initialize the database for development.',
+export const generateMetadata = async (): Promise<Metadata> => {
+  return generatePageMetadata({
+    title: 'Development Setup',
+    description:
+      'Complete guide to setting up Octogriffin locally. Learn how to configure Docker, create a GitHub App, and initialize the database for development.',
+    suffix: 'Octogriffin Docs',
+    path: 'docs/dev-setup',
+  });
 };
 
-export default function DevSetupPage() {
+export default function DocsDevSetupPage() {
   return (
     <div className="max-w-3xl space-y-12 pb-20">
       <div>

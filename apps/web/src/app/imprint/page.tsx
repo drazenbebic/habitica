@@ -1,42 +1,21 @@
-import { NextPage } from 'next';
 import { Metadata } from 'next';
 import Link from 'next/link';
 
 import { Content } from '@/components/ui/Content';
 import { Heading } from '@/components/ui/Heading';
+import { generatePageMetadata } from '@/utils/seo';
 import { supportEmail } from '@/utils/supportEmail';
 
-export const metadata: Metadata = {
-  title: 'Imprint',
-  description:
-    'Legal disclosure and provider identification for Octogriffin. Operated by Drazen Bebic in Vienna, Austria.',
-  openGraph: {
+export const generateMetadata = async (): Promise<Metadata> => {
+  return generatePageMetadata({
     title: 'Imprint',
     description:
       'Legal disclosure and provider identification for Octogriffin. Operated by Drazen Bebic in Vienna, Austria.',
-    url: 'https://octogriffin.com/imprint',
-    siteName: 'Octogriffin',
-    locale: 'en_US',
-    type: 'website',
-    images: [
-      {
-        url: 'https://octogriffin.com/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Octogriffin Imprint',
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Imprint',
-    description:
-      'Legal disclosure and provider identification for Octogriffin. Operated by Drazen Bebic in Vienna, Austria.',
-    images: ['https://octogriffin.com/og-image.png'],
-  },
+    path: 'imprint',
+  });
 };
 
-const Imprint: NextPage = () => {
+export default function ImprintPage() {
   const email = supportEmail();
 
   return (
@@ -193,6 +172,4 @@ const Imprint: NextPage = () => {
       </div>
     </div>
   );
-};
-
-export default Imprint;
+}
