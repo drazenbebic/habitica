@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.8.0](https://github.com/drazenbebic/octogriffin/compare/web-v0.7.2...web-v0.8.0) (2026-01-23)
+
+
+### Features
+
+* add docs pages ([#206](https://github.com/drazenbebic/octogriffin/issues/206)) ([812ace0](https://github.com/drazenbebic/octogriffin/commit/812ace014189b54de6c71fa2819f65f33ff2728a))
+* add health check route ([ab091cb](https://github.com/drazenbebic/octogriffin/commit/ab091cb1fb631a369d44246e9428d4f1df181231))
+
 ## [0.7.2](https://github.com/drazenbebic/octogriffin/compare/web-v0.7.1...web-v0.7.2) (2026-01-19)
 
 
