@@ -1922,6 +1922,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@octogriffin/api@workspace:apps/api":
+  version: 0.0.0-use.local
+  resolution: "@octogriffin/api@workspace:apps/api"
+  dependencies:
+    "@types/node": "npm:^24"
+    hono: "npm:^4.11.5"
+    tsx: "npm:^4.21.0"
+    typescript: "npm:^5.9.3"
+  languageName: unknown
+  linkType: soft
+
 "@octogriffin/web@workspace:apps/web":
   version: 0.0.0-use.local
   resolution: "@octogriffin/web@workspace:apps/web"
@@ -6173,6 +6184,13 @@ __metadata:
   version: 4.10.6
   resolution: "hono@npm:4.10.6"
   checksum: 10c0/a4df5a44378df640464a468cfa6364cc90fbf0a0d89c1bc8fa704c8450855b17baf7a5837655b1c00d6cf8dcecffc2ee702bf3f2c66dda243fe845b75b4b7f4b
+  languageName: node
+  linkType: hard
+
+"hono@npm:^4.11.5":
+  version: 4.11.5
+  resolution: "hono@npm:4.11.5"
+  checksum: 10c0/0473f7dde6f4d2e0d6e04cace561715560d7f884d5c7d3d7bc8e4b7f7b5ec7b826cc996ebcc2b343e1c00a95d7436a95a75c91b3b2a8666ba3b4be4b7bdb1982
   languageName: node
   linkType: hard
 
